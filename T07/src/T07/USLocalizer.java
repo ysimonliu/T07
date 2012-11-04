@@ -4,7 +4,7 @@ import lejos.nxt.*;
 
 public class USLocalizer{
 	// declare falling_edge, and rising_edge
-	public enum LocalizationType { FALLING_EDGE, RISING_EDGE };
+	public enum LocalizationType {FALLING_EDGE, RISING_EDGE };
 	public static double ROTATION_SPEED = 30;
 	// noWallDistance is a safe distance to make sure that robot sees no wall, wall distance is the threshold for seeing a wall
 	private double wallDistance = 40, noWallDistance = 50;
