@@ -1,2 +1,4 @@
-#java specific
+# java generics
 *.class
+# eclipse settings
+.metadata
