@@ -1,0 +1,9 @@
+# java generics
+*.class
+
+# Package Files #
+*.jar
+*.war
+*.ear
+# eclipse settings
+.metadata
