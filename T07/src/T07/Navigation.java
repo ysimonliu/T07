@@ -52,7 +52,7 @@ public class Navigation {
 				}
 			}
 			else {
-				// same idea with the one above, except an opposite direction
+				// same idea with the one above, except in opposite direction
 				while (Math.abs(odometer.getTheta() - angle) > thetaEpsilon) {
 					robot.setRotationSpeed(rotationSpeed);
 				}
