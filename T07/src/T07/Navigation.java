@@ -44,7 +44,7 @@ public class Navigation {
 			isTurning = true;
 			// if target angle is within 180 degree to the left of the current heading, make sure to turn to the right direction
 			// this is to turn the minimal angle with the odometer given
-			// POSSIBLE FIX (UNTESTED): angle=Odometer.fixDegAngle(angle);
+			angle=Odometer.fixDegAngle(angle);		// takes care of negative angles
 			if ((angle < odometer.getTheta() && Math.abs(odometer.getTheta() - angle) < 180) || 
 					(angle > odometer.getTheta() && Math.abs(odometer.getTheta() - angle) > 180)){
 				// before reaching the wanted angle, let's rotate it

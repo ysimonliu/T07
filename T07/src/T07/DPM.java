@@ -12,23 +12,7 @@ public class DPM {
 		RConsole.println("Connected!");
 		printNums();
 		
-		while (Button.readButtons() != Button.ID_ESCAPE);
-		
-		// BILAL - Odometer test
-		/*TwoWheeledRobot patBot = new TwoWheeledRobot(Motor.A, Motor.B, Motor.C);
-		Odometer odo = new Odometer(patBot, true);
-		LCDInfo lcd = new LCDInfo(odo);
-		Navigation nav = new Navigation(odo);
-		
-		Motor.A.flt();
-		Motor.B.flt();
-		
-		Button.waitForAnyPress();
-		
-		nav.turnTo(-45);
-		
-		Button.waitForAnyPress();*/
-		
+		while (Button.readButtons() != Button.ID_ESCAPE);		
 	}
 	
 	private static void printNums() {
