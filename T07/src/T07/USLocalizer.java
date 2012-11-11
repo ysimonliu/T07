@@ -128,7 +128,6 @@ public class USLocalizer{
 			odo.getPosition(pos);
 			odo.setPosition(new double [] {0.0, 0.0, pos[2] + headingDiff}, new boolean [] {true, true, true});
 			// turn to the true "north", which is the 0 degree after correction
-			Navigation navigation = new Navigation(this.odo);
 			navigation.turnTo(0);
 
 		}

@@ -105,4 +105,24 @@ public class TwoWheeledRobot {
 		else
 			rightMotor.setSpeed((int)rightSpeed);
 	}
+	
+	// method that returns if leftMotor is moving
+	public boolean leftMotorMoving() {
+		return leftMotor.isMoving();
+	}
+	
+	// method that returns if rightMotor is moving\
+	public boolean rightMotorMoving() {
+		return rightMotor.isMoving();
+	}
+	
+	// method that stops the leftmotor only
+	public void stopLeftMotor () {
+		leftMotor.setSpeed(0);
+	}
+	
+	// method that stops the rightmotor only
+	public void stopRightMotor () {
+		rightMotor.setSpeed(0);
+	}
 }

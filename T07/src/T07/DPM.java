@@ -20,9 +20,8 @@ public class DPM {
 		Odometer odo = new Odometer(robot);
 		// Navigation navi = new Navigation(odo);
 		
-		//Basic parameters for testing different classes (Ashley)
 		int buttonChoice;
-		RConsole.openBluetooth(20000);
+		RConsole.openBluetooth(100);
 		RConsole.println("Connected!");
 		do {
 			LCD.clear();
@@ -42,6 +41,8 @@ public class DPM {
 		
 		odo.timedOut();
 		lcd.timedOut();
+		
+		while (Button.waitForAnyPress() != Button.ID_ESCAPE);
 	}
 
 }

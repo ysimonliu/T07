@@ -10,12 +10,16 @@ public class Navigation {
 	private double epsilon = 2.0, thetaEpsilon = 1.0;
 	private boolean  isTurning = false;
 	private double forwardSpeed = 5, rotationSpeed = 30;
+	private USPoller rightSensor;
+	private USPoller middleSensor;
 
 	
-		public Navigation(Odometer odometer) {
+		public Navigation(Odometer odometer, USPoller middleSensor, USPoller rightSensor) {
 			// constructor
 			this.odometer = odometer;
 			this.robot = odometer.getTwoWheeledRobot();
+			this.rightSensor = rightSensor;
+			this.middleSensor = middleSensor;
 		}
 		
 		public void travelTo(double x, double y) {
@@ -23,6 +27,12 @@ public class Navigation {
 			double minAng;
 			// unless I have reached the target X and Y position
 		    while (Math.abs(x - odometer.getX() ) > epsilon || Math.abs(y - odometer.getY() ) > epsilon ) {
+		    	
+		    	// avoid block checker (detects if an object is located in front of the robot and then moves into wall following mode)
+		    	if (middleSensor.getFilteredData() < 30) { //TODO test the wall detection value so that robot doesn't hit wall
+		    		avoidBlock();
+		    	}
+		    	
 		    	// compute the turning angle
 			    minAng = Math.toDegrees(Math.atan2(x - odometer.getX(),y - odometer.getY()));
 			    minAng = Odometer.fixDegAngle(minAng);
@@ -62,5 +72,9 @@ public class Navigation {
 			robot.setRotationSpeed(0);
 			// change the status of the flag
 			isTurning = false;
+		}
+		
+		public void avoidBlock() {
+			
 		}
 	}

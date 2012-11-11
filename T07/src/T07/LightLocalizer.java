@@ -9,7 +9,8 @@ public class LightLocalizer{
 	// initialize the odometer, twoWheeledRobot, lightSensor and Navigation
 	private Odometer odo;
 	private TwoWheeledRobot robot;
-	private LightSensor ls;
+	private LightPoller leftLight;
+	private LightPoller rightLight;
 	private Navigation navigation;
 	// distance from light sensor to the center of the axle
 	private double lightSensorD = 13.5;
@@ -19,15 +20,17 @@ public class LightLocalizer{
 	private static int gridLineIntensity = 500;
 	
 	// constructor
-	public LightLocalizer(Odometer odo, LightSensor ls) {
+	public LightLocalizer(Odometer odo, LightPoller leftLight, LightPoller rightLight, Navigation navi) {
 		this.odo = odo;
 		this.robot = odo.getTwoWheeledRobot();
-		this.ls = ls;
-		this.navigation = new Navigation(odo);
-		// turn on the light
-		ls.setFloodlight(true);
+		this.leftLight = leftLight;
+		this.rightLight = rightLight;
+		this.navigation = navi;
 	}
 	
+	// COMMENTED OUT BY ASHLEY OLD LIGHTSENSOR LOCALIZATION METHOD
+	
+	/*
 	public void doLocalization() {
 		// drive to location listed in tutorial
 		// we used the following approach to make sure that our swipe will read correct coordinates
@@ -91,19 +94,43 @@ public class LightLocalizer{
  		navigation.travelTo(0,0);
  		navigation.turnTo(0);
 	}
+	*/
 	
-	// helper function to travel until the grid line
-	private void travelUntilGridLine() {
-		// robot travel until the light sensor detects grid line
-		while (getLsReading() > gridLineIntensity) {
-			robot.setForwardSpeed(FORWARD_SPEED);
+	// Method that controls light localization
+	public void doLocalization() {
+		
+		// Moves the robot forward towards first gridline
+		robot.setForwardSpeed(200); //TODO check the robot speed
+		
+		// This loop detects the first line (the x axis) and stops directly on it
+		while(robot.leftMotorMoving() || robot.rightMotorMoving()) {
+			
+			if (leftLight.getFilteredData() < 45) { // TODO check the light value reading, will it detect line
+				robot.stopLeftMotor();
+			}
+			if (rightLight.getFilteredData() < 45) { // TODO check the light value reading, will it detect line
+				robot.stopRightMotor();
+			}	
 		}
-		robot.setForwardSpeed(0);
+		double
+		odo.setPosition( {0, 0, 90}, {false, false, true} );
+		
+		navigation.turnTo(0); // Will turn the robot to 0 degrees assuming that pos X is 0 degrees, TODO check convention
+		
+		// Moves the robot forward towards second gridline
+		robot.setForwardSpeed(200); // TODO check the robot speed
+		
+		// This loop detects the second line (the y axis) and stops directly on it
+		while(robot.leftMotorMoving() || robot.rightMotorMoving()) {
+			if (leftLight.getFilteredData() < 45) { // TODO check the light value reading
+				robot.stopLeftMotor();
+			}
+			if (rightLight.getFilteredData() < 45) { // TODO check the light value reading
+				robot.stopRightMotor();
+			}
+		}
+		
+		
+				
 	}
-	
-	// get the light sensor reading
-	private int getLsReading() {
-		return ls.readNormalizedValue();
-	}
-
 }
