@@ -20,13 +20,10 @@ public class USLocalizer{
 	private Navigation navigation;
 
 	// constructor
-	public USLocalizer(Odometer odo, USPoller usl, USPoller usr, LocalizationType locType, Navigation navigation) {
+	public USLocalizer(Odometer odo, LocalizationType locType, Navigation navigation) {
 		this.odo = odo;
 		this.robot = odo.getTwoWheeledRobot();
-		this.usLeft = usl; // won't be required 
-		this.usRight = usr; // won't be required
 		this.locType = locType;
-		//this.filterCounter = 0;
 		this.navigation = navigation;
 	}
 
@@ -83,7 +80,6 @@ public class USLocalizer{
 		}
 		// if choosing rising edge
 		else {
-			// below is given comment by TA
 			/*
 			 * The robot should turn until it sees the wall, then look for the
 			 * "rising edges:" the points where it no longer sees the wall.

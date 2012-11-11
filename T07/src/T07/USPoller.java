@@ -15,12 +15,14 @@ public class USPoller implements TimerListener{
 	private Timer usPollerTimer;
 	private final int DEFAULT_PERIOD_ULTRASONIC = 60; // Period for which the timerlistener will sleep (Adjust if necessary)
 	private UltrasonicSensor us;
+	private TwoWheeledRobot robot;
 	private static int[] readingRecords = new int[10];
 	private static int counter;
 	
 	// Constructor for USPoller
-	public USPoller(UltrasonicSensor uSensor) {
-		this.us = uSensor;
+	public USPoller(TwoWheeledRobot robot) {
+		this.robot = robot;
+		this.us = robot.leftUSSensor;
 		this.usPollerTimer = new Timer(DEFAULT_PERIOD_ULTRASONIC, this);
 		this.usPollerTimer.start();
 		counter = 0;

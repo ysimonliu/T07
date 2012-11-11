@@ -1,5 +1,6 @@
 package T07;
 import lejos.nxt.LCD;
+import lejos.nxt.comm.RConsole;
 import lejos.util.Timer;
 import lejos.util.TimerListener;
 
@@ -7,13 +8,17 @@ public class LCDInfo implements TimerListener{
 	public static final int LCD_REFRESH = 100;
 	private Odometer odometer;
 	private Timer lcdTimer;
+	private USPoller usPoller;
+	//private TwoWheeledRobot robot;
 
 	// arrays for displaying data
 	private double [] position;
 
-	public LCDInfo(Odometer odometer) {
+	public LCDInfo(Odometer odometer, USPoller usPoller) {
 		this.odometer = odometer;
 		this.lcdTimer = new Timer(LCD_REFRESH, this);
+		this.usPoller = usPoller;
+		//this.robot = odometer.getTwoWheeledRobot();
 
 		// initialize the arrays for displaying data
 		position = new double [3];
@@ -24,6 +29,7 @@ public class LCDInfo implements TimerListener{
 
 	public void timedOut() { 
 		odometer.getPosition(position);
+		// print to the LCD screen
 		LCD.clear();
 		LCD.drawString("X: ", 0, 0);
 		LCD.drawString("Y: ", 0, 1);
@@ -31,6 +37,12 @@ public class LCDInfo implements TimerListener{
 		LCD.drawString(formattedDoubleToString(position[0], 2), 3, 0);
 		LCD.drawString(formattedDoubleToString(position[1], 2), 3, 1);
 		LCD.drawString(formattedDoubleToString(position[2], 2), 3, 2);
+		// print to the RConsole Viewer for debug's convenience
+		RConsole.println("X:" + formattedDoubleToString(position[0], 2));
+		RConsole.println("Y:" + formattedDoubleToString(position[1], 2));
+		RConsole.println("Theta:" + formattedDoubleToString(position[2], 2));
+		RConsole.println("LeftUS Raw:" + usPoller.getRawData());
+		RConsole.println("LeftUS Processed:" + usPoller.getFilteredData());
 	}
 
 	// helper function to cast a double to 2 decimal places and return an array
