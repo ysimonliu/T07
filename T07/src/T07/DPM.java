@@ -11,13 +11,16 @@ public class DPM {
 	static private final double WIDTH = 12;
 	static private final NXTRegulatedMotor LEFTMOTOR = Motor.A;
 	static private final NXTRegulatedMotor RIGHTMOTOR = Motor.B;
+	static private final LightSensor LEFT_LIGHT_SENSOR = new LightSensor(SensorPort.S1);
+	static private final LightSensor RIGHT_LIGHT_SENSOR = new LightSensor(SensorPort.S2);
 	static private final UltrasonicSensor MIDDLE_ULTRASONIC_SENSOR = new UltrasonicSensor(SensorPort.S3);
 	static private final UltrasonicSensor RIGHT_ULTRASONIC_SENSOR = new UltrasonicSensor(SensorPort.S4);
 	
 	public static void main(String[] args){
 		
 		// Instantiate classes for basic components testing
-		TwoWheeledRobot robot = new TwoWheeledRobot(LEFTMOTOR, RIGHTMOTOR, MIDDLE_ULTRASONIC_SENSOR, RIGHT_ULTRASONIC_SENSOR, LEFT_RADIUS, RIGHT_RADIUS, WIDTH);
+		TwoWheeledRobot robot = new TwoWheeledRobot(LEFTMOTOR, RIGHTMOTOR, MIDDLE_ULTRASONIC_SENSOR, RIGHT_ULTRASONIC_SENSOR, 
+				LEFT_LIGHT_SENSOR, RIGHT_LIGHT_SENSOR, LEFT_RADIUS, RIGHT_RADIUS, WIDTH);
 		Odometer odo = new Odometer(robot);
 		// Navigation navi = new Navigation(odo);
 		
@@ -44,6 +47,7 @@ public class DPM {
 		odo.timedOut();
 		lcd.timedOut();
 		
+		// once the escape button is pressed, the robot will exit this program
 		while (Button.waitForAnyPress() != Button.ID_ESCAPE);
 		System.exit(0);
 	}

@@ -16,7 +16,9 @@ public class USPoller implements TimerListener{
 	private final int DEFAULT_PERIOD_ULTRASONIC = 60; // Period for which the timerlistener will sleep (Adjust if necessary)
 	private UltrasonicSensor us;
 	private TwoWheeledRobot robot;
-	private static int[] readingRecords = new int[10];
+	// TODO: test the responsiveness of the sensor readings and change the size of the array
+	private static int sizeOfCachedReadings = 7;
+	private static int[] readingRecords = new int[sizeOfCachedReadings];
 	private static int counter;
 	
 	// Constructor for USPoller
@@ -38,7 +40,7 @@ public class USPoller implements TimerListener{
 		}
 		// reset the cache values
 		counter = 0;
-		readingRecords = new int[10];
+		readingRecords = new int[sizeOfCachedReadings];
 	}
 	
 	// TimerListener method that sets filtered US data readings, also controls pinging rates
@@ -52,7 +54,7 @@ public class USPoller implements TimerListener{
 
 		// add the newly read distance to replace the oldest element in the array
 		rawUSValue = us.getDistance();
-		readingRecords[counter % 10] = rawUSValue;
+		readingRecords[counter % sizeOfCachedReadings] = rawUSValue;
 		// get the median value of the array
 		filteredUSValue = getReadingRecordsMedian();
 		// increment the counter to move to the element in the array, aka the oldest element to be replaced
@@ -61,7 +63,7 @@ public class USPoller implements TimerListener{
 	}
 	
 	// get median will return the median value of the last eleven ultrasonic sensor readings
-	private int getReadingRecordsMedian() {
+	public int getReadingRecordsMedian() {
 		int medianValue;
 		// sort the reading records and copy it to another array
 		int[] sortedReadings = sortReadingRecords(Arrays.copyOf(readingRecords, readingRecords.length)); 

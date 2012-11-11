@@ -1,27 +1,75 @@
 package T07;
 
+import java.util.Arrays;
+
 import lejos.nxt.*;
+import lejos.util.Timer;
 import lejos.util.TimerListener;
 
 // Class that controls the light sensors and makes sure that the data doesn't
 // become confused when being called from multiple sources
 public class LightPoller implements TimerListener{
 	
-	// private variable that store the lightValue
-	private int lightValue;
+	// private variable that stores the controlled USValue
+	private int rawLightValue, filteredLightValue;
+	private Timer lightPollerTimer;
+	private final int DEFAULT_PERIOD_ULTRASONIC = 60; // Period for which the timerlistener will sleep (Adjust if necessary)
+	private LightSensor ls;
+	private TwoWheeledRobot robot;
+	// TODO: test the responsiveness of the sensor readings and change the size of the array
+	private static int sizeOfCachedReadings = 7;
+	private static int[] readingRecords = new int[sizeOfCachedReadings];
+	private static int counter;
 	
 	// Constructor of lightpoller
-	public LightPoller() {
-		// What do we need here?
+	public LightPoller(TwoWheeledRobot robot) {
+		this.robot = robot;
+		this.ls = robot.leftLS;
+		this.lightPollerTimer = new Timer(DEFAULT_PERIOD_ULTRASONIC, this);
+		this.lightPollerTimer.start();
+		counter = 0;
 	}
 	
 	// timerListener method that controls access to the light sensor
 	public void timedOut() {
-		
+		// add the newly read distance to replace the oldest element in the array
+		rawLightValue = ls.getNormalizedLightValue();
+		readingRecords[counter % sizeOfCachedReadings] = rawLightValue;
+		// get the median value of the array
+		filteredLightValue = getReadingRecordsMedian();
+		// increment the counter to move to the element in the array, aka the oldest element to be replaced
+		counter++;
 	}
 	
-	// public method that returns the lightValue for this light sensor
+	// get median will return the median value of the last eleven ultrasonic sensor readings
+	public int getReadingRecordsMedian() {
+		int medianValue;
+		// sort the reading records and copy it to another array
+		int[] sortedReadings = sortReadingRecords(Arrays.copyOf(readingRecords, readingRecords.length)); 
+		// if the number of elements in the array is odd, get the value of the middle index of the array
+		if (sortedReadings.length % 2 == 1) {
+			medianValue = sortedReadings[sortedReadings.length / 2 + 1];
+		}
+		// else calculate the mean value of the value of the middle two elements
+		else {
+			medianValue = (sortedReadings[sortedReadings.length / 2] + sortedReadings[sortedReadings.length / 2 + 1] ) / 2;
+		}
+		return medianValue;
+	}
+
+	// this is a helper function to sort an array
+	private int[] sortReadingRecords(int[] arraysToBeSorted) {
+		Arrays.sort(arraysToBeSorted);
+		return arraysToBeSorted;
+	}
+	
+	// getter method that returns the filteredUSValue
 	public int getFilteredData() {
-		return lightValue;
+		return filteredLightValue;
+	}
+	
+	// getter for the unprocessed data
+	public int getRawData() {
+		return rawLightValue;
 	}
 }
