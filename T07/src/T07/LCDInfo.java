@@ -9,15 +9,17 @@ public class LCDInfo implements TimerListener{
 	private Odometer odometer;
 	private Timer lcdTimer;
 	private USPoller usPoller;
+	private LightPoller lp;
 	//private TwoWheeledRobot robot;
 
 	// arrays for displaying data
 	private double [] position;
 
-	public LCDInfo(Odometer odometer, USPoller usPoller) {
+	public LCDInfo(Odometer odometer, USPoller usPoller, LightPoller lp) {
 		this.odometer = odometer;
 		this.lcdTimer = new Timer(LCD_REFRESH, this);
 		this.usPoller = usPoller;
+		this.lp = lp;
 		//this.robot = odometer.getTwoWheeledRobot();
 
 		// initialize the arrays for displaying data
@@ -43,6 +45,8 @@ public class LCDInfo implements TimerListener{
 		RConsole.println("Theta:" + formattedDoubleToString(position[2], 2));
 		RConsole.println("LeftUS Raw:" + usPoller.getRawData());
 		RConsole.println("LeftUS Processed:" + usPoller.getFilteredData());
+		RConsole.println("LeftLS Raw:" + lp.getRawData());
+		RConsole.println("LeftLS Processed:" + lp.getFilteredData());
 	}
 
 	// helper function to cast a double to 2 decimal places and return an array

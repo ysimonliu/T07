@@ -6,6 +6,7 @@ import lejos.nxt.comm.RConsole;
 public class DPM {
 	
 	public enum USSensor {MIDDLE, RIGHT};
+	public enum LSensor {LEFT, MIDDLE, RIGHT};
 	static private final double LEFT_RADIUS = 12;
 	static private final double RIGHT_RADIUS = 12;
 	static private final double WIDTH = 12;
@@ -41,13 +42,15 @@ public class DPM {
 		} while (buttonChoice != Button.ID_LEFT && buttonChoice != Button.ID_RIGHT);
 		
 		USPoller usPoller = new USPoller(robot);
-		usPoller.changeSensor(USSensor.RIGHT);
-		LCDInfo lcd = new LCDInfo(odo, usPoller);
+		LightPoller lp1 = new LightPoller(robot, LSensor.LEFT);
+		LightPoller lp2 = new LightPoller(robot, LSensor.RIGHT);
+		
+		LCDInfo lcd = new LCDInfo(odo, usPoller, lp1);
 		
 		odo.timedOut();
 		lcd.timedOut();
 		
-		// once the escape button is pressed, the robot will exit this program
+		// once the escape button is pressed, the robot will 
 		while (Button.waitForAnyPress() != Button.ID_ESCAPE);
 		System.exit(0);
 	}

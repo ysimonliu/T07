@@ -21,10 +21,18 @@ public class LightPoller implements TimerListener{
 	private static int[] readingRecords = new int[sizeOfCachedReadings];
 	private static int counter;
 	
-	// Constructor of lightpoller
-	public LightPoller(TwoWheeledRobot robot) {
+	// Constructor of lightPoller
+	public LightPoller(TwoWheeledRobot robot, DPM.LSensor choice) {
 		this.robot = robot;
-		this.ls = robot.leftLS;
+		switch(choice) {
+		case LEFT:
+			this.ls = robot.leftLS;
+		case MIDDLE:
+		// FIXME: need to implement the middle sensor once the two brick communication is fixed
+		//	this.ls = robot.middleLS;
+		case RIGHT:
+			this.ls = robot.rightLS;
+		}
 		this.lightPollerTimer = new Timer(DEFAULT_PERIOD_ULTRASONIC, this);
 		this.lightPollerTimer.start();
 		counter = 0;
