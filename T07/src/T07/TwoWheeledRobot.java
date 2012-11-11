@@ -1,8 +1,6 @@
 package T07;
 import lejos.nxt.*;
 
-// This code is given by TA for the Localizer lab WITHOUT any change except the measurements of the robot
-// so we don't have any comment in this class
 public class TwoWheeledRobot {
 	
 	// this class contains the measurements of the robot
@@ -20,7 +18,6 @@ public class TwoWheeledRobot {
 						   double rightRadius) {
 		this.leftMotor = leftMotor;
 		this.rightMotor = rightMotor;
-		// REMOVED LIGHTSENSOR MOTOR!!!
 		this.leftRadius = leftRadius;
 		this.rightRadius = rightRadius;
 		this.width = width;

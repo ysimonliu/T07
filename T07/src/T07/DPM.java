@@ -4,7 +4,6 @@ import lejos.nxt.Button;
 import lejos.nxt.LCD;
 import lejos.nxt.Motor;
 import lejos.nxt.UltrasonicSensor;
-import lejos.nxt.comm.RConsole;
 import lejos.nxt.*;
 
 public class DPM {

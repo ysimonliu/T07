@@ -138,37 +138,4 @@ public class USLocalizer{
 		}
 	}
 
-	// TODO commented out because USPoller will have this job, might require in the future
-	/*
-	public int getFilteredData() {
-		int distance;
-
-		// do a ping
-		us.ping();
-
-		// wait for the ping to complete
-		try { Thread.sleep(50); } catch (InterruptedException e) {}
-
-		// there will be a delay here
-		distance = us.getDistance();
-
-		// filter out the erroneous 255 reading by using a filter. Same ideology with lab 1 except that we keep the last normal(non-255) reading here 
-		if (distance == 255) {
-			if (filterCounter >= 10){
-				distance = 255;
-			}
-			else {
-				distance = lastNormalReading;
-			}
-			filterCounter++;
-		}
-		else {
-			lastNormalReading = distance;
-			filterCounter = 0;
-		}
-
-		return distance;
-	}
-	*/
-
 }
