@@ -9,17 +9,15 @@ public class Navigation {
 	private TwoWheeledRobot robot;
 	private double epsilon = 2.0, thetaEpsilon = 1.0;
 	private boolean  isTurning = false;
-	private double forwardSpeed = 5, rotationSpeed = 30;
-	private USPoller rightSensor;
-	private USPoller middleSensor;
-
+	private double forwardSpeed = 100, rotationSpeed = 75;
+	private USPoller selectedSensor;
+	private final int bandCenter = 30, bandwith = 5;
 	
-		public Navigation(Odometer odometer, USPoller middleSensor, USPoller rightSensor) {
+		public Navigation(Odometer odometer, USPoller selectedSensor) {
 			// constructor
 			this.odometer = odometer;
 			this.robot = odometer.getTwoWheeledRobot();
-			this.rightSensor = rightSensor;
-			this.middleSensor = middleSensor;
+			this.selectedSensor = selectedSensor;
 		}
 		
 		public void travelTo(double x, double y) {
@@ -29,8 +27,8 @@ public class Navigation {
 		    while (Math.abs(x - odometer.getX() ) > epsilon || Math.abs(y - odometer.getY() ) > epsilon ) {
 		    	
 		    	// avoid block checker (detects if an object is located in front of the robot and then moves into wall following mode)
-		    	if (middleSensor.getFilteredData() < 30) { //TODO test the wall detection value so that robot doesn't hit wall
-		    		avoidBlock();
+		    	if (selectedSensor.getFilteredData() < 30) { //TODO test the wall detection value so that robot doesn't hit wall
+		    		avoidBlock(); // go into wall following method
 		    	}
 		    	
 		    	// compute the turning angle
@@ -76,5 +74,23 @@ public class Navigation {
 		
 		public void avoidBlock() {
 			
+			// TODO change sensors with DPM.USSensor.RIGHT, must change back after wall following
+			selectedSensor.changeSensor(DPM.USSensor.RIGHT); // changes the sensor to the right sensor for wall following
+			
+			turnTo((odometer.getTheta()+270)%360); // turns the robot 90 degrees when an object is detected
+			double lockAngle = (odometer.getTheta() + 180) % 360; // this locks the initial angle, used to get out of the wall following mode
+			
+			// TODO check useless turning!!! This loop will maintain wall following to avoid any objects
+			while (odometer.getTheta() > (lockAngle + 20) && odometer.getTheta() < (lockAngle -20)) { // when the robot is facing a specific angle it has avoided the object
+				if (selectedSensor.getFilteredData() > (bandCenter + (bandwith))) { // if robot out of bandwith turn torwards wall
+					robot.setRotationSpeed(rotationSpeed);
+				} else if (selectedSensor.getFilteredData() < (bandCenter - (bandwith))) { // if robot out of bandwith turn from wall
+					robot.setRotationSpeed(-rotationSpeed);
+				} else { // otherwise continue straight
+					robot.setForwardSpeed(forwardSpeed);
+				}
+			}
+			
+			selectedSensor.changeSensor(DPM.USSensor.MIDDLE); // changes the sensor back to the middle sensor after wall following complete
 		}
 	}
