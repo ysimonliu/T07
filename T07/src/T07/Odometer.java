@@ -9,13 +9,13 @@ public class Odometer implements TimerListener {
 	private TwoWheeledRobot robot;
 	private Timer odometerTimer;
 	private Navigation nav;
-	// position data
 	private Object lock;
 	private double x, y, theta;
 	private double [] oldDH, dDH;
 
 	public Odometer(TwoWheeledRobot robot, int period, boolean start) {
 		// initialize variables
+		// TODO error with odometer, doesn't list correct theta when turned right!!!!
 		this.robot = robot;
 		this.nav = new Navigation(this);
 		odometerTimer = new Timer(period, this);

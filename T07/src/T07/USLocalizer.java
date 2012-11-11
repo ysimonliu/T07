@@ -12,22 +12,22 @@ public class USLocalizer{
 	private double wallDistance = 40, noWallDistance = 50;
 	private Odometer odo;
 	private TwoWheeledRobot robot;
-	private UltrasonicSensor us;
+	private USPoller usLeft;
+	private USPoller usRight;
 	private LocalizationType locType;
 	private double headingDiff;
-	private int filterCounter, lastNormalReading;
+	//private int filterCounter, lastNormalReading; // values for the getdistance method that isn't required
 	private Navigation navigation;
 
 	// constructor
-	public USLocalizer(Odometer odo, UltrasonicSensor us, LocalizationType locType, Navigation navigation) {
+	public USLocalizer(Odometer odo, USPoller usl, USPoller usr, LocalizationType locType, Navigation navigation) {
 		this.odo = odo;
 		this.robot = odo.getTwoWheeledRobot();
-		this.us = us;
+		this.usLeft = usl; // won't be required 
+		this.usRight = usr; // won't be required
 		this.locType = locType;
-		this.filterCounter = 0;
+		//this.filterCounter = 0;
 		this.navigation = navigation;
-		// switch off the ultrasonic sensor
-		us.off();
 	}
 
 	public void doLocalization() {
@@ -38,12 +38,12 @@ public class USLocalizer{
 		if (locType.equals(LocalizationType.FALLING_EDGE)) {
 
 			// if facing the wall, rotate until the robot sees no wall
-			while(getFilteredData() < noWallDistance){
+			while(usRight.getFilteredData() < noWallDistance){
 				robot.setRotationSpeed(ROTATION_SPEED);
 			}
 
 			// rotate the robot until it sees no wall
-			while(getFilteredData() > wallDistance){
+			while(usRight.getFilteredData() > wallDistance){
 				robot.setRotationSpeed(ROTATION_SPEED);
 			}
 			robot.setRotationSpeed(0);
@@ -54,12 +54,12 @@ public class USLocalizer{
 			Sound.beep();
 
 			// switch direction and wait until it sees no wall
-			while(getFilteredData() <= noWallDistance) {
+			while(usLeft.getFilteredData() <= noWallDistance) {
 				robot.setRotationSpeed(-ROTATION_SPEED);
 			}
 
 			// keep rotating until the robot sees a wall, then latch the angle+
-			while(getFilteredData() > wallDistance) {
+			while(usLeft.getFilteredData() > wallDistance) {
 				robot.setRotationSpeed(-ROTATION_SPEED);
 			}
 			robot.setRotationSpeed(0);
@@ -92,11 +92,11 @@ public class USLocalizer{
 			 */
 
 			// if first facing away from a wall, then first turn to a wall
-			while(getFilteredData() > wallDistance) {
+			while(usRight.getFilteredData() > wallDistance) {
 				robot.setRotationSpeed(ROTATION_SPEED);
 			}
 			// rotate the robot until it sees no wall
-			while(getFilteredData() < wallDistance){
+			while(usRight.getFilteredData() < wallDistance){
 				robot.setRotationSpeed(ROTATION_SPEED);
 			}
 			robot.setRotationSpeed(0);
@@ -107,12 +107,12 @@ public class USLocalizer{
 			Sound.beep();
 
 			// switch direction and wait until it sees a wall
-			while(getFilteredData() > wallDistance) {
+			while(usLeft.getFilteredData() > wallDistance) {
 				robot.setRotationSpeed(-ROTATION_SPEED);
 			}
 
 			// keep rotating until the robot just doesn't see a wall, then latch the angle+
-			while(getFilteredData() < wallDistance) {
+			while(usLeft.getFilteredData() < wallDistance) {
 				robot.setRotationSpeed(-ROTATION_SPEED);
 			}
 			robot.setRotationSpeed(0);
@@ -138,6 +138,8 @@ public class USLocalizer{
 		}
 	}
 
+	// TODO commented out because USPoller will have this job, might require in the future
+	/*
 	public int getFilteredData() {
 		int distance;
 
@@ -167,5 +169,6 @@ public class USLocalizer{
 
 		return distance;
 	}
+	*/
 
 }

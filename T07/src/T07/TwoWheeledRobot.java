@@ -15,24 +15,23 @@ public class TwoWheeledRobot {
 	
 	public TwoWheeledRobot(NXTRegulatedMotor leftMotor,
 						   NXTRegulatedMotor rightMotor,
-						   NXTRegulatedMotor lightSensorMotor,
 						   double width,
 						   double leftRadius,
 						   double rightRadius) {
 		this.leftMotor = leftMotor;
 		this.rightMotor = rightMotor;
-		this.lightSensorMotor = lightSensorMotor;
+		// REMOVED LIGHTSENSOR MOTOR!!!
 		this.leftRadius = leftRadius;
 		this.rightRadius = rightRadius;
 		this.width = width;
 	}
 	
 	public TwoWheeledRobot(NXTRegulatedMotor leftMotor, NXTRegulatedMotor rightMotor, NXTRegulatedMotor lightSensorMotor) {
-		this(leftMotor, rightMotor, lightSensorMotor, DEFAULT_WIDTH, DEFAULT_LEFT_RADIUS, DEFAULT_RIGHT_RADIUS);
+		this(leftMotor, rightMotor, DEFAULT_WIDTH, DEFAULT_LEFT_RADIUS, DEFAULT_RIGHT_RADIUS);
 	}
 	
 	public TwoWheeledRobot(NXTRegulatedMotor leftMotor, NXTRegulatedMotor rightMotor, NXTRegulatedMotor lightSensorMotor, double width) {
-		this(leftMotor, rightMotor, lightSensorMotor, width, DEFAULT_LEFT_RADIUS, DEFAULT_RIGHT_RADIUS);
+		this(leftMotor, rightMotor, width, DEFAULT_LEFT_RADIUS, DEFAULT_RIGHT_RADIUS);
 	}
 	
 	// accessors
