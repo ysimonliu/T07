@@ -41,8 +41,8 @@ public class LCDInfo implements TimerListener{
 		RConsole.println("X:" + formattedDoubleToString(position[0], 2));
 		RConsole.println("Y:" + formattedDoubleToString(position[1], 2));
 		RConsole.println("Theta:" + formattedDoubleToString(position[2], 2));
-		RConsole.println("LeftUS Raw:" + usPoller.getRawData());
-		RConsole.println("LeftUS Processed:" + usPoller.getFilteredData());
+		RConsole.println("US Raw:" + usPoller.getRawData());
+		RConsole.println("US Processed:" + usPoller.getFilteredData());
 	}
 
 	// helper function to cast a double to 2 decimal places and return an array

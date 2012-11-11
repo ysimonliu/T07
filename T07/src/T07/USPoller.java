@@ -22,9 +22,22 @@ public class USPoller implements TimerListener{
 	// Constructor for USPoller
 	public USPoller(TwoWheeledRobot robot) {
 		this.robot = robot;
-		this.us = robot.leftUSSensor;
+		this.us = robot.middleUSSensor;
 		this.usPollerTimer = new Timer(DEFAULT_PERIOD_ULTRASONIC, this);
 		this.usPollerTimer.start();
+		counter = 0;
+	}
+	
+	public void changeSensor(DPM.USSensor choice) {
+		// set sensor depending on input
+		if (choice == DPM.USSensor.MIDDLE){
+			this.us = robot.middleUSSensor;
+		}
+		else {
+			this.us = robot.rightUSSensor;
+		}
+		// reset the cache array and the counter
+		readingRecords = new int[10];
 		counter = 0;
 	}
 	

@@ -5,22 +5,22 @@ import lejos.nxt.comm.RConsole;
 
 public class DPM {
 	
+	public enum USSensor {MIDDLE, RIGHT};
 	static private final double LEFT_RADIUS = 12;
 	static private final double RIGHT_RADIUS = 12;
 	static private final double WIDTH = 12;
 	static private final NXTRegulatedMotor LEFTMOTOR = Motor.A;
 	static private final NXTRegulatedMotor RIGHTMOTOR = Motor.B;
-	static private final UltrasonicSensor LEFT_ULTRASONIC_SENSOR = new UltrasonicSensor(SensorPort.S3);
+	static private final UltrasonicSensor MIDDLE_ULTRASONIC_SENSOR = new UltrasonicSensor(SensorPort.S3);
 	static private final UltrasonicSensor RIGHT_ULTRASONIC_SENSOR = new UltrasonicSensor(SensorPort.S4);
 	
 	public static void main(String[] args){
 		
 		// Instantiate classes for basic components testing
-		TwoWheeledRobot robot = new TwoWheeledRobot(LEFTMOTOR, RIGHTMOTOR, LEFT_ULTRASONIC_SENSOR, RIGHT_ULTRASONIC_SENSOR, LEFT_RADIUS, RIGHT_RADIUS, WIDTH);
+		TwoWheeledRobot robot = new TwoWheeledRobot(LEFTMOTOR, RIGHTMOTOR, MIDDLE_ULTRASONIC_SENSOR, RIGHT_ULTRASONIC_SENSOR, LEFT_RADIUS, RIGHT_RADIUS, WIDTH);
 		Odometer odo = new Odometer(robot);
 		// Navigation navi = new Navigation(odo);
 		
-		//Basic parameters for testing different classes (Ashley)
 		int buttonChoice;
 		RConsole.openBluetooth(20000);
 		RConsole.println("Connected!");
@@ -38,10 +38,14 @@ public class DPM {
 		} while (buttonChoice != Button.ID_LEFT && buttonChoice != Button.ID_RIGHT);
 		
 		USPoller usPoller = new USPoller(robot);
+		usPoller.changeSensor(USSensor.RIGHT);
 		LCDInfo lcd = new LCDInfo(odo, usPoller);
 		
 		odo.timedOut();
 		lcd.timedOut();
+		
+		while (Button.waitForAnyPress() != Button.ID_ESCAPE);
+		System.exit(0);
 	}
 
 }
