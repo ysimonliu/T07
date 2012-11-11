@@ -112,8 +112,11 @@ public class LightLocalizer{
 				robot.stopRightMotor();
 			}	
 		}
-		double
-		odo.setPosition( {0, 0, 90}, {false, false, true} );
+		
+		// sets the robot to 90 degrees so that the turn to method moves to 0 degrees correctly
+		double data1[] = {0, 0, 90};
+		boolean pos1[] = {false, false, true};	
+		odo.setPosition(data1, pos1);
 		
 		navigation.turnTo(0); // Will turn the robot to 0 degrees assuming that pos X is 0 degrees, TODO check convention
 		
@@ -130,7 +133,9 @@ public class LightLocalizer{
 			}
 		}
 		
-		
-				
+		// finally sets the localized positions of the robot
+		double data2[] = {0, 0, 0};
+		boolean pos2[] = {true, true, true};
+		odo.setPosition(data2, pos2);		
 	}
 }
