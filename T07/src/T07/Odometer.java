@@ -24,9 +24,7 @@ public class Odometer implements TimerListener {
 		dDH = new double [2];
 		lock = new Object();
 
-		// start the odometer immediately, if necessary
-		if (start)
-			odometerTimer.start();
+		odometerTimer.start();
 	}
 
 	public Odometer(TwoWheeledRobot robot) {

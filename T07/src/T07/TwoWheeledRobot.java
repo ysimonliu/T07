@@ -137,10 +137,12 @@ public class TwoWheeledRobot {
 	// method that stops the leftmotor only
 	public void stopLeftMotor () {
 		leftMotor.setSpeed(0);
+		leftMotor.stop();
 	}
 	
 	// method that stops the rightmotor only
 	public void stopRightMotor () {
 		rightMotor.setSpeed(0);
+		rightMotor.stop();
 	}
 }

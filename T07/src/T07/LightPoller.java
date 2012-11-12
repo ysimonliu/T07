@@ -17,7 +17,7 @@ public class LightPoller implements TimerListener{
 	private LightSensor ls;
 	private TwoWheeledRobot robot;
 	// TODO: test the responsiveness of the sensor readings and change the size of the array
-	private static int sizeOfCachedReadings = 7;
+	private static int sizeOfCachedReadings = 5;
 	private static int[] readingRecords = new int[sizeOfCachedReadings];
 	private static int counter;
 	
@@ -27,11 +27,13 @@ public class LightPoller implements TimerListener{
 		switch(choice) {
 		case LEFT:
 			this.ls = robot.leftLS;
+			break;
 		case MIDDLE:
 		// FIXME: need to implement the middle sensor once the two brick communication is fixed
 		//	this.ls = robot.middleLS;
 		case RIGHT:
 			this.ls = robot.rightLS;
+			break;
 		}
 		this.lightPollerTimer = new Timer(DEFAULT_PERIOD_ULTRASONIC, this);
 		this.lightPollerTimer.start();

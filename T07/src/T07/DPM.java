@@ -2,6 +2,7 @@ package T07;
 
 import lejos.nxt.*;
 import lejos.nxt.comm.RConsole;
+import lejos.util.Delay;
 
 public class DPM {
 	
@@ -45,10 +46,16 @@ public class DPM {
 		LightPoller lp1 = new LightPoller(robot, LSensor.LEFT);
 		LightPoller lp2 = new LightPoller(robot, LSensor.RIGHT);
 		
-		LCDInfo lcd = new LCDInfo(odo, usPoller, lp1);
+		LCDInfo lcd = new LCDInfo(odo, usPoller, lp1, lp2);
 		
 		odo.timedOut();
-		lcd.timedOut();
+		lcd.timedOut();	
+		
+		Navigation navi = new Navigation(odo, usPoller);
+		LightLocalizer ll = new LightLocalizer (odo, lp1, lp2, navi);
+		
+		Delay.msDelay(1000);
+		ll.doLocalization();
 		
 		// once the escape button is pressed, the robot will 
 		while (Button.waitForAnyPress() != Button.ID_ESCAPE);

@@ -9,7 +9,7 @@ public class Navigation {
 	private TwoWheeledRobot robot;
 	private double epsilon = 2.0, thetaEpsilon = 1.0;
 	private boolean  isTurning = false;
-	private double forwardSpeed = 100, rotationSpeed = 75;
+	private double forwardSpeed = 30, rotationSpeed = 10;
 	private USPoller selectedSensor;
 	private final int bandCenter = 30, bandwith = 5;
 	
