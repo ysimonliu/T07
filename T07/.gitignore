@@ -7,3 +7,6 @@
 *.ear
 # eclipse settings
 .metadata
+# lejos files
+*.nxd
+*.nxj
