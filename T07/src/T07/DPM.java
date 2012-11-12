@@ -6,18 +6,22 @@ import lejos.nxt.comm.RConsole;
 public class DPM {
 	
 	public enum USSensor {MIDDLE, RIGHT};
+	public enum LSensor {LEFT, MIDDLE, RIGHT};
 	static private final double LEFT_RADIUS = 12;
 	static private final double RIGHT_RADIUS = 12;
 	static private final double WIDTH = 12;
 	static private final NXTRegulatedMotor LEFTMOTOR = Motor.A;
 	static private final NXTRegulatedMotor RIGHTMOTOR = Motor.B;
+	static private final LightSensor LEFT_LIGHT_SENSOR = new LightSensor(SensorPort.S1);
+	static private final LightSensor RIGHT_LIGHT_SENSOR = new LightSensor(SensorPort.S2);
 	static private final UltrasonicSensor MIDDLE_ULTRASONIC_SENSOR = new UltrasonicSensor(SensorPort.S3);
 	static private final UltrasonicSensor RIGHT_ULTRASONIC_SENSOR = new UltrasonicSensor(SensorPort.S4);
 	
 	public static void main(String[] args){
 		
 		// Instantiate classes for basic components testing
-		TwoWheeledRobot robot = new TwoWheeledRobot(LEFTMOTOR, RIGHTMOTOR, MIDDLE_ULTRASONIC_SENSOR, RIGHT_ULTRASONIC_SENSOR, LEFT_RADIUS, RIGHT_RADIUS, WIDTH);
+		TwoWheeledRobot robot = new TwoWheeledRobot(LEFTMOTOR, RIGHTMOTOR, MIDDLE_ULTRASONIC_SENSOR, RIGHT_ULTRASONIC_SENSOR, 
+				LEFT_LIGHT_SENSOR, RIGHT_LIGHT_SENSOR, LEFT_RADIUS, RIGHT_RADIUS, WIDTH);
 		Odometer odo = new Odometer(robot);
 		// Navigation navi = new Navigation(odo);
 		
@@ -38,12 +42,15 @@ public class DPM {
 		} while (buttonChoice != Button.ID_LEFT && buttonChoice != Button.ID_RIGHT);
 		
 		USPoller usPoller = new USPoller(robot);
-		usPoller.changeSensor(USSensor.RIGHT);
-		LCDInfo lcd = new LCDInfo(odo, usPoller);
+		LightPoller lp1 = new LightPoller(robot, LSensor.LEFT);
+		LightPoller lp2 = new LightPoller(robot, LSensor.RIGHT);
+		
+		LCDInfo lcd = new LCDInfo(odo, usPoller, lp1);
 		
 		odo.timedOut();
 		lcd.timedOut();
 		
+		// once the escape button is pressed, the robot will 
 		while (Button.waitForAnyPress() != Button.ID_ESCAPE);
 		System.exit(0);
 	}

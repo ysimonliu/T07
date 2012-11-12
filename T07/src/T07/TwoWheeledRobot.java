@@ -9,6 +9,7 @@ public class TwoWheeledRobot {
 	public static final double DEFAULT_WIDTH = 15.8;
 	public NXTRegulatedMotor leftMotor, rightMotor, lightSensorMotor;
 	public UltrasonicSensor middleUSSensor, rightUSSensor;
+	public LightSensor leftLS, rightLS;
 	private double leftRadius, rightRadius, width;
 	private double forwardSpeed, rotationSpeed;
 	
@@ -16,11 +17,15 @@ public class TwoWheeledRobot {
 						   NXTRegulatedMotor rightMotor,
 						   UltrasonicSensor middleUSSensor,
 						   UltrasonicSensor rightUSSensor,
+						   LightSensor leftLS,
+						   LightSensor rightLS,
 						   double width,
 						   double leftRadius,
 						   double rightRadius) {
 		this.leftMotor = leftMotor;
 		this.rightMotor = rightMotor;
+		this.leftLS = leftLS;
+		this.rightLS = rightLS;
 		this.middleUSSensor = middleUSSensor;
 		this.rightUSSensor = rightUSSensor;
 		this.leftRadius = leftRadius;
@@ -28,12 +33,25 @@ public class TwoWheeledRobot {
 		this.width = width;
 	}
 	
-	public TwoWheeledRobot(NXTRegulatedMotor leftMotor, NXTRegulatedMotor rightMotor, UltrasonicSensor middleUSSensor, UltrasonicSensor rightUSSensor) {
-		this(leftMotor, rightMotor, middleUSSensor, rightUSSensor, DEFAULT_WIDTH, DEFAULT_LEFT_RADIUS, DEFAULT_RIGHT_RADIUS);
+	public TwoWheeledRobot(NXTRegulatedMotor leftMotor, 
+						   NXTRegulatedMotor rightMotor, 
+						   UltrasonicSensor middleUSSensor, 
+						   UltrasonicSensor rightUSSensor,
+						   LightSensor leftLS,
+						   LightSensor rightLS) {
+		this(leftMotor, rightMotor, middleUSSensor, rightUSSensor, leftLS, rightLS,
+				DEFAULT_WIDTH, DEFAULT_LEFT_RADIUS, DEFAULT_RIGHT_RADIUS);
 	}
 	
-	public TwoWheeledRobot(NXTRegulatedMotor leftMotor, NXTRegulatedMotor rightMotor, UltrasonicSensor middleUSSensor, UltrasonicSensor rightUSSensor, double width) {
-		this(leftMotor, rightMotor, middleUSSensor, rightUSSensor, width, DEFAULT_LEFT_RADIUS, DEFAULT_RIGHT_RADIUS);
+	public TwoWheeledRobot(NXTRegulatedMotor leftMotor, 
+						   NXTRegulatedMotor rightMotor, 
+						   UltrasonicSensor middleUSSensor, 
+						   UltrasonicSensor rightUSSensor, 
+						   LightSensor leftLS,
+						   LightSensor rightLS,
+						   double width) {
+		this(leftMotor, rightMotor, middleUSSensor, rightUSSensor, leftLS, rightLS,
+				width, DEFAULT_LEFT_RADIUS, DEFAULT_RIGHT_RADIUS);
 	}
 	
 	// accessors
