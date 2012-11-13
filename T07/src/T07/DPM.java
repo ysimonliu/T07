@@ -42,11 +42,7 @@ public class DPM {
 			
 		} while (buttonChoice != Button.ID_LEFT && buttonChoice != Button.ID_RIGHT);
 		
-		try {
-			Thread.sleep(1000);
-		} catch (Exception e) {
-			
-		}
+		
 		
 		USPoller usPoller = new USPoller(robot);
 		LightPoller lp1 = new LightPoller(robot, LSensor.LEFT);
@@ -54,9 +50,20 @@ public class DPM {
 		
 		LCDInfo lcd = new LCDInfo(odo, usPoller, lp1, lp2);
 		
+		try {
+			Thread.sleep(1000);
+		} catch (Exception e) {
+			
+		}
+		
 		Navigation navi = new Navigation(odo, usPoller);
 	
-		navi.travelTo(30, 30);
+		USLocalizer usLocalizer = new USLocalizer(odo, navi, usPoller);
+		
+		LightLocalizer lightLocalizer = new LightLocalizer(odo, lp1, lp2, navi); 
+		
+		//navi.travelForwardY(90);
+		lightLocalizer.doLocalization();
 		
 		
 		

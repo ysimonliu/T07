@@ -41,11 +41,11 @@ public class LCDInfo implements TimerListener{
 		LCD.drawString(formattedDoubleToString(position[0], 2), 3, 0);
 		LCD.drawString(formattedDoubleToString(position[1], 2), 3, 1);
 		LCD.drawString(formattedDoubleToString(position[2], 2), 3, 2);
-		LCD.drawString("US filtered:" + usPoller.getFilteredData(), 0, 3);
-		LCD.drawString("US raw:" + usPoller.getRawData(), 0, 4);
+		LCD.drawString("LLS :" + lpl.getSecondOrderDerivative(), 0, 3);
+		LCD.drawString("RLS :" + lpr.getSecondOrderDerivative(), 0, 4);
 		// print to the RConsole Viewer for debug's convenience
-		/*RConsole.println("X:" + formattedDoubleToString(position[0], 2));
-		RConsole.println("Y:" + formattedDoubleToString(position[1], 2));
+		RConsole.println("LLS :" + lpl.getSecondOrderDerivative());
+		/*RConsole.println("Y:" + formattedDoubleToString(position[1], 2));
 		RConsole.println("Theta:" + formattedDoubleToString(position[2], 2));
 		RConsole.println("LeftUS Raw:" + usPoller.getRawData());
 		RConsole.println("LeftUS Processed:" + usPoller.getFilteredData());

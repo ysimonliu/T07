@@ -13,11 +13,14 @@ public class LightLocalizer{
 	private LightPoller rightLight;
 	private Navigation navigation;
 	// distance from light sensor to the center of the axle
-	private double lightSensorD = 13.5;
+	private double lightSensorD = 18.5;
 	private double[]angles = new double[4];
-	public static double ROTATION_SPEED = 20, FORWARD_SPEED = 10;
+	private double[] leftAngles = new double[4];
+	private double[] rightAngles = new double[4];
+	public static double ROTATION_SPEED = 20, FORWARD_SPEED = 30;
 	// the intensity of the grid line on the tile, to avoid using magic numbers
 	private static int gridLineIntensity = 475;
+	private static int blackLineDerivativeThreshold = 15;
 	
 	// constructor
 	public LightLocalizer(Odometer odo, LightPoller leftLight, LightPoller rightLight, Navigation navi) {
@@ -30,49 +33,69 @@ public class LightLocalizer{
 	
 	// Method that controls light localization
 	public void doLocalization() {
+		navigation.travelForward();
+		while (Math.abs(leftLight.getSecondOrderDerivative()) < blackLineDerivativeThreshold) {
+		}
+		robot.stop();
+		double lengthY = 15;
+		navigation.travelForwardY(-lengthY);
 		
-		// Moves the robot forward towards first gridline
-		robot.setForwardSpeed(30); //TODO check the robot speed
+		navigation.turnTo(90);
 		
-		// This loop detects the first line (the x axis) and stops directly on it
-		while(robot.leftMotorMoving() || robot.rightMotorMoving()) {
-			
-			if (leftLight.getRawData() < gridLineIntensity) { // TODO check the light value reading, will it detect line
-				robot.stopLeftMotor();
-				Sound.beep();
-			}
-			if (rightLight.getRawData() < gridLineIntensity) { // TODO check the light value reading, will it detect line
-				robot.stopRightMotor();
-				Sound.beep();
-			}
+		navigation.travelForward();
+		while (Math.abs(leftLight.getSecondOrderDerivative()) < blackLineDerivativeThreshold) {
 		}
 		
-		// COMMENTED OUT TO TEST... PROBLEM WITH LIGHT SENSORS CONTACT ASHLEY
-		/*
-		// sets the robot to 90 degrees so that the turn to method moves to 0 degrees correctly
-		double data1[] = {0, 0, 0};
-		boolean pos1[] = {false, false, true};	
-		odo.setPosition(data1, pos1);
+		robot.stop();
+		double lengthX = 15;
+		navigation.travelForwardX(-lengthX);
 		
-		navigation.turnTo(90); // Will turn the robot to 0 degrees assuming that pos X is 0 degrees, TODO check convention
+		//TODO: the following is to be fixed
 		
-		// Moves the robot forward towards second gridline
-		robot.setForwardSpeed(30); // TODO check the robot speed
+		robot.setRotationSpeed(ROTATION_SPEED);
 		
-		// This loop detects the second line (the y axis) and stops directly on it
-		while(robot.leftMotorMoving() || robot.rightMotorMoving()) {
-			if (leftLight.getFilteredData() > 480) { // TODO check the light value reading
-				robot.stopLeftMotor();
+		//to store the angles light sensor detects grid lines
+		int i = 0;
+		int j = 0;
+		// exit condition for while loop is to have recorded all four valid readings
+		while(j < 4){
+		 	if((Math.abs(leftLight.getSecondOrderDerivative()) < blackLineDerivativeThreshold)) {
+		 		// once detects a line, beep, and record data
+		 		Sound.beep();
+		 		try {
+					Thread.sleep(100);
+				} catch (Exception e) {
+					
+				}
+		 		leftAngles[i] = odo.getTheta();
+		 		i++;
 			}
-			if (rightLight.getFilteredData() > 480) { // TODO check the light value reading
-				robot.stopRightMotor();
-			}
+		 	if ((Math.abs(rightLight.getSecondOrderDerivative()) < blackLineDerivativeThreshold)) {
+		 		try {
+					Thread.sleep(100);
+				} catch (Exception e) {
+					
+				}
+		 		Sound.beep();
+		 		rightAngles[j] = odo.getTheta();
+		 		j++;
+		 	}
 		}
+		robot.stop();
 		
-		// finally sets the localized positions of the robot
-		double data2[] = {0, 0, 90};
-		boolean pos2[] = {true, true, true};
-		odo.setPosition(data2, pos2);		
-		*/
+		for (i = 0; i < 4; i++) {
+			angles[i] = (rightAngles[i] - leftAngles[i]) / 2 + leftAngles[i]; 
+		}
+		 		
+		 		
+		 // use formulas derived from the tutorial slides to correct odometer
+		 double CorrectedX = -lightSensorD * Math.cos(Math.toRadians((angles[3] - angles[1]) / 2));
+		 double CorrectedY = -lightSensorD * Math.cos(Math.toRadians((angles[2] - angles[0]) / 2));
+		 double CorrectedTheta = (angles[3] - angles[1]) / 2 + 295;
+		 // actually correct odometer
+		 odo.setPosition(new double[] {CorrectedX, CorrectedY, CorrectedTheta}, new boolean [] {true, true, true});
+		 // travel to (0,0) point and turn to 0 degree using the navigation class
+		 navigation.travelTo(0,0);
+		 navigation.turnTo(0);
 	}
 }
