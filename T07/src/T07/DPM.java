@@ -8,9 +8,9 @@ public class DPM {
 	
 	public enum USSensor {MIDDLE, RIGHT};
 	public enum LSensor {LEFT, MIDDLE, RIGHT};
-	static private final double LEFT_RADIUS = 12;
-	static private final double RIGHT_RADIUS = 12;
-	static private final double WIDTH = 12;
+	static private final double LEFT_RADIUS = 2.70;
+	static private final double RIGHT_RADIUS = 2.70;
+	static private final double WIDTH = 15.8;
 	static private final NXTRegulatedMotor LEFTMOTOR = Motor.A;
 	static private final NXTRegulatedMotor RIGHTMOTOR = Motor.B;
 	static private final LightSensor LEFT_LIGHT_SENSOR = new LightSensor(SensorPort.S1);
@@ -22,13 +22,13 @@ public class DPM {
 		
 		// Instantiate classes for basic components testing
 		TwoWheeledRobot robot = new TwoWheeledRobot(LEFTMOTOR, RIGHTMOTOR, MIDDLE_ULTRASONIC_SENSOR, RIGHT_ULTRASONIC_SENSOR, 
-				LEFT_LIGHT_SENSOR, RIGHT_LIGHT_SENSOR, LEFT_RADIUS, RIGHT_RADIUS, WIDTH);
+				LEFT_LIGHT_SENSOR, RIGHT_LIGHT_SENSOR, WIDTH, LEFT_RADIUS, RIGHT_RADIUS);
 		Odometer odo = new Odometer(robot);
 		// Navigation navi = new Navigation(odo);
 		
 		int buttonChoice;
-		RConsole.openBluetooth(20000);
-		RConsole.println("Connected!");
+		//RConsole.openBluetooth(20000);
+		//RConsole.println("Connected!");
 		do {
 			LCD.clear();
 			
@@ -42,20 +42,23 @@ public class DPM {
 			
 		} while (buttonChoice != Button.ID_LEFT && buttonChoice != Button.ID_RIGHT);
 		
+		try {
+			Thread.sleep(1000);
+		} catch (Exception e) {
+			
+		}
+		
 		USPoller usPoller = new USPoller(robot);
 		LightPoller lp1 = new LightPoller(robot, LSensor.LEFT);
 		LightPoller lp2 = new LightPoller(robot, LSensor.RIGHT);
 		
 		LCDInfo lcd = new LCDInfo(odo, usPoller, lp1, lp2);
 		
-		odo.timedOut();
-		lcd.timedOut();	
-		
 		Navigation navi = new Navigation(odo, usPoller);
-		LightLocalizer ll = new LightLocalizer (odo, lp1, lp2, navi);
+	
+		navi.travelTo(30, 30);
 		
-		Delay.msDelay(1000);
-		ll.doLocalization();
+		
 		
 		// once the escape button is pressed, the robot will 
 		while (Button.waitForAnyPress() != Button.ID_ESCAPE);

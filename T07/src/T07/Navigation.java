@@ -1,15 +1,16 @@
 package T07;
 
 import lejos.nxt.*;
+import lejos.nxt.comm.RConsole;
 
 
 public class Navigation {
 	// initialize all variables, both class and instance variables
 	private Odometer odometer;
 	private TwoWheeledRobot robot;
-	private double epsilon = 2.0, thetaEpsilon = 1.0;
+	private double epsilon = 2.0, thetaEpsilon = 2.0;
 	private boolean  isTurning = false;
-	private double forwardSpeed = 30, rotationSpeed = 10;
+	private double forwardSpeed = 20, rotationSpeed = 30;
 	private USPoller selectedSensor;
 	private final int bandCenter = 30, bandwith = 5;
 	
@@ -20,29 +21,64 @@ public class Navigation {
 			this.selectedSensor = selectedSensor;
 		}
 		
+		/**
+		 * Travel straight forward for a distance in x+ direction.
+		 * Assume robot is already facing x+ direction.
+		 * @param distance distance to travel forward, travel backward if distance < 0.
+		 */
+		public void travelForwardX(double distance) {
+			double currentX = odometer.getX();
+			if (distance > 0) {
+				robot.setForwardSpeed(forwardSpeed);
+			} else {
+				robot.setForwardSpeed(-forwardSpeed);
+			}
+			
+			while (Math.abs(odometer.getX() - currentX - distance) > epsilon) {
+				//wait
+			}
+			robot.stop();	
+		}
+		
+		/**
+		 * Travel straight forward for a distance in y+ direction.
+		 * Assume robot is already facing y+ direction.
+		 * @param distance distance to travel forward, travel backward if distance < 0.
+		 */
+		public void travelForwardY(double distance) {
+			double currentY = odometer.getY();
+			if (distance > 0) {
+				robot.setForwardSpeed(forwardSpeed);
+			} else {
+				robot.setForwardSpeed(-forwardSpeed);
+			}
+			
+			while (Math.abs(odometer.getY() - currentY - distance) > epsilon) {
+				//wait
+			}
+			robot.stop();			
+		}
+		
+		
 		public void travelTo(double x, double y) {
 			// define minimal angle variable
 			double minAng;
+			// compute the turning angle
+		    minAng = 90 - Math.toDegrees(Math.atan2(y - odometer.getY(),x - odometer.getX()));
+		   turnTo(minAng);
 			// unless I have reached the target X and Y position
 		    while (Math.abs(x - odometer.getX() ) > epsilon || Math.abs(y - odometer.getY() ) > epsilon ) {
 		    	
 		    	// avoid block checker (detects if an object is located in front of the robot and then moves into wall following mode)
-		    	if (selectedSensor.getFilteredData() < 30) { //TODO test the wall detection value so that robot doesn't hit wall
+		    	/*if (selectedSensor.getFilteredData() < 30) { //TODO test the wall detection value so that robot doesn't hit wall
 		    		avoidBlock(); // go into wall following method
-		    	}
+		    	}*/	    	
 		    	
-		    	// compute the turning angle
-			    minAng = Math.toDegrees(Math.atan2(x - odometer.getX(),y - odometer.getY()));
-			    minAng = Odometer.fixDegAngle(minAng);
-			    // turn to that angle
-			    turnTo(minAng);
-			    // while turning, do not proceed
-			    while (isTurning) {}
 			    // set robot to move forward
 			    robot.setForwardSpeed(forwardSpeed);
 		    }
 		    // now we have reached the final destination, we can stop and relax now
-		    robot.setForwardSpeed(0);
+		    robot.stop();
 		    // DEBUG: beep to signal that we have reached the final destination
 		    Sound.beep();
 		}
@@ -50,24 +86,34 @@ public class Navigation {
 		public void turnTo(double angle) {
 			// isTurning is a flag to indicate whether the robot is now turning
 			isTurning = true;
-			// if target angle is within 180 degree to the left of the current heading, make sure to turn to the right direction
-			// this is to turn the minimal angle with the odometer given
-			angle = Odometer.fixDegAngle(angle);		// takes care of negative angles
-			if ((angle < odometer.getTheta() && Math.abs(odometer.getTheta() - angle) < 180) || 
-					(angle > odometer.getTheta() && Math.abs(odometer.getTheta() - angle) > 180)){
-				// before reaching the wanted angle, let's rotate it
-				while (Math.abs(odometer.getTheta() - angle) > thetaEpsilon) {
-					robot.setRotationSpeed(-rotationSpeed);
-				}
+			while (angle > 360) {
+				angle = angle - 360;
 			}
-			else {
-				// same idea with the one above, except in opposite direction
-				while (Math.abs(odometer.getTheta() - angle) > thetaEpsilon) {
-					robot.setRotationSpeed(rotationSpeed);
-				}
+			while (angle < 0) {
+				angle = angle + 360;
+			}
+			//RConsole.println("angle:" + angle);
+			
+			double startingAngle = odometer.getTheta();
+			double relativeAngle = angle - startingAngle;
+			double speed;
+			int fixingAngle;
+			if (relativeAngle > 180) relativeAngle = relativeAngle - 360;
+			if (relativeAngle < -180) relativeAngle = relativeAngle + 360;
+			if (relativeAngle > 0) {
+				speed = rotationSpeed;
+				fixingAngle = -15;
+			} else {
+				speed = -rotationSpeed;
+				fixingAngle = 15;
+			}
+			robot.setRotationSpeed(speed);
+			while (Math.abs(odometer.getTheta() - angle) > thetaEpsilon) {
+				//wait
 			}
 			// stop the robot
-			robot.setRotationSpeed(0);
+			robot.stop();			
+			//robot.rotate(fixingAngle);
 			// change the status of the flag
 			isTurning = false;
 		}

@@ -4,8 +4,8 @@ import lejos.nxt.*;
 public class TwoWheeledRobot {
 	
 	// this class contains the measurements of the robot
-	public static final double DEFAULT_LEFT_RADIUS = 2.75;
-	public static final double DEFAULT_RIGHT_RADIUS = 2.75;
+	public static final double DEFAULT_LEFT_RADIUS = 2.70;
+	public static final double DEFAULT_RIGHT_RADIUS = 2.70;
 	public static final double DEFAULT_WIDTH = 15.8;
 	public NXTRegulatedMotor leftMotor, rightMotor, lightSensorMotor;
 	public UltrasonicSensor middleUSSensor, rightUSSensor;
@@ -78,12 +78,12 @@ public class TwoWheeledRobot {
 	// mutators
 	public void setForwardSpeed(double speed) {
 		forwardSpeed = speed;
-		setSpeeds(forwardSpeed, rotationSpeed);
+		setSpeeds(forwardSpeed, 0);
 	}
 	
 	public void setRotationSpeed(double speed) {
 		rotationSpeed = speed;
-		setSpeeds(forwardSpeed, rotationSpeed);
+		setSpeeds(0, rotationSpeed);
 	}
 	
 	public void setSpeeds(double forwardSpeed, double rotationalSpeed) {
@@ -144,5 +144,22 @@ public class TwoWheeledRobot {
 	public void stopRightMotor () {
 		rightMotor.setSpeed(0);
 		rightMotor.stop();
+	}
+	
+	/**
+	 * both motor rotate a certain degree
+	 * @param angle
+	 */
+	public void rotate(int angle) {
+		rightMotor.rotate(angle, true);
+		leftMotor.rotate(-angle);
+	}
+	
+	/**
+	 * stop two motors at the same time
+	 */
+	public void stop() {
+		rightMotor.stop(true);
+		leftMotor.stop();
 	}
 }
