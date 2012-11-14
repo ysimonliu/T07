@@ -129,7 +129,7 @@ public class TwoWheeledRobot {
 		return leftMotor.isMoving();
 	}
 	
-	// method that returns if rightMotor is moving\
+	// method that returns if rightMotor is moving
 	public boolean rightMotorMoving() {
 		return rightMotor.isMoving();
 	}
@@ -161,5 +161,9 @@ public class TwoWheeledRobot {
 	public void stop() {
 		rightMotor.stop(true);
 		leftMotor.stop();
+	}
+	
+	public void startMotors() {
+		
 	}
 }

@@ -52,5 +52,8 @@ public class LightPoller implements TimerListener{
 		return secondOrderDerivative;
 	}
 	
-	
+	// getting that returns the raw light value
+	public int getRawValue() {
+		return rawLightValue;
+	}	
 }

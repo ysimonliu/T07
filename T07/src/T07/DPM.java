@@ -63,6 +63,7 @@ public class DPM {
 		LightLocalizer lightLocalizer = new LightLocalizer(odo, lp1, lp2, navi); 
 		
 		//navi.travelForwardY(90);
+		usLocalizer.doLocalization();
 		lightLocalizer.doLocalization();
 		
 		

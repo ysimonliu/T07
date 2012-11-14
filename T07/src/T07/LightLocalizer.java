@@ -17,9 +17,9 @@ public class LightLocalizer{
 	private double[]angles = new double[4];
 	private double[] leftAngles = new double[4];
 	private double[] rightAngles = new double[4];
-	public static double ROTATION_SPEED = 20, FORWARD_SPEED = 30;
+	public static double ROTATION_SPEED = 4, FORWARD_SPEED = 5;
 	// the intensity of the grid line on the tile, to avoid using magic numbers
-	private static int gridLineIntensity = 475;
+	private static int gridLineIntensity = 460;
 	private static int blackLineDerivativeThreshold = 15;
 	
 	// constructor
@@ -33,13 +33,43 @@ public class LightLocalizer{
 	
 	// Method that controls light localization
 	public void doLocalization() {
-		navigation.travelForward();
-		while (Math.abs(leftLight.getSecondOrderDerivative()) < blackLineDerivativeThreshold) {
-		}
-		robot.stop();
-		double lengthY = 15;
-		navigation.travelForwardY(-lengthY);
 		
+		robot.setForwardSpeed(FORWARD_SPEED);
+		
+		// this will make the robot move to the x axis correcting the y coordinates
+		while (robot.leftMotorMoving() || robot.rightMotorMoving()) {
+			if (leftLight.getRawValue() < gridLineIntensity) {
+				Sound.beep();
+				robot.stopLeftMotor();
+			}
+			if (rightLight.getRawValue() < gridLineIntensity) {
+				Sound.beep();
+				robot.stopRightMotor();
+			}
+		}
+		
+		// sets the odometer at 0 degrees
+		odo.setPosition(new double[] {0, 0, 0}, new boolean [] {true, true, true});
+		// turn to 90 degrees to fix the x coordinates
+		
+		navigation.turnTo(90);
+		
+		
+		
+		//while (Math.abs(leftLight.getSecondOrderDerivative()) < blackLineDerivativeThreshold) {
+		//}
+		//robot.stop();
+		//double lengthY = 15;
+		//navigation.travelForwardY(-lengthY);
+		/*while(robot.leftMotorMoving() && robot.rightMotorMoving()) {
+			if (Math.abs(leftLight.getSecondOrderDerivative()) <blackLineDerivativeThreshold) {
+				robot.stopLeftMotor();
+			}
+			if (Math.abs(rightLight.getSecondOrderDerivative()) <blackLineDerivativeThreshold) {
+				robot.stopRightMotor();
+			}
+		}
+		/*
 		navigation.turnTo(90);
 		
 		navigation.travelForward();
@@ -97,5 +127,6 @@ public class LightLocalizer{
 		 // travel to (0,0) point and turn to 0 degree using the navigation class
 		 navigation.travelTo(0,0);
 		 navigation.turnTo(0);
+		 */
 	}
 }
