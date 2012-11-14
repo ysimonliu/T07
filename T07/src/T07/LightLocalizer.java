@@ -17,7 +17,7 @@ public class LightLocalizer{
 	private double[]angles = new double[4];
 	private double[] leftAngles = new double[4];
 	private double[] rightAngles = new double[4];
-	public static double ROTATION_SPEED = 4, FORWARD_SPEED = 5;
+	public static double ROTATION_SPEED = 3, FORWARD_SPEED = 3;
 	// the intensity of the grid line on the tile, to avoid using magic numbers
 	private static int gridLineIntensity = 460;
 	private static int blackLineDerivativeThreshold = 15;
@@ -51,10 +51,29 @@ public class LightLocalizer{
 		// sets the odometer at 0 degrees
 		odo.setPosition(new double[] {0, 0, 0}, new boolean [] {true, true, true});
 		// turn to 90 degrees to fix the x coordinates
-		
+
 		navigation.turnTo(90);
 		
 		
+		Sound.beep();
+		
+		
+		robot.setForwardSpeed(FORWARD_SPEED);
+		
+		// this will make the robot move to the y axis correcting the x coordinates
+		while (robot.leftMotorMoving() || robot.rightMotorMoving()) {
+			if (leftLight.getRawValue() < gridLineIntensity) {
+				Sound.beep();
+				robot.stopLeftMotor();
+			}
+			if (rightLight.getRawValue() < gridLineIntensity) {
+				Sound.beep();
+				robot.stopRightMotor();
+			}
+		}
+		
+		// sets the odometer at the correct heading and x and y coordinates
+		odo.setPosition(new double[] {0, 0, 90}, new boolean [] {true, true, true});
 		
 		//while (Math.abs(leftLight.getSecondOrderDerivative()) < blackLineDerivativeThreshold) {
 		//}
