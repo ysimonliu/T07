@@ -72,6 +72,8 @@ public class DPM {
 		int y = 0;
 		Searcher search = new Searcher(odo, navi, lp3, usPoller, x, y);
 		
+		search.findBeacon();
+		
 		// once the escape button is pressed, the robot will 
 		while (Button.waitForAnyPress() != Button.ID_ESCAPE);
 		System.exit(0);

@@ -38,7 +38,7 @@ public class Searcher {
 	public void findBeacon() {
 		// TODO: Ashley has an idea for the algorithm to implement, will introduce this but not for the demo.
 		
-		navigation.travelTo(247.68, 247.68); // simple movement for the demo
+		navigation.travelTo(216.72, 216.72); // simple movement for the demo
 		
 		while (robot.motorsMoving()) {
 			if (middleLight.getRawValue() > lightBeaconThreshold) { // TODO decide on a value that allows the search algorithm to be exited
@@ -71,12 +71,11 @@ public class Searcher {
 		int previousMax = 0;
 		int maxLightValue = 0;
 		double storedTheta = 0;
-		int[] lightValues = new int[25];
+		int[] lightValues = new int[25]; // TODO: check that the array doesn't overflow
 		double[] thetaValue = new double[25];
 		
 		// makes the robot do a 360 and detect all the light values around it
 		
-		robot.rotate(360);
 		robot.rotate(360);
 		
 		// stores the light values around it and then puts the light values with the corresponding theta

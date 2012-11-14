@@ -160,6 +160,8 @@ public class TwoWheeledRobot {
 	 * both motor rotate a certain degree
 	 * @param angle
 	 */
+	
+	// TODO: Check if this turns the desired angle
 	public void rotate(int angle) {
 		rightMotor.rotate(angle, true);
 		leftMotor.rotate(-angle);
