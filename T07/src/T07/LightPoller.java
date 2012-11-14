@@ -21,7 +21,6 @@ public class LightPoller implements TimerListener{
 	private LightSensor ls;
 	private TwoWheeledRobot robot;
 
-	
 	// Constructor of lightPoller
 	public LightPoller(TwoWheeledRobot robot, DPM.LSensor choice) {
 		this.robot = robot;
