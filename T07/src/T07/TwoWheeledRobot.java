@@ -9,7 +9,7 @@ public class TwoWheeledRobot {
 	public static final double DEFAULT_WIDTH = 15.8;
 	public NXTRegulatedMotor leftMotor, rightMotor, lightSensorMotor;
 	public UltrasonicSensor middleUSSensor, rightUSSensor;
-	public LightSensor leftLS, rightLS;
+	public LightSensor leftLS, rightLS, middleLS;
 	private double leftRadius, rightRadius, width;
 	private double forwardSpeed, rotationSpeed;
 	
@@ -19,6 +19,7 @@ public class TwoWheeledRobot {
 						   UltrasonicSensor rightUSSensor,
 						   LightSensor leftLS,
 						   LightSensor rightLS,
+						   LightSensor middleLS,
 						   double width,
 						   double leftRadius,
 						   double rightRadius) {
@@ -38,8 +39,9 @@ public class TwoWheeledRobot {
 						   UltrasonicSensor middleUSSensor, 
 						   UltrasonicSensor rightUSSensor,
 						   LightSensor leftLS,
-						   LightSensor rightLS) {
-		this(leftMotor, rightMotor, middleUSSensor, rightUSSensor, leftLS, rightLS,
+						   LightSensor rightLS,
+						   LightSensor middleLS) {
+		this(leftMotor, rightMotor, middleUSSensor, rightUSSensor, leftLS, rightLS, middleLS,
 				DEFAULT_WIDTH, DEFAULT_LEFT_RADIUS, DEFAULT_RIGHT_RADIUS);
 	}
 	
@@ -49,8 +51,9 @@ public class TwoWheeledRobot {
 						   UltrasonicSensor rightUSSensor, 
 						   LightSensor leftLS,
 						   LightSensor rightLS,
+						   LightSensor middleLS,
 						   double width) {
-		this(leftMotor, rightMotor, middleUSSensor, rightUSSensor, leftLS, rightLS,
+		this(leftMotor, rightMotor, middleUSSensor, rightUSSensor, leftLS, rightLS, middleLS,
 				width, DEFAULT_LEFT_RADIUS, DEFAULT_RIGHT_RADIUS);
 	}
 	
@@ -135,6 +138,14 @@ public class TwoWheeledRobot {
 		return rightMotor.isMoving();
 	}
 	
+	// returns whether the motors are moving or not
+	public boolean motorsMoving() {
+		if (rightMotorMoving() || leftMotorMoving()) {
+			return true;
+		}
+		return false;
+	}
+	
 	// method that stops the leftmotor only
 	public void stopLeftMotor () {
 		leftMotor.stop();
@@ -162,8 +173,19 @@ public class TwoWheeledRobot {
 		leftMotor.stop();
 	}
 	
-	public void startMotors() {
-		rightMotor.forward();
-		leftMotor.forward();
+	// method that moves the robot forward a specific distance
+	public void moveForwardDistance(double distance) {
+		leftMotor.rotate(convertDistance(leftRadius, distance), true);
+		rightMotor.rotate(convertDistance(rightRadius, distance), true);
+	}
+	
+	// taken from the square driver class (lab2) converts the turn angle into a distance for the convertDistance method
+	private static int convertAngle(double radius, double width, double angle) {
+		return convertDistance(radius, Math.PI * width * angle / 360.0);
+	}
+	
+	// taken from the square drive class, converts into a usable angle displacement (degrees) for the rotate operation
+	private static int convertDistance(double radius, double distance) {
+		return (int) ((180.0 * distance) / (Math.PI * radius));
 	}
 }

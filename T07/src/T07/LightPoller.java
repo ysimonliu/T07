@@ -32,6 +32,9 @@ public class LightPoller implements TimerListener{
 		case RIGHT:
 			this.ls = robot.rightLS;
 			break;
+		case MIDDLE:
+			this.ls = robot.middleLS;
+			break;
 		}
 		this.lightPollerTimer = new Timer(DEFAULT_PERIOD_ULTRASONIC, this);
 		this.lightPollerTimer.start();
