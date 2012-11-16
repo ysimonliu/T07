@@ -45,8 +45,13 @@ public class CommunicationController implements TimerListener, Runnable{
 	 * Creating a thread to receive data
 	 */
 	public void run() {
-		Message message = this.communicationClient.receive();
-		this.lightData[message.getType()] = message.getValue();
+		while (true) {
+			Message message = this.communicationClient.receive();
+			if (message != null) {
+				this.lightData[message.getType()] = message.getValue();
+			}
+		}
+		
 	}
 	
 	public void sendLightSensorValue() {

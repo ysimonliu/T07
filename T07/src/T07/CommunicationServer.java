@@ -32,14 +32,6 @@ public class CommunicationServer {
 		dataOut = connection.openDataOutputStream();
 		dataIn = connection.openDataInputStream();
 		
-		while (true) {
-			try {
-				dataIn.readInt();				
-			} catch (IOException e) {
-				
-			}
-			
-		}
 	}
 	
 	public void sent(Message message) {

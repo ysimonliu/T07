@@ -3,12 +3,13 @@ package client;
 
 import lejos.util.Timer;
 import lejos.util.TimerListener;
+import lejos.nxt.Button;
 import lejos.nxt.LightSensor;
 import lejos.nxt.SensorPort;
 
 
 
-public class DPM {
+public class DPM_Client {
 	public enum LSensor {LEFT, MIDDLE, RIGHT};
 	
 
@@ -22,6 +23,8 @@ public class DPM {
 		//start communication with master brick
 		CommunicationController communicationController = new CommunicationController(lightPoller,communicationClient);
 		
-		
+		// once the escape button is pressed, the robot will 
+		while (Button.waitForAnyPress() != Button.ID_ESCAPE);
+		System.exit(0);
 	}
 }

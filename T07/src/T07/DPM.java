@@ -28,11 +28,12 @@ public class DPM {
 				LEFT_LIGHT_SENSOR, RIGHT_LIGHT_SENSOR, MIDDLE_LIGHT_SENSOR, WIDTH, LEFT_RADIUS, RIGHT_RADIUS);
 		Odometer odo = new Odometer(robot);
 		// Navigation navi = new Navigation(odo);
+		//start to get connection with the client brick
+		CommunicationServer communicationServer = new CommunicationServer();
 		
 		//start to get connection with Bluetooth server provided by TA
 		BTReceiver btReceiver = new BTReceiver();
-		//start to get connection with the client brick
-		CommunicationServer communicationServer = new CommunicationServer();
+		
 				
 		
 		
