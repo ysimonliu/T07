@@ -1,8 +1,10 @@
 package T07;
 
+
 import lejos.nxt.*;
 import lejos.nxt.comm.RConsole;
 import lejos.util.Delay;
+import bluetooth.*;
 
 public class DPM {
 	
@@ -27,6 +29,13 @@ public class DPM {
 		Odometer odo = new Odometer(robot);
 		// Navigation navi = new Navigation(odo);
 		
+		//start to get connection with Bluetooth server provided by TA
+		BTReceiver btReceiver = new BTReceiver();
+		//start to get connection with the client brick
+		CommunicationServer communicationServer = new CommunicationServer();
+				
+		
+		
 		int buttonChoice;
 		//RConsole.openBluetooth(20000);
 		//RConsole.println("Connected!");
@@ -50,6 +59,10 @@ public class DPM {
 		LightPoller lp2 = new LightPoller(robot, LSensor.RIGHT);
 		LightPoller lp3 = new LightPoller(robot, LSensor.MIDDLE);
 		
+		//starting communication with the client brick
+		CommunicationController communicationController = new CommunicationController(lp3,communicationServer);
+
+		
 		LCDInfo lcd = new LCDInfo(odo, usPoller, lp1, lp2);
 		
 		try {
@@ -70,7 +83,7 @@ public class DPM {
 		// search algorithm, will search for the light source TODO: need to integrate with the second brick... HOW?
 		int x = 0; // TODO pass the x and y values to the searcher so it knows where the searching starts...
 		int y = 0;
-		Searcher search = new Searcher(odo, navi, lp3, usPoller, x, y);
+		Searcher search = new Searcher(odo, navi, lp3, usPoller, communicationController, x, y);
 		
 		search.findBeacon();
 		

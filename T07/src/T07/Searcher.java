@@ -15,6 +15,7 @@ public class Searcher {
 	private TwoWheeledRobot robot;
 	private LightPoller middleLight;
 	private USPoller middlePoller;
+	private CommunicationController communicationController;
 	private int startX;
 	private int startY;
 	private int[][] field; // will store field information for use by the searcher algorithm
@@ -23,7 +24,8 @@ public class Searcher {
 	private int desiredBeaconDistance = 20; // distance that is desired from beacon to grabbing arm
 	
 	//Constructor
-	public Searcher(Odometer odometer, Navigation navigation, LightPoller middleLight, USPoller middlePoller, int startX, int startY) {
+	public Searcher(Odometer odometer, Navigation navigation, LightPoller middleLight, USPoller middlePoller,
+			CommunicationController communicationController, int startX, int startY) {
 		this.odometer = odometer;
 		this.navigation = navigation;
 		this.middleLight = middleLight;
@@ -31,6 +33,7 @@ public class Searcher {
 		this.startY = startY;
 		this.middlePoller = middlePoller;
 		this.robot = odometer.getTwoWheeledRobot();
+		this.communicationController = communicationController;
 	}
 	
 	// method that deals with finding the beacon, will need a sophisticated searching algorithm, may also need a seperate method to get
@@ -42,7 +45,8 @@ public class Searcher {
 		
 		while (robot.motorsMoving()) {
 			if (middleLight.getRawValue() > lightBeaconThreshold) { // TODO decide on a value that allows the search algorithm to be exited
-				while (/*middleLight.getRawValue() < lightBeaconMaxValue &&*/ middlePoller.getFilteredData() > desiredBeaconDistance) { // TODO: check these values with testing
+				while (communicationController.getLightSensorValue() < lightBeaconMaxValue && middlePoller.getFilteredData() > desiredBeaconDistance) { 
+					// TODO: check these values with testing
 					// TODO: for now we just move towards the light, will be improved after the demo
 					// Following code is simply approaching the flag, nothing more, from Ashley's Lab 5 code, will not be used after the demo
 
