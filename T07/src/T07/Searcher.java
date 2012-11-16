@@ -25,7 +25,7 @@ public class Searcher {
 	
 	//Constructor
 	public Searcher(Odometer odometer, Navigation navigation, LightPoller middleLight, USPoller middlePoller,
-			CommunicationController communicationController, int startX, int startY) {
+			/*CommunicationController communicationController,*/ int startX, int startY) {
 		this.odometer = odometer;
 		this.navigation = navigation;
 		this.middleLight = middleLight;

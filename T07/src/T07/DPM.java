@@ -17,7 +17,7 @@ public class DPM {
 	static private final NXTRegulatedMotor RIGHTMOTOR = Motor.B;
 	static private final LightSensor LEFT_LIGHT_SENSOR = new LightSensor(SensorPort.S1);
 	static private final LightSensor RIGHT_LIGHT_SENSOR = new LightSensor(SensorPort.S2);
-	static private final LightSensor MIDDLE_LIGHT_SENSOR = new LightSensor(SensorPort.S4);
+	static private final LightSensor MIDDLE_LIGHT_SENSOR = new LightSensor(SensorPort.S4); //TODO: Fix this, exception here
 	static private final UltrasonicSensor MIDDLE_ULTRASONIC_SENSOR = new UltrasonicSensor(SensorPort.S3);
 	static private final UltrasonicSensor RIGHT_ULTRASONIC_SENSOR = new UltrasonicSensor(SensorPort.S4);
 	
@@ -29,7 +29,7 @@ public class DPM {
 		Odometer odo = new Odometer(robot);
 		// Navigation navi = new Navigation(odo);
 		//start to get connection with the client brick
-		CommunicationServer communicationServer = new CommunicationServer();
+		//CommunicationServer communicationServer = new CommunicationServer();
 		
 		//start to get connection with Bluetooth server provided by TA
 		BTReceiver btReceiver = new BTReceiver();
@@ -61,7 +61,7 @@ public class DPM {
 		LightPoller lp3 = new LightPoller(robot, LSensor.MIDDLE);
 		
 		//starting communication with the client brick
-		CommunicationController communicationController = new CommunicationController(lp3,communicationServer);
+		//CommunicationController communicationController = new CommunicationController(lp3,communicationServer);
 
 		
 		LCDInfo lcd = new LCDInfo(odo, usPoller, lp1, lp2);
@@ -84,7 +84,7 @@ public class DPM {
 		// search algorithm, will search for the light source TODO: need to integrate with the second brick... HOW?
 		int x = 0; // TODO pass the x and y values to the searcher so it knows where the searching starts...
 		int y = 0;
-		Searcher search = new Searcher(odo, navi, lp3, usPoller, communicationController, x, y);
+		Searcher search = new Searcher(odo, navi, lp3, usPoller, /*communicationController,*/ x, y);
 		
 		search.findBeacon();
 		
