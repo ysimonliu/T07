@@ -17,9 +17,6 @@ public class CommunicationServer {
 	private DataOutputStream dataOut;
 	private DataInputStream dataIn;
 	
-	public static int MID_LIGHT_SENSOR_VALUE = 1;
-	public static int MID_LIGHT_SENSOR_HEIGHT = 2;
-	public static int MID_LIGHT_SENSOR_THETA = 3;
 	
 	public CommunicationServer() {
 		connection = RS485.waitForConnection(0, NXTConnection.PACKET);

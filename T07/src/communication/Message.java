@@ -44,7 +44,7 @@ public class Message {
 	}
 	
 	private int checkOutValue(String messageString) {
-		return Integer.parseInt(messageString.substring(2, 3));
+		return Integer.parseInt(messageString.substring(2));
 	}
 
 }
