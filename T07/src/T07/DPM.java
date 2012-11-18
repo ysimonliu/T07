@@ -4,7 +4,7 @@ package T07;
 import lejos.nxt.*;
 import lejos.nxt.comm.RConsole;
 import lejos.util.Delay;
-import bluetooth.*;
+//import bluetooth.*; //TODO: some error here, fix when required
 
 public class DPM {
 	
@@ -13,8 +13,11 @@ public class DPM {
 	static private final double LEFT_RADIUS = 2.70;
 	static private final double RIGHT_RADIUS = 2.70;
 	static private final double WIDTH = 15.8;
-	static private final NXTRegulatedMotor LEFTMOTOR = Motor.A;
+	static private final NXTRegulatedMotor LEFTMOTOR = Motor.A; // TODO: Will need to sort out the motor configurations with master/slave brick communications
 	static private final NXTRegulatedMotor RIGHTMOTOR = Motor.B;
+	static private final NXTRegulatedMotor LEFTCLAWMOTOR = Motor.A;
+	static private final NXTRegulatedMotor RIGHTCLAWMOTOR = Motor.B;
+	static private final NXTRegulatedMotor LIFTRAISEMOTOR = Motor.C;
 	static private final LightSensor LEFT_LIGHT_SENSOR = new LightSensor(SensorPort.S1);
 	static private final LightSensor RIGHT_LIGHT_SENSOR = new LightSensor(SensorPort.S2);
 	static private final LightSensor MIDDLE_LIGHT_SENSOR = new LightSensor(SensorPort.S4); //TODO: Fix this, exception here
@@ -24,15 +27,15 @@ public class DPM {
 	public static void main(String[] args){
 		
 		// Instantiate classes for basic components testing
-		TwoWheeledRobot robot = new TwoWheeledRobot(LEFTMOTOR, RIGHTMOTOR, MIDDLE_ULTRASONIC_SENSOR, RIGHT_ULTRASONIC_SENSOR, 
-				LEFT_LIGHT_SENSOR, RIGHT_LIGHT_SENSOR, MIDDLE_LIGHT_SENSOR, WIDTH, LEFT_RADIUS, RIGHT_RADIUS);
+		TwoWheeledRobot robot = new TwoWheeledRobot(LEFTMOTOR, RIGHTMOTOR, LEFTCLAWMOTOR, RIGHTCLAWMOTOR, LIFTRAISEMOTOR, MIDDLE_ULTRASONIC_SENSOR,
+				RIGHT_ULTRASONIC_SENSOR, LEFT_LIGHT_SENSOR, RIGHT_LIGHT_SENSOR, MIDDLE_LIGHT_SENSOR, WIDTH, LEFT_RADIUS, RIGHT_RADIUS);
 		Odometer odo = new Odometer(robot);
-		// Navigation navi = new Navigation(odo);
+		//Navigation navi = new Navigation(odo);
 		//start to get connection with the client brick
 		//CommunicationServer communicationServer = new CommunicationServer();
 		
 		//start to get connection with Bluetooth server provided by TA
-		BTReceiver btReceiver = new BTReceiver();
+		//BTReceiver btReceiver = new BTReceiver();
 		
 				
 		
@@ -74,19 +77,23 @@ public class DPM {
 		
 		// sets the basics for localization
 		Navigation navi = new Navigation(odo, usPoller);	
-		USLocalizer usLocalizer = new USLocalizer(odo, navi, usPoller);		
-		LightLocalizer lightLocalizer = new LightLocalizer(odo, lp1, lp2, navi); 
+		//USLocalizer usLocalizer = new USLocalizer(odo, navi, usPoller);		
+		//LightLocalizer lightLocalizer = new LightLocalizer(odo, lp1, lp2, navi); 
 		
 		// performs us and light localization subroutines
-		usLocalizer.doLocalization();
-		lightLocalizer.doLocalization();
+		//usLocalizer.doLocalization();
+		//lightLocalizer.doLocalization();
 		
 		// search algorithm, will search for the light source TODO: need to integrate with the second brick... HOW?
 		int x = 0; // TODO pass the x and y values to the searcher so it knows where the searching starts...
 		int y = 0;
-		Searcher search = new Searcher(odo, navi, lp3, usPoller, /*communicationController,*/ x, y);
+		//Searcher search = new Searcher(odo, navi, lp3, usPoller, /*communicationController,*/ x, y);
 		
-		search.findBeacon();
+		// performs the searching event
+		//search.findBeacon();
+		
+		FlagHandler flagHandler = new FlagHandler(odo, navi, usPoller);
+		flagHandler.pickUp();
 		
 		// once the escape button is pressed, the robot will 
 		while (Button.waitForAnyPress() != Button.ID_ESCAPE);

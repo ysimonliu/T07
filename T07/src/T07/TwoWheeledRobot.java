@@ -8,13 +8,19 @@ public class TwoWheeledRobot {
 	public static final double DEFAULT_RIGHT_RADIUS = 2.70;
 	public static final double DEFAULT_WIDTH = 15.8;
 	public NXTRegulatedMotor leftMotor, rightMotor, lightSensorMotor;
+	public NXTRegulatedMotor leftClawMotor, rightClawMotor, liftRaiseMotor;
 	public UltrasonicSensor middleUSSensor, rightUSSensor;
 	public LightSensor leftLS, rightLS, middleLS;
 	private double leftRadius, rightRadius, width;
 	private double forwardSpeed, rotationSpeed;
+	private final int openAndClosingAngle = 60;
+	private int distanceClawRaised = 0; // this stores the raised distance of the claws, for use by the lower claws method
 	
 	public TwoWheeledRobot(NXTRegulatedMotor leftMotor,
 						   NXTRegulatedMotor rightMotor,
+						   NXTRegulatedMotor leftClawMotor,
+						   NXTRegulatedMotor rightClawMotor,
+						   NXTRegulatedMotor liftRaiseMotor,
 						   UltrasonicSensor middleUSSensor,
 						   UltrasonicSensor rightUSSensor,
 						   LightSensor leftLS,
@@ -25,6 +31,9 @@ public class TwoWheeledRobot {
 						   double rightRadius) {
 		this.leftMotor = leftMotor;
 		this.rightMotor = rightMotor;
+		this.leftClawMotor = leftClawMotor;
+		this.rightClawMotor = rightClawMotor;
+		this.liftRaiseMotor = liftRaiseMotor;
 		this.leftLS = leftLS;
 		this.rightLS = rightLS;
 		this.middleUSSensor = middleUSSensor;
@@ -32,28 +41,37 @@ public class TwoWheeledRobot {
 		this.leftRadius = leftRadius;
 		this.rightRadius = rightRadius;
 		this.width = width;
+		
+		leftClawMotor.stop(false); // makes the motors for the claws stay in place, in case the claw comes into contact with something
+		rightClawMotor.stop(true);
 	}
 	
 	public TwoWheeledRobot(NXTRegulatedMotor leftMotor, 
-						   NXTRegulatedMotor rightMotor, 
+						   NXTRegulatedMotor rightMotor,
+						   NXTRegulatedMotor leftClawMotor,
+						   NXTRegulatedMotor rightClawMotor,
+						   NXTRegulatedMotor liftRaiseMotor,
 						   UltrasonicSensor middleUSSensor, 
 						   UltrasonicSensor rightUSSensor,
 						   LightSensor leftLS,
 						   LightSensor rightLS,
 						   LightSensor middleLS) {
-		this(leftMotor, rightMotor, middleUSSensor, rightUSSensor, leftLS, rightLS, middleLS,
+		this(leftMotor, rightMotor, leftClawMotor, rightClawMotor, liftRaiseMotor, middleUSSensor, rightUSSensor, leftLS, rightLS, middleLS,
 				DEFAULT_WIDTH, DEFAULT_LEFT_RADIUS, DEFAULT_RIGHT_RADIUS);
 	}
 	
 	public TwoWheeledRobot(NXTRegulatedMotor leftMotor, 
 						   NXTRegulatedMotor rightMotor, 
 						   UltrasonicSensor middleUSSensor, 
-						   UltrasonicSensor rightUSSensor, 
+						   UltrasonicSensor rightUSSensor,
+						   NXTRegulatedMotor leftClawMotor,
+						   NXTRegulatedMotor rightClawMotor,
+						   NXTRegulatedMotor liftRaiseMotor,
 						   LightSensor leftLS,
 						   LightSensor rightLS,
 						   LightSensor middleLS,
 						   double width) {
-		this(leftMotor, rightMotor, middleUSSensor, rightUSSensor, leftLS, rightLS, middleLS,
+		this(leftMotor, rightMotor, leftClawMotor, rightClawMotor, liftRaiseMotor, middleUSSensor, rightUSSensor, leftLS, rightLS, middleLS,
 				width, DEFAULT_LEFT_RADIUS, DEFAULT_RIGHT_RADIUS);
 	}
 	
@@ -128,6 +146,8 @@ public class TwoWheeledRobot {
 		
 	}
 	
+	// 
+	
 	// method that returns if leftMotor is moving
 	public boolean leftMotorMoving() {
 		return leftMotor.isMoving();
@@ -144,6 +164,50 @@ public class TwoWheeledRobot {
 			return true;
 		}
 		return false;
+	}
+	
+	// method that closes the robot claws
+	public void closeClaws() {
+		
+		leftClawMotor.setSpeed(50); // TODO: check the opening and closing speeds
+		rightClawMotor.setSpeed(50);
+		leftClawMotor.rotate(openAndClosingAngle);
+		rightClawMotor.rotate(openAndClosingAngle);
+		leftClawMotor.stop(true);
+		rightClawMotor.stop(false);
+	}
+	
+	// TODO: check the rotation direction of the claws
+	// method that opens the robot claws
+	public void openClaws() {
+		
+		leftClawMotor.setSpeed(50);
+		rightClawMotor.setSpeed(50);
+		leftClawMotor.rotate(-openAndClosingAngle);
+		rightClawMotor.rotate(-openAndClosingAngle);
+		leftClawMotor.stop(true);
+		rightClawMotor.stop(false);
+	}
+	
+	// method that raises the claw system, passed an int that is converted to a height for distance of raise
+	public void raiseClaws(int distance) {
+		
+		distanceClawRaised = distanceClawRaised + distance; // this takes into account if the claw is raised from some height to another
+		
+		liftRaiseMotor.setSpeed(50);
+		liftRaiseMotor.rotate(distance*180); // TODO: check the distance raised by the input parameter, make it roughly accurate, check direction, check lowerclaws too
+		liftRaiseMotor.stop(false);
+		
+	}
+	
+	// method that lowers the claw system, passed an int that is converts to a height for distance to lower
+	public void lowerClaws(int distance) {
+		
+		distanceClawRaised = distanceClawRaised - distance; // this takes into account the amount the claw height will be displaced by
+		
+		liftRaiseMotor.setSpeed(50);
+		liftRaiseMotor.rotate(distance*180);
+		liftRaiseMotor.stop(false);
 	}
 	
 	// method that stops the leftmotor only
