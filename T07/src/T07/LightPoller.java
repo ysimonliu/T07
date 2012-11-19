@@ -1,13 +1,12 @@
 package T07;
 
-import java.util.Arrays;
-
 import lejos.nxt.*;
 import lejos.util.Timer;
 import lejos.util.TimerListener;
 
 // Class that controls the light sensors and makes sure that the data doesn't
 // become confused when being called from multiple sources
+
 public class LightPoller implements TimerListener{
 	
 	// private variable that stores the controlled USValue

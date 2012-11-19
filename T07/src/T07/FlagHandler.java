@@ -1,7 +1,5 @@
 package T07;
 
-import lejos.nxt.*;
-
 // class that controls the flag handling performed by the robot
 public class FlagHandler {
 	private USPoller usPoller; // may need this to get accurate distance of flag, for grabbing

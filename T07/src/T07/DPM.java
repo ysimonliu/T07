@@ -10,9 +10,6 @@ public class DPM {
 	
 	public enum USSensor {MIDDLE, RIGHT};
 	public enum LSensor {LEFT, MIDDLE, RIGHT};
-	static private final double LEFT_RADIUS = 2.70;
-	static private final double RIGHT_RADIUS = 2.70;
-	static private final double WIDTH = 15.8;
 	static private final NXTRegulatedMotor LEFTMOTOR = Motor.A; // TODO: Will need to sort out the motor configurations with master/slave brick communications
 	static private final NXTRegulatedMotor RIGHTMOTOR = Motor.B;
 	static private final NXTRegulatedMotor LEFTCLAWMOTOR = Motor.A;
@@ -28,7 +25,7 @@ public class DPM {
 		
 		// Instantiate classes for basic components testing
 		TwoWheeledRobot robot = new TwoWheeledRobot(LEFTMOTOR, RIGHTMOTOR, LEFTCLAWMOTOR, RIGHTCLAWMOTOR, LIFTRAISEMOTOR, MIDDLE_ULTRASONIC_SENSOR,
-				RIGHT_ULTRASONIC_SENSOR, LEFT_LIGHT_SENSOR, RIGHT_LIGHT_SENSOR, MIDDLE_LIGHT_SENSOR, WIDTH, LEFT_RADIUS, RIGHT_RADIUS);
+				RIGHT_ULTRASONIC_SENSOR, LEFT_LIGHT_SENSOR, RIGHT_LIGHT_SENSOR, MIDDLE_LIGHT_SENSOR);
 		Odometer odo = new Odometer(robot);
 		//Navigation navi = new Navigation(odo);
 		//start to get connection with the client brick
@@ -94,6 +91,13 @@ public class DPM {
 		
 		FlagHandler flagHandler = new FlagHandler(odo, navi, usPoller);
 		flagHandler.pickUp();
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		flagHandler.putDown();
 		
 		// once the escape button is pressed, the robot will 
 		while (Button.waitForAnyPress() != Button.ID_ESCAPE);

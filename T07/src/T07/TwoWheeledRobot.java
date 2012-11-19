@@ -25,10 +25,7 @@ public class TwoWheeledRobot {
 						   UltrasonicSensor rightUSSensor,
 						   LightSensor leftLS,
 						   LightSensor rightLS,
-						   LightSensor middleLS,
-						   double width,
-						   double leftRadius,
-						   double rightRadius) {
+						   LightSensor middleLS) {
 		this.leftMotor = leftMotor;
 		this.rightMotor = rightMotor;
 		this.leftClawMotor = leftClawMotor;
@@ -38,26 +35,12 @@ public class TwoWheeledRobot {
 		this.rightLS = rightLS;
 		this.middleUSSensor = middleUSSensor;
 		this.rightUSSensor = rightUSSensor;
-		this.leftRadius = leftRadius;
-		this.rightRadius = rightRadius;
-		this.width = width;
+		this.leftRadius = DEFAULT_LEFT_RADIUS;
+		this.rightRadius = DEFAULT_RIGHT_RADIUS;
+		this.width = DEFAULT_WIDTH;
 		
 		leftClawMotor.stop(false); // makes the motors for the claws stay in place, in case the claw comes into contact with something
 		rightClawMotor.stop(true);
-	}
-	
-	public TwoWheeledRobot(NXTRegulatedMotor leftMotor, 
-						   NXTRegulatedMotor rightMotor,
-						   NXTRegulatedMotor leftClawMotor,
-						   NXTRegulatedMotor rightClawMotor,
-						   NXTRegulatedMotor liftRaiseMotor,
-						   UltrasonicSensor middleUSSensor, 
-						   UltrasonicSensor rightUSSensor,
-						   LightSensor leftLS,
-						   LightSensor rightLS,
-						   LightSensor middleLS) {
-		this(leftMotor, rightMotor, leftClawMotor, rightClawMotor, liftRaiseMotor, middleUSSensor, rightUSSensor, leftLS, rightLS, middleLS,
-				DEFAULT_WIDTH, DEFAULT_LEFT_RADIUS, DEFAULT_RIGHT_RADIUS);
 	}
 	
 	public TwoWheeledRobot(NXTRegulatedMotor leftMotor, 
@@ -71,8 +54,7 @@ public class TwoWheeledRobot {
 						   LightSensor rightLS,
 						   LightSensor middleLS,
 						   double width) {
-		this(leftMotor, rightMotor, leftClawMotor, rightClawMotor, liftRaiseMotor, middleUSSensor, rightUSSensor, leftLS, rightLS, middleLS,
-				width, DEFAULT_LEFT_RADIUS, DEFAULT_RIGHT_RADIUS);
+		this(leftMotor, rightMotor, leftClawMotor, rightClawMotor, liftRaiseMotor, middleUSSensor, rightUSSensor, leftLS, rightLS, middleLS);
 	}
 	
 	// accessors

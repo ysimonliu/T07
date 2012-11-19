@@ -62,7 +62,7 @@ public class USPoller implements TimerListener{
 		
 	}
 	
-	// get median will return the median value of the last eleven ultrasonic sensor readings
+	// get median will return the median value of the last seven ultrasonic sensor readings
 	public int getReadingRecordsMedian() {
 		int medianValue;
 		// sort the reading records and copy it to another array

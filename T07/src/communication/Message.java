@@ -2,7 +2,6 @@ package communication;
 
 /**
  * The message sent between two bricks.
- * @author cqin4
  *
  */
 public class Message {
