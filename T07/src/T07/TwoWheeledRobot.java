@@ -122,50 +122,6 @@ public class TwoWheeledRobot {
 		return false;
 	}
 	
-	// method that closes the robot claws
-/*	public void closeClaws() {
-		
-		leftClawMotor.setSpeed(50); // TODO: check the opening and closing speeds
-		rightClawMotor.setSpeed(50);
-		leftClawMotor.rotate(openAndClosingAngle);
-		rightClawMotor.rotate(openAndClosingAngle);
-		leftClawMotor.stop(true);
-		rightClawMotor.stop(false);
-	}
-	
-	// TODO: check the rotation direction of the claws
-	// method that opens the robot claws
-	public void openClaws() {
-		
-		leftClawMotor.setSpeed(50);
-		rightClawMotor.setSpeed(50);
-		leftClawMotor.rotate(-openAndClosingAngle);
-		rightClawMotor.rotate(-openAndClosingAngle);
-		leftClawMotor.stop(true);
-		rightClawMotor.stop(false);
-	}
-	
-	// method that raises the claw system, passed an int that is converted to a height for distance of raise
-	public void raiseClaws(int distance) {
-		
-		distanceClawRaised = distanceClawRaised + distance; // this takes into account if the claw is raised from some height to another
-		
-		liftRaiseMotor.setSpeed(50);
-		liftRaiseMotor.rotate(distance*180); // TODO: check the distance raised by the input parameter, make it roughly accurate, check direction, check lowerclaws too
-		liftRaiseMotor.stop(false);
-		
-	}
-	
-	// method that lowers the claw system, passed an int that is converts to a height for distance to lower
-	public void lowerClaws(int distance) {
-		
-		distanceClawRaised = distanceClawRaised - distance; // this takes into account the amount the claw height will be displaced by
-		
-		liftRaiseMotor.setSpeed(50);
-		liftRaiseMotor.rotate(distance*180);
-		liftRaiseMotor.stop(false);
-	}*/
-	
 	// method that stops the leftmotor only
 	public void stopLeftMotor () {
 		leftMotor.stop();

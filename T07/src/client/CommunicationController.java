@@ -53,17 +53,13 @@ public class CommunicationController implements TimerListener, Runnable{
 			if (message != null) {
 				this.lightData[message.getType()] = message.getValue();
 			}
+			
 		}
 		
 	}
 	
 	public void sendLightSensorValue() {
 		Message message = new Message(Message.MID_LIGHT_SENSOR_VALUE, this.lightPoller.getRawValue());
-		this.communicationClient.sent(message);
-	}
-	
-	private void sendUSSensorValue() {
-		Message message = new Message(Message.RIGHT_US_SENSOR_VALUE, this.usPoller.getRawValue());
 		this.communicationClient.sent(message);
 	}
 	
@@ -77,6 +73,11 @@ public class CommunicationController implements TimerListener, Runnable{
 		this.communicationClient.sent(message);
 	}
 	
+	private void sendUSSensorValue() {
+		Message message = new Message(Message.RIGHT_US_SENSOR_VALUE, this.usPoller.getRawValue());
+		this.communicationClient.sent(message);
+	}
+	
 	public int getLightSensorValue() {
 		return this.lightData[Message.MID_LIGHT_SENSOR_VALUE];
 	}
@@ -87,6 +88,10 @@ public class CommunicationController implements TimerListener, Runnable{
 	
 	public int getLightSensorHeight() {
 		return this.lightData[Message.MID_LIGHT_SENSOR_HEIGHT];
+	}
+	
+	public int getRightUSSensorValue(){
+		return this.lightData[Message.RIGHT_US_SENSOR_VALUE];
 	}
 
 }

@@ -10,6 +10,10 @@ public class Message {
 	public static int MID_LIGHT_SENSOR_HEIGHT = 1;
 	public static int MID_LIGHT_SENSOR_THETA = 2;
 	public static int RIGHT_US_SENSOR_VALUE = 3;
+	public static int LEFT_CLAW_ROTATION = 4;
+	public static int LEFT_CLAW_CURRENT_ANGLE = 5;
+	public static int RIGHT_CLAW_ROTATION = 6;
+	public static int RIGHT_CLAW_CURRENT_ANGLE = 7;
 	
 	private int type;
 	private int value;
