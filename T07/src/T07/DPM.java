@@ -19,13 +19,12 @@ public class DPM {
 	static private final LightSensor RIGHT_LIGHT_SENSOR = new LightSensor(SensorPort.S2);
 	static private final LightSensor MIDDLE_LIGHT_SENSOR = new LightSensor(SensorPort.S4); //TODO: Fix this, exception here
 	static private final UltrasonicSensor MIDDLE_ULTRASONIC_SENSOR = new UltrasonicSensor(SensorPort.S3);
-	static private final UltrasonicSensor RIGHT_ULTRASONIC_SENSOR = new UltrasonicSensor(SensorPort.S4);
 	
 	public static void main(String[] args){
 		
 		// Instantiate classes for basic components testing
 		TwoWheeledRobot robot = new TwoWheeledRobot(LEFTMOTOR, RIGHTMOTOR, LEFTCLAWMOTOR, RIGHTCLAWMOTOR, LIFTRAISEMOTOR, MIDDLE_ULTRASONIC_SENSOR,
-				RIGHT_ULTRASONIC_SENSOR, LEFT_LIGHT_SENSOR, RIGHT_LIGHT_SENSOR, MIDDLE_LIGHT_SENSOR);
+				LEFT_LIGHT_SENSOR, RIGHT_LIGHT_SENSOR, MIDDLE_LIGHT_SENSOR);
 		Odometer odo = new Odometer(robot);
 		//Navigation navi = new Navigation(odo);
 		//start to get connection with the client brick

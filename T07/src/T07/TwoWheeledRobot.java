@@ -22,7 +22,6 @@ public class TwoWheeledRobot {
 						   NXTRegulatedMotor rightClawMotor,
 						   NXTRegulatedMotor liftRaiseMotor,
 						   UltrasonicSensor middleUSSensor,
-						   UltrasonicSensor rightUSSensor,
 						   LightSensor leftLS,
 						   LightSensor rightLS,
 						   LightSensor middleLS) {
@@ -34,7 +33,6 @@ public class TwoWheeledRobot {
 		this.leftLS = leftLS;
 		this.rightLS = rightLS;
 		this.middleUSSensor = middleUSSensor;
-		this.rightUSSensor = rightUSSensor;
 		this.leftRadius = DEFAULT_LEFT_RADIUS;
 		this.rightRadius = DEFAULT_RIGHT_RADIUS;
 		this.width = DEFAULT_WIDTH;
@@ -46,7 +44,6 @@ public class TwoWheeledRobot {
 	public TwoWheeledRobot(NXTRegulatedMotor leftMotor, 
 						   NXTRegulatedMotor rightMotor, 
 						   UltrasonicSensor middleUSSensor, 
-						   UltrasonicSensor rightUSSensor,
 						   NXTRegulatedMotor leftClawMotor,
 						   NXTRegulatedMotor rightClawMotor,
 						   NXTRegulatedMotor liftRaiseMotor,
@@ -54,7 +51,7 @@ public class TwoWheeledRobot {
 						   LightSensor rightLS,
 						   LightSensor middleLS,
 						   double width) {
-		this(leftMotor, rightMotor, leftClawMotor, rightClawMotor, liftRaiseMotor, middleUSSensor, rightUSSensor, leftLS, rightLS, middleLS);
+		this(leftMotor, rightMotor, leftClawMotor, rightClawMotor, liftRaiseMotor, middleUSSensor, leftLS, rightLS, middleLS);
 	}
 	
 	// accessors
