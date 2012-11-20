@@ -9,6 +9,7 @@ public class LCDInfo implements TimerListener{
 	private Odometer odometer;
 	private Timer lcdTimer;
 	private USPoller usPoller;
+	private CommunicationController communicationController;
 	private LightPoller lpl;
 	private LightPoller lpr;
 	//private TwoWheeledRobot robot;
@@ -16,10 +17,11 @@ public class LCDInfo implements TimerListener{
 	// arrays for displaying data
 	private double [] position;
 
-	public LCDInfo(Odometer odometer, USPoller usPoller, LightPoller lpl, LightPoller lpr) {
+	public LCDInfo(Odometer odometer, USPoller usPoller, CommunicationController communicationController, LightPoller lpl, LightPoller lpr) {
 		this.odometer = odometer;
 		this.lcdTimer = new Timer(LCD_REFRESH, this);
 		this.usPoller = usPoller;
+		this.communicationController = communicationController;
 		this.lpl = lpl;
 		this.lpr = lpr;
 		//this.robot = odometer.getTwoWheeledRobot();
@@ -43,8 +45,9 @@ public class LCDInfo implements TimerListener{
 		LCD.drawString(formattedDoubleToString(position[2], 2), 3, 2);
 		LCD.drawString("LLS :" + lpl.getSecondOrderDerivative(), 0, 3);
 		LCD.drawString("RLS :" + lpr.getSecondOrderDerivative(), 0, 4);
+		LCD.drawString("Slave: " + communicationController.getLightSensorValue(), 0, 5);
 		// print to the RConsole Viewer for debug's convenience
-		RConsole.println("LLS :" + lpl.getSecondOrderDerivative());
+		//RConsole.println("LLS :" + lpl.getSecondOrderDerivative());
 		/*RConsole.println("Y:" + formattedDoubleToString(position[1], 2));
 		RConsole.println("Theta:" + formattedDoubleToString(position[2], 2));
 		RConsole.println("LeftUS Raw:" + usPoller.getRawData());

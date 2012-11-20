@@ -17,11 +17,11 @@ public class FlagHandler {
 	}
 	
 	// public method that picks up the flag when it is encountered, called from the searcher class
-	public void pickUp() {
+	/*public void pickUp() {
 		
 		/*if (usPoller.getFilteredData() <= requiredBlockDistance) {
 		
-		}*/ //TODO: figure out how we know that the block is in grasping distance
+		} //TODO: figure out how we know that the block is in grasping distance
 		
 		// Now block should be in grasping distance, do grabbing
 		robot.closeClaws();
@@ -36,4 +36,5 @@ public class FlagHandler {
 		robot.openClaws();
 		
 	}
+	*/
 }

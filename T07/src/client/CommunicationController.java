@@ -17,11 +17,13 @@ public class CommunicationController implements TimerListener, Runnable{
 	private final int DEFAULT_COMMUNICATION_PERIOD = 60;
 	private CommunicationClient communicationClient;
 	private LightPoller lightPoller;
+	private USPoller usPoller;
 	private int[] lightData = new int [3];
 	
-	public CommunicationController(LightPoller ls, CommunicationClient communicationClient) {
+	public CommunicationController(LightPoller ls, USPoller usPoller, CommunicationClient communicationClient) {
 		this.communicationClient = communicationClient;
 		this.lightPoller = ls;
+		this.usPoller = usPoller;
 		
 		// run the data receiver
 		new Thread(this).start();
@@ -37,6 +39,7 @@ public class CommunicationController implements TimerListener, Runnable{
 	 */
 	public void timedOut() {
 		sendLightSensorValue();
+		sendUSSensorValue();
 		//TODO:send more data needed.
 	}
 
@@ -56,6 +59,11 @@ public class CommunicationController implements TimerListener, Runnable{
 	
 	public void sendLightSensorValue() {
 		Message message = new Message(Message.MID_LIGHT_SENSOR_VALUE, this.lightPoller.getRawValue());
+		this.communicationClient.sent(message);
+	}
+	
+	private void sendUSSensorValue() {
+		Message message = new Message(Message.RIGHT_US_SENSOR_VALUE, this.usPoller.getRawValue());
 		this.communicationClient.sent(message);
 	}
 	

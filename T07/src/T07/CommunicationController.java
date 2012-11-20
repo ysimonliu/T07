@@ -78,5 +78,9 @@ public class CommunicationController implements TimerListener, Runnable{
 	public int getLightSensorHeight() {
 		return this.lightData[Message.MID_LIGHT_SENSOR_HEIGHT];
 	}
+	
+	public int getRightUSSensorValue(){
+		return this.lightData[Message.RIGHT_US_SENSOR_VALUE];
+	}
 
 }

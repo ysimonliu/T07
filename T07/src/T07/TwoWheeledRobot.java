@@ -8,7 +8,6 @@ public class TwoWheeledRobot {
 	public static final double DEFAULT_RIGHT_RADIUS = 2.70;
 	public static final double DEFAULT_WIDTH = 15.8;
 	public NXTRegulatedMotor leftMotor, rightMotor, lightSensorMotor;
-	public NXTRegulatedMotor leftClawMotor, rightClawMotor, liftRaiseMotor;
 	public UltrasonicSensor middleUSSensor, rightUSSensor;
 	public LightSensor leftLS, rightLS, middleLS;
 	private double leftRadius, rightRadius, width;
@@ -18,43 +17,28 @@ public class TwoWheeledRobot {
 	
 	public TwoWheeledRobot(NXTRegulatedMotor leftMotor,
 						   NXTRegulatedMotor rightMotor,
-						   NXTRegulatedMotor leftClawMotor,
-						   NXTRegulatedMotor rightClawMotor,
-						   NXTRegulatedMotor liftRaiseMotor,
 						   UltrasonicSensor middleUSSensor,
-						   UltrasonicSensor rightUSSensor,
 						   LightSensor leftLS,
 						   LightSensor rightLS,
 						   LightSensor middleLS) {
 		this.leftMotor = leftMotor;
 		this.rightMotor = rightMotor;
-		this.leftClawMotor = leftClawMotor;
-		this.rightClawMotor = rightClawMotor;
-		this.liftRaiseMotor = liftRaiseMotor;
 		this.leftLS = leftLS;
 		this.rightLS = rightLS;
 		this.middleUSSensor = middleUSSensor;
-		this.rightUSSensor = rightUSSensor;
 		this.leftRadius = DEFAULT_LEFT_RADIUS;
 		this.rightRadius = DEFAULT_RIGHT_RADIUS;
 		this.width = DEFAULT_WIDTH;
-		
-		leftClawMotor.stop(false); // makes the motors for the claws stay in place, in case the claw comes into contact with something
-		rightClawMotor.stop(true);
 	}
 	
 	public TwoWheeledRobot(NXTRegulatedMotor leftMotor, 
 						   NXTRegulatedMotor rightMotor, 
-						   UltrasonicSensor middleUSSensor, 
-						   UltrasonicSensor rightUSSensor,
-						   NXTRegulatedMotor leftClawMotor,
-						   NXTRegulatedMotor rightClawMotor,
-						   NXTRegulatedMotor liftRaiseMotor,
+						   UltrasonicSensor middleUSSensor,
 						   LightSensor leftLS,
 						   LightSensor rightLS,
 						   LightSensor middleLS,
 						   double width) {
-		this(leftMotor, rightMotor, leftClawMotor, rightClawMotor, liftRaiseMotor, middleUSSensor, rightUSSensor, leftLS, rightLS, middleLS);
+		this(leftMotor, rightMotor, middleUSSensor, leftLS, rightLS, middleLS);
 	}
 	
 	// accessors
@@ -149,7 +133,7 @@ public class TwoWheeledRobot {
 	}
 	
 	// method that closes the robot claws
-	public void closeClaws() {
+/*	public void closeClaws() {
 		
 		leftClawMotor.setSpeed(50); // TODO: check the opening and closing speeds
 		rightClawMotor.setSpeed(50);
@@ -190,7 +174,7 @@ public class TwoWheeledRobot {
 		liftRaiseMotor.setSpeed(50);
 		liftRaiseMotor.rotate(distance*180);
 		liftRaiseMotor.stop(false);
-	}
+	}*/
 	
 	// method that stops the leftmotor only
 	public void stopLeftMotor () {

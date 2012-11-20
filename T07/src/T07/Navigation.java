@@ -124,7 +124,7 @@ public class Navigation {
 		}
 		
 		public void avoidBlock() {
-			
+			/*
 			// TODO change sensors with DPM.USSensor.RIGHT, must change back after wall following
 			selectedSensor.changeSensor(DPM.USSensor.RIGHT); // changes the sensor to the right sensor for wall following
 			
@@ -141,7 +141,8 @@ public class Navigation {
 					robot.setForwardSpeed(forwardSpeed);
 				}
 			}
-			
 			selectedSensor.changeSensor(DPM.USSensor.MIDDLE); // changes the sensor back to the middle sensor after wall following complete
+					*/
 		}
+
 	}

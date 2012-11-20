@@ -30,19 +30,6 @@ public class USPoller implements TimerListener{
 		counter = 0;
 	}
 	
-	public void changeSensor(DPM.USSensor choice) {
-		// set a sensor into operation
-		if (choice == DPM.USSensor.MIDDLE){
-			this.us = robot.middleUSSensor;
-		}
-		else {
-			this.us = robot.rightUSSensor;
-		}
-		// reset the cache values
-		counter = 0;
-		readingRecords = new int[sizeOfCachedReadings];
-	}
-	
 	// TimerListener method that sets filtered US data readings, also controls pinging rates
 	public void timedOut() {
 
