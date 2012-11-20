@@ -15,7 +15,6 @@ public class Searcher {
 	private TwoWheeledRobot robot;
 	private LightPoller middleLight;
 	private USPoller middlePoller;
-	private CommunicationController communicationController;
 	private int startX;
 	private int startY;
 	private int[][] field; // will store field information for use by the searcher algorithm
@@ -33,14 +32,13 @@ public class Searcher {
 		this.startY = startY;
 		this.middlePoller = middlePoller;
 		this.robot = odometer.getTwoWheeledRobot();
-		this.communicationController = communicationController;
 	}
 	
 	// method that deals with finding the beacon, will need a sophisticated searching algorithm, may also need a seperate method to get
 	// get a beacon at a known location
 	public void findBeacon() {
 		// TODO: Ashley has an idea for the algorithm to implement, will introduce this but not for the demo.
-		
+		/*
 		navigation.travelTo(216.72, 216.72); // simple movement for the demo
 		
 		while (robot.motorsMoving()) {
@@ -65,7 +63,7 @@ public class Searcher {
 				Sound.twoBeeps();
 				Delay.msDelay(5000);
 			}
-		}
+		}*/
 	}
 	
 	public void searchLight() {

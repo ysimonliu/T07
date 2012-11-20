@@ -31,16 +31,6 @@ public class TwoWheeledRobot {
 		this.width = DEFAULT_WIDTH;
 	}
 	
-	public TwoWheeledRobot(NXTRegulatedMotor leftMotor, 
-						   NXTRegulatedMotor rightMotor, 
-						   UltrasonicSensor middleUSSensor,
-						   LightSensor leftLS,
-						   LightSensor rightLS,
-						   LightSensor middleLS,
-						   double width) {
-		this(leftMotor, rightMotor, middleUSSensor, leftLS, rightLS, middleLS);
-	}
-	
 	// accessors
 	public double getDisplacement() {
 		return (leftMotor.getTachoCount() * leftRadius +
