@@ -45,7 +45,7 @@ public class LCDInfo implements TimerListener{
 		LCD.drawString(formattedDoubleToString(position[2], 2), 3, 2);
 		LCD.drawString("LLS :" + lpl.getSecondOrderDerivative(), 0, 3);
 		LCD.drawString("RLS :" + lpr.getSecondOrderDerivative(), 0, 4);
-		LCD.drawString("Slave: " + communicationController.getLightSensorValue(), 0, 5);
+		LCD.drawString("Slave: " + communicationController.getMidLightSensorValue(), 0, 5);
 		// print to the RConsole Viewer for debug's convenience
 		//RConsole.println("LLS :" + lpl.getSecondOrderDerivative());
 		/*RConsole.println("Y:" + formattedDoubleToString(position[1], 2));
