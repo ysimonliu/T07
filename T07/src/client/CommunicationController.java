@@ -18,7 +18,7 @@ public class CommunicationController implements TimerListener, Runnable{
 	private CommunicationClient communicationClient;
 	private LightPoller lightPoller;
 	private USPoller usPoller;
-	private int[] lightData = new int [3];
+	private int[] lightData = new int [8];
 	
 	public CommunicationController(LightPoller ls, USPoller usPoller, CommunicationClient communicationClient) {
 		this.communicationClient = communicationClient;

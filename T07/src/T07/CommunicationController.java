@@ -16,11 +16,10 @@ public class CommunicationController implements TimerListener, Runnable{
 	private final int DEFAULT_COMMUNICATION_PERIOD = 60;
 	private CommunicationServer communicationServer;
 	private LightPoller lightPoller;
-	private int[] lightData = new int [3];
+	private int[] lightData = new int [8];
 	
-	public CommunicationController(LightPoller ls, CommunicationServer communicationServer) {
+	public CommunicationController(CommunicationServer communicationServer) {
 		this.communicationServer = communicationServer;
-		this.lightPoller = ls;
 		
 		// run the data receiver
 		new Thread(this).start();

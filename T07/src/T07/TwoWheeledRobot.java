@@ -12,15 +12,12 @@ public class TwoWheeledRobot {
 	public LightSensor leftLS, rightLS, middleLS;
 	private double leftRadius, rightRadius, width;
 	private double forwardSpeed, rotationSpeed;
-	private final int openAndClosingAngle = 60;
-	private int distanceClawRaised = 0; // this stores the raised distance of the claws, for use by the lower claws method
 	
 	public TwoWheeledRobot(NXTRegulatedMotor leftMotor,
 						   NXTRegulatedMotor rightMotor,
 						   UltrasonicSensor middleUSSensor,
 						   LightSensor leftLS,
-						   LightSensor rightLS,
-						   LightSensor middleLS) {
+						   LightSensor rightLS) {
 		this.leftMotor = leftMotor;
 		this.rightMotor = rightMotor;
 		this.leftLS = leftLS;

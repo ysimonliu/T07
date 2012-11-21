@@ -9,18 +9,17 @@ import lejos.util.Delay;
 public class DPM {
 	
 	public enum USSensor {MIDDLE, RIGHT};
-	public enum LSensor {LEFT, MIDDLE, RIGHT};
+	public enum LSensor {LEFT, RIGHT};
 	static private final NXTRegulatedMotor LEFT_MOTOR = Motor.A; // TODO: Will need to sort out the motor configurations with master/slave brick communications
 	static private final NXTRegulatedMotor RIGHT_MOTOR = Motor.B;
 	static private final LightSensor LEFT_LIGHT_SENSOR = new LightSensor(SensorPort.S1);
 	static private final LightSensor RIGHT_LIGHT_SENSOR = new LightSensor(SensorPort.S2);
-	static private final LightSensor MIDDLE_LIGHT_SENSOR = new LightSensor(SensorPort.S4);
 	static private final UltrasonicSensor MIDDLE_ULTRASONIC_SENSOR = new UltrasonicSensor(SensorPort.S3);
 	
 	public static void main(String[] args){
 		
 		// Instantiate classes for basic components testing
-		TwoWheeledRobot robot = new TwoWheeledRobot(LEFT_MOTOR, RIGHT_MOTOR, MIDDLE_ULTRASONIC_SENSOR, LEFT_LIGHT_SENSOR, RIGHT_LIGHT_SENSOR, MIDDLE_LIGHT_SENSOR);
+		TwoWheeledRobot robot = new TwoWheeledRobot(LEFT_MOTOR, RIGHT_MOTOR, MIDDLE_ULTRASONIC_SENSOR, LEFT_LIGHT_SENSOR, RIGHT_LIGHT_SENSOR);
 		Odometer odo = new Odometer(robot);
 		//Navigation navi = new Navigation(odo);
 		//start to get connection with the client brick
@@ -46,10 +45,9 @@ public class DPM {
 		USPoller usPoller = new USPoller(robot);
 		LightPoller lp1 = new LightPoller(robot, LSensor.LEFT);
 		LightPoller lp2 = new LightPoller(robot, LSensor.RIGHT);
-		LightPoller lp3 = new LightPoller(robot, LSensor.MIDDLE);
 		
 		//starting communication with the client brick, the communication controller is started in its constructor
-		CommunicationController communicationController = new CommunicationController(lp3,communicationServer);
+		CommunicationController communicationController = new CommunicationController(communicationServer);
 		
 		LCDInfo lcd = new LCDInfo(odo, usPoller, communicationController, lp1, lp2);
 		lcd.timedOut();
