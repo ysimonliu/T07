@@ -3,12 +3,11 @@ package T07;
 /**
  * Sending and receiving data to and from client brick
  */
+import client.FlagHandler;
 import communication.Message;
 
 import lejos.util.Timer;
 import lejos.util.TimerListener;
-import lejos.nxt.LightSensor;
-import lejos.nxt.SensorPort;
 
 public class CommunicationController implements TimerListener, Runnable{
 	
@@ -16,7 +15,7 @@ public class CommunicationController implements TimerListener, Runnable{
 	private final int DEFAULT_COMMUNICATION_PERIOD = 60;
 	private CommunicationServer communicationServer;
 	private LightPoller lightPoller;
-	private int[] lightData = new int [8];
+	private int[] lightData = new int [Message.NUMBER_OF_ELEMENTS];
 	
 	public CommunicationController(CommunicationServer communicationServer) {
 		this.communicationServer = communicationServer;
@@ -48,7 +47,6 @@ public class CommunicationController implements TimerListener, Runnable{
 				this.lightData[message.getType()] = message.getValue();
 			}
 		}
-		
 	}
 	
 	public void sendLightSensorValue() {
@@ -56,13 +54,23 @@ public class CommunicationController implements TimerListener, Runnable{
 		this.communicationServer.sent(message);
 	}
 	
-	public void sendLightSensorHeight() {
-		Message message = new Message(Message.MID_LIGHT_SENSOR_HEIGHT, this.lightPoller.getRawValue());
+	public void sendLightSensorTheta() {
+		Message message = new Message(Message.MID_LIGHT_SENSOR_THETA, this.lightPoller.getRawValue());
 		this.communicationServer.sent(message);
 	}
 	
-	public void sendLightSensorTheta() {
-		Message message = new Message(Message.MID_LIGHT_SENSOR_THETA, this.lightPoller.getRawValue());
+	public void sendOpenClaw() {
+		Message message = new Message(Message.OPEN_CLAW, 1);
+		this.communicationServer.sent(message);
+	}
+	
+	public void sendCloseClaw() {
+		Message message = new Message(Message.CLOSE_CLAW, 1);
+		this.communicationServer.sent(message);
+	}
+	
+	public void sendRaiseLiftDistance(){
+		Message message = new Message(Message.RAISE_LIFT_DISTANCE, 0);
 		this.communicationServer.sent(message);
 	}
 	
@@ -73,13 +81,9 @@ public class CommunicationController implements TimerListener, Runnable{
 	public int getLightSensorTheta() {
 		return this.lightData[Message.MID_LIGHT_SENSOR_THETA];
 	}
-	
-	public int getLightSensorHeight() {
-		return this.lightData[Message.MID_LIGHT_SENSOR_HEIGHT];
-	}
-	
+
 	public int getRightUSSensorValue(){
 		return this.lightData[Message.RIGHT_US_SENSOR_VALUE];
 	}
-
+	
 }

@@ -6,14 +6,13 @@ package communication;
  */
 public class Message {
 	
+	public static int NUMBER_OF_ELEMENTS = 6;
 	public static int MID_LIGHT_SENSOR_VALUE = 0;
-	public static int MID_LIGHT_SENSOR_HEIGHT = 1;
-	public static int MID_LIGHT_SENSOR_THETA = 2;
-	public static int RIGHT_US_SENSOR_VALUE = 3;
-	public static int LEFT_CLAW_ROTATION = 4;
-	public static int LEFT_CLAW_CURRENT_ANGLE = 5;
-	public static int RIGHT_CLAW_ROTATION = 6;
-	public static int RIGHT_CLAW_CURRENT_ANGLE = 7;
+	public static int MID_LIGHT_SENSOR_THETA = 1;
+	public static int RIGHT_US_SENSOR_VALUE = 2;
+	public static int OPEN_CLAW = 3;
+	public static int CLOSE_CLAW = 4;
+	public static int RAISE_LIFT_DISTANCE = 5;
 	
 	private int type;
 	private int value;

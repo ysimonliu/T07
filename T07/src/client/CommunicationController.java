@@ -18,7 +18,7 @@ public class CommunicationController implements TimerListener, Runnable{
 	private CommunicationClient communicationClient;
 	private LightPoller lightPoller;
 	private USPoller usPoller;
-	private int[] lightData = new int [8];
+	private int[] lightData = new int [Message.NUMBER_OF_ELEMENTS];
 	
 	public CommunicationController(LightPoller ls, USPoller usPoller, CommunicationClient communicationClient) {
 		this.communicationClient = communicationClient;
@@ -51,7 +51,18 @@ public class CommunicationController implements TimerListener, Runnable{
 		while (true) {
 			Message message = this.communicationClient.receive();
 			if (message != null) {
-				this.lightData[message.getType()] = message.getValue();
+				if (message.getType() == Message.OPEN_CLAW) {
+					FlagHandler.openClaws();
+				}
+				else if (message.getType() == Message.CLOSE_CLAW) {
+					FlagHandler.closeClaws();
+				}
+				else if (message.getType() == Message.RAISE_LIFT_DISTANCE){
+					FlagHandler.raiseClaws();
+				}
+				else {
+					this.lightData[message.getType()] = message.getValue();
+				}
 			}
 			
 		}
@@ -60,11 +71,6 @@ public class CommunicationController implements TimerListener, Runnable{
 	
 	public void sendLightSensorValue() {
 		Message message = new Message(Message.MID_LIGHT_SENSOR_VALUE, this.lightPoller.getRawValue());
-		this.communicationClient.sent(message);
-	}
-	
-	public void sendLightSensorHeight() {
-		Message message = new Message(Message.MID_LIGHT_SENSOR_HEIGHT, this.lightPoller.getRawValue());
 		this.communicationClient.sent(message);
 	}
 	
@@ -78,6 +84,7 @@ public class CommunicationController implements TimerListener, Runnable{
 		this.communicationClient.sent(message);
 	}
 	
+	
 	public int getLightSensorValue() {
 		return this.lightData[Message.MID_LIGHT_SENSOR_VALUE];
 	}
@@ -85,13 +92,21 @@ public class CommunicationController implements TimerListener, Runnable{
 	public int getLightSensorTheta() {
 		return this.lightData[Message.MID_LIGHT_SENSOR_THETA];
 	}
-	
-	public int getLightSensorHeight() {
-		return this.lightData[Message.MID_LIGHT_SENSOR_HEIGHT];
-	}
-	
+
 	public int getRightUSSensorValue(){
 		return this.lightData[Message.RIGHT_US_SENSOR_VALUE];
+	}
+	
+	public int getOpenClaw(){
+		return this.lightData[Message.OPEN_CLAW];
+	}
+	
+	public int getCloseClaw(){
+		return this.lightData[Message.CLOSE_CLAW];
+	}
+	
+	public int getRaiseLifeDistance(){
+		return this.lightData[Message.RAISE_LIFT_DISTANCE];
 	}
 
 }
