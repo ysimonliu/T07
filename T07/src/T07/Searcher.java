@@ -15,16 +15,17 @@ public class Searcher {
 	private TwoWheeledRobot robot;
 	private LightPoller middleLight;
 	private USPoller middlePoller;
+	private CommunicationController communicationController;
 	private int startX;
 	private int startY;
-	private int[][] field; // will store field information for use by the searcher algorithm
+	private int[][] field  = new int[12][12]; // will store field information for use by the searcher algorithm
 	private int lightBeaconThreshold = 50; // minimum light value that exits the searching algorithm and moves robot towards the light source (will be close)
 	private int lightBeaconMaxValue; // light value that is detected when in front of the beacon (will be calibrated)
 	private int desiredBeaconDistance = 20; // distance that is desired from beacon to grabbing arm
 	
 	//Constructor
 	public Searcher(Odometer odometer, Navigation navigation, LightPoller middleLight, USPoller middlePoller,
-			/*CommunicationController communicationController,*/ int startX, int startY) {
+			CommunicationController communicationController, int startX, int startY) {
 		this.odometer = odometer;
 		this.navigation = navigation;
 		this.middleLight = middleLight;
@@ -32,38 +33,14 @@ public class Searcher {
 		this.startY = startY;
 		this.middlePoller = middlePoller;
 		this.robot = odometer.getTwoWheeledRobot();
+		this.communicationController = communicationController;
 	}
 	
 	// method that deals with finding the beacon, will need a sophisticated searching algorithm, may also need a seperate method to get
 	// get a beacon at a known location
 	public void findBeacon() {
 		// TODO: Ashley has an idea for the algorithm to implement, will introduce this but not for the demo.
-		/*
-		navigation.travelTo(216.72, 216.72); // simple movement for the demo
 		
-		while (robot.motorsMoving()) {
-			if (middleLight.getRawValue() > lightBeaconThreshold) { // TODO decide on a value that allows the search algorithm to be exited
-				while (communicationController.getLightSensorValue() < lightBeaconMaxValue && middlePoller.getFilteredData() > desiredBeaconDistance) { 
-					// TODO: check these values with testing
-					// TODO: for now we just move towards the light, will be improved after the demo
-					// Following code is simply approaching the flag, nothing more, from Ashley's Lab 5 code, will not be used after the demo
-
-					if (!robot.leftMotorMoving() && !robot.rightMotorMoving()) {
-						searchLight();
-
-						robot.moveForwardDistance(30);
-					}	
-				}
-				
-				// stops the motors after reaching required distance, otherwise the robot will continue until the end of the rotate
-				robot.stopLeftMotor();
-				robot.stopRightMotor();
-				
-				// signals that the robot has performed its required operation
-				Sound.twoBeeps();
-				Delay.msDelay(5000);
-			}
-		}*/
 	}
 	
 	public void searchLight() {

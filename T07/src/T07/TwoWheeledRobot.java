@@ -4,9 +4,9 @@ import lejos.nxt.*;
 public class TwoWheeledRobot {
 	
 	// this class contains the measurements of the robot
-	public static final double DEFAULT_LEFT_RADIUS = 2.70;
-	public static final double DEFAULT_RIGHT_RADIUS = 2.70;
-	public static final double DEFAULT_WIDTH = 15.8;
+	public static final double DEFAULT_LEFT_RADIUS = 2.68;
+	public static final double DEFAULT_RIGHT_RADIUS = 2.68;
+	public static final double DEFAULT_WIDTH = 16.2;
 	public NXTRegulatedMotor leftMotor, rightMotor, lightSensorMotor;
 	public UltrasonicSensor middleUSSensor, rightUSSensor;
 	public LightSensor leftLS, rightLS, middleLS;

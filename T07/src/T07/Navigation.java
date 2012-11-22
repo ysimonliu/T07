@@ -10,7 +10,7 @@ public class Navigation {
 	private TwoWheeledRobot robot;
 	private double epsilon = 2.0, thetaEpsilon = 2.0;
 	private boolean  isTurning = false;
-	private double forwardSpeed = 15, rotationSpeed = 30;
+	private double forwardSpeed = 8, rotationSpeed = 6;
 	private USPoller selectedSensor;
 	private final int bandCenter = 30, bandwith = 5;
 	
@@ -65,6 +65,36 @@ public class Navigation {
 		
 		
 		public void travelTo(double x, double y) {
+			
+			// Moves the robot in a square, first up along the y axis, and second up along the x axis
+			
+			// makes sure that the robot turns to the correct heading
+			if (y - odometer.getY() < 0) {
+				turnTo(180);
+			} else {
+				turnTo(0);
+			}
+			// moves the robot up the y-axis stops when the desired y-coordinate is reached
+			while (Math.abs(y - odometer.getY()) > epsilon) {
+				robot.setForwardSpeed(forwardSpeed);
+			}
+			
+			// makes sure that the robot turns to the correct heading
+			if (x - odometer.getX() < 0) {
+				turnTo(270);
+			} else {
+				turnTo(90);
+			}
+			// moves the robot up the x-axis stops when the desired x-coordinate is reached
+			while (Math.abs(x - odometer.getX()) > epsilon) {
+				robot.setForwardSpeed(forwardSpeed);
+			}
+			
+			robot.stop();
+			Sound.beep();
+			
+			// COMMENTED OUT BY ASHLEY, keep if my code doesn't work.
+			/*
 			// define minimal angle variable
 			double minAng;
 			// compute the turning angle
@@ -76,15 +106,16 @@ public class Navigation {
 		    	// avoid block checker (detects if an object is located in front of the robot and then moves into wall following mode)
 		    	/*if (selectedSensor.getFilteredData() < 30) { //TODO test the wall detection value so that robot doesn't hit wall
 		    		avoidBlock(); // go into wall following method
-		    	}*/	    	
+		    	}    	
 		    	
-			    // set robot to move forward
+			    // set robot to move forwardt
 			    robot.setForwardSpeed(forwardSpeed);
 		    }
 		    // now we have reached the final destination, we can stop and relax now
 		    robot.stop();
 		    // DEBUG: beep to signal that we have reached the final destination
-		    Sound.beep();
+		    Sound.beep(); 
+		    */
 		}
 	
 		public void turnTo(double angle) {

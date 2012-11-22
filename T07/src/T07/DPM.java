@@ -40,7 +40,13 @@ public class DPM {
 		startLCDDisplay(odo, usPoller, communicationController, lp2, lp2);
 		
 		//FIXME: This close claw thing actually doesn't work
-		communicationController.sendCloseClaw();
+		//communicationController.sendCloseClaw();
+		
+		navi.travelTo(90, 90);
+		navi.travelTo(0, 0);
+		navi.travelTo(90,0);
+		navi.travelTo(90,90);
+		navi.travelTo(0, 0);
 		
 		// localize
 		//localize(odo, navi, usPoller, lp1, lp2);
