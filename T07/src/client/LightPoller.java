@@ -23,8 +23,9 @@ public class LightPoller implements TimerListener{
 
 	// Constructor of lightPoller
 	public LightPoller(LightSensor ls) {
-	
+		
 		this.ls = ls;
+		ls.setFloodlight(false);
 		this.lightPollerTimer = new Timer(DEFAULT_PERIOD_ULTRASONIC, this);
 		this.lightPollerTimer.start();
 	}

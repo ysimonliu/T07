@@ -1,5 +1,6 @@
 package client;
 
+import lejos.nxt.LCD;
 import lejos.nxt.NXTRegulatedMotor;
 import T07.Navigation;
 import T07.Odometer;
@@ -11,22 +12,18 @@ public class FlagHandler {
 	private static NXTRegulatedMotor leftClawMotor = DPM_Client.LEFT_CLAW_MOTOR;
 	private static NXTRegulatedMotor rightClawMotor = DPM_Client.RIGHT_CLAW_MOTOR;
 	private static NXTRegulatedMotor liftRaiseMotor = DPM_Client.CLAW_LIFT_MOTOR;
-	private static int openAndClosingAngle = 120, distanceClawRaised = 0;
-	
-	// Constructor
-	public FlagHandler () {
-		distanceClawRaised = 0;
-	}
+	private static int distanceClawRaised = 0;
+	private static final int MAX_CLAW_HEIGHT = 1000, CLAMP_ANGLE = 45;
 	
 	// public method that picks up the flag when it is encountered, called from the searcher class
-	public void pickUp() {
+	public static void pickUp() {
 		closeClaws();
-		raiseClaws(30);
+		raiseClaws();
 	}
 	
 	// public method that puts down the flag when the destination is encountered, called from the hider class
-	public void putDown() {
-		lowerClaws(30);
+	public static void putDown() {
+		lowerClaws();
 		openClaws();
 	}
 	
@@ -34,10 +31,11 @@ public class FlagHandler {
 	@SuppressWarnings("deprecation")
 	public static void closeClaws() {
 		
+		LCD.drawString("Closing...", 0, 3);
 		leftClawMotor.setSpeed(50); // TODO: check the opening and closing speeds
 		rightClawMotor.setSpeed(50);
-		leftClawMotor.rotate(openAndClosingAngle, true);
-		rightClawMotor.rotate(openAndClosingAngle, false);
+		leftClawMotor.rotate(CLAMP_ANGLE, true);
+		rightClawMotor.rotate(CLAMP_ANGLE, true);
 		try {
 			Thread.sleep(1500);
 		} catch (InterruptedException e) {
@@ -52,10 +50,11 @@ public class FlagHandler {
 	// method that opens the robot claws
 	public static void openClaws() {
 		
+		LCD.drawString("Opening...", 0, 1);
 		leftClawMotor.setSpeed(50);
 		rightClawMotor.setSpeed(50);
-		leftClawMotor.rotate(-openAndClosingAngle);
-		rightClawMotor.rotate(-openAndClosingAngle);
+		leftClawMotor.rotate(-CLAMP_ANGLE, true);
+		rightClawMotor.rotate(-CLAMP_ANGLE, true);
 		try {
 			Thread.sleep(1500);
 		} catch (InterruptedException e) {
@@ -65,34 +64,25 @@ public class FlagHandler {
 	}
 	
 	// method that raises the claw system, passed an int that is converted to a height for distance of raise
+	public static void raiseClaws() {
+		raiseClaws(MAX_CLAW_HEIGHT);
+	}
+	
 	@SuppressWarnings("deprecation")
 	public static void raiseClaws(int distance) {
 		
-		distanceClawRaised = distanceClawRaised + distance; // this takes into account if the claw is raised from some height to another
-		
+		LCD.drawString("Raising...", 0, 2);
+		distanceClawRaised += distance; // this takes into account if the claw is raised from some height to another
 		liftRaiseMotor.setSpeed(50);
-		liftRaiseMotor.rotate(distance*180); // TODO: check the distance raised by the input parameter, make it roughly accurate, check direction, check lowerclaws too
-		liftRaiseMotor.lock(100);
-		
-	}
-	
-	public static void raiseClaws() {
-		int distance = 15;
-		distanceClawRaised = distanceClawRaised + distance; // this takes into account if the claw is raised from some height to another
-		
-		liftRaiseMotor.setSpeed(50);
-		liftRaiseMotor.rotate(distance*180); // TODO: check the distance raised by the input parameter, make it roughly accurate, check direction, check lowerclaws too
+		liftRaiseMotor.rotate(distance);
 		liftRaiseMotor.lock(100);
 		
 	}
 	
 	// method that lowers the claw system, passed an int that is converts to a height for distance to lower
-	public static void lowerClaws(int distance) {
-		
-		distanceClawRaised = distanceClawRaised - distance; // this takes into account the amount the claw height will be displaced by
-		
+	public static void lowerClaws() {
+		LCD.drawString("Lowering...", 0, 4);
 		liftRaiseMotor.setSpeed(50);
-		liftRaiseMotor.rotate(distance*180);
-		liftRaiseMotor.stop(false);
+		liftRaiseMotor.rotate(-distanceClawRaised);
 	}
 }

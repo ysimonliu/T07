@@ -25,7 +25,6 @@ public class DPM_Client {
 		CommunicationClient communicationClient = new CommunicationClient();
 		//start communication with master brick
 		CommunicationController communicationController = new CommunicationController(lightPoller, usPoller, communicationClient);
-		communicationController.timedOut();
 		
 		// once the escape button is pressed, the robot will exit
 		while (Button.waitForAnyPress() != Button.ID_ESCAPE);
