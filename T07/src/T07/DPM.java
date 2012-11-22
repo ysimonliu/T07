@@ -42,10 +42,13 @@ public class DPM {
 		//FIXME: This close claw thing actually doesn't work
 		//communicationController.sendCloseClaw();
 		
-		navi.travelTo(90, 90);
+		OdometryCorrection correct = new OdometryCorrection (odo, lp1, lp2);
+		correct.start();
+		
+		navi.travelTo(60, 60);
 		navi.travelTo(0, 0);
-		navi.travelTo(90,0);
-		navi.travelTo(90,90);
+		navi.travelTo(60,0);
+		navi.travelTo(60,60);
 		navi.travelTo(0, 0);
 		
 		// localize

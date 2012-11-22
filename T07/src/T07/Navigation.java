@@ -10,7 +10,7 @@ public class Navigation {
 	private TwoWheeledRobot robot;
 	private double epsilon = 2.0, thetaEpsilon = 2.0;
 	private boolean  isTurning = false;
-	private double forwardSpeed = 8, rotationSpeed = 6;
+	private double forwardSpeed = 8, rotationSpeed = 8;
 	private USPoller selectedSensor;
 	private final int bandCenter = 30, bandwith = 5;
 	
@@ -62,7 +62,6 @@ public class Navigation {
 		public void travelForward() {
 			robot.setForwardSpeed(forwardSpeed);
 		}
-		
 		
 		public void travelTo(double x, double y) {
 			
