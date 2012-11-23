@@ -45,11 +45,13 @@ public class DPM {
 		//OdometryCorrection correct = new OdometryCorrection (odo, lp1, lp2);
 		//correct.start();
 		
+		
 		navi.travelTo(60, 60);
 		navi.travelTo(0, 0);
 		navi.travelTo(60,0);
 		navi.travelTo(60,60);
 		navi.travelTo(0, 0);
+		
 		
 		// localize
 		//localize(odo, navi, usPoller, lp1, lp2);
