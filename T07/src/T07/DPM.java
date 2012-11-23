@@ -18,16 +18,19 @@ public class DPM {
 	
 	public static void main(String[] args){
 		
+		// get ready to connect to slave brick
+		CommunicationServer communicationServer = new CommunicationServer();
+		// establish connection
+		CommunicationController communicationController = new CommunicationController(communicationServer);
 		// Instantiate classes of all basic components
-		TwoWheeledRobot robot = new TwoWheeledRobot(LEFT_MOTOR, RIGHT_MOTOR, MIDDLE_ULTRASONIC_SENSOR, LEFT_LIGHT_SENSOR, RIGHT_LIGHT_SENSOR);
+		TwoWheeledRobot robot = new TwoWheeledRobot(LEFT_MOTOR, RIGHT_MOTOR, MIDDLE_ULTRASONIC_SENSOR, LEFT_LIGHT_SENSOR, RIGHT_LIGHT_SENSOR, communicationController);
 		Odometer odo = new Odometer(robot);
 		USPoller usPoller = new USPoller(robot);
 		LightPoller lp1 = new LightPoller(robot, LSensor.LEFT);
 		LightPoller lp2 = new LightPoller(robot, LSensor.RIGHT);
 		Navigation navi = new Navigation(odo, usPoller, lp1, lp2);
 		
-		//start to get connection with the client brick
-		CommunicationServer communicationServer = new CommunicationServer();
+
 		
 		//start to get connection with Bluetooth server provided by TA
 		//BTReceiver btReceiver = new BTReceiver();
@@ -35,13 +38,9 @@ public class DPM {
 		// main menu
 		menu();
 		
-		//starting communication with the client brick, the communication controller is started in its constructor
-		CommunicationController communicationController = new CommunicationController(communicationServer);
+
 		// start the LCD display
 		startLCDDisplay(odo, usPoller, communicationController, lp2, lp2);
-		
-		//FIXME: This close claw thing actually doesn't work
-		//communicationController.sendCloseClaw();
 		
 		//OdometryCorrection correct = new OdometryCorrection (odo, lp1, lp2);
 		//correct.start();
