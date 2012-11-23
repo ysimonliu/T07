@@ -15,24 +15,30 @@ public class FlagHandler {
 	private static int distanceClawRaised = 0;
 	private static final int MAX_CLAW_HEIGHT = 1000, CLAMP_ANGLE = 45;
 	
-	// public method that picks up the flag when it is encountered, called from the searcher class
+	/**
+	 * first close the claw to grab on the beacon, and then raise the claw
+	 */
 	public static void pickUp() {
 		closeClaws();
 		raiseClaws();
 	}
 	
-	// public method that puts down the flag when the destination is encountered, called from the hider class
+	/**
+	 * first lower the claw, and then open the claw
+	 */
 	public static void putDown() {
 		lowerClaws();
 		openClaws();
 	}
 	
-	// method that closes the robot claws
+	/**
+	 * close the claw to grab on the beacon
+	 */
 	@SuppressWarnings("deprecation")
 	public static void closeClaws() {
 		
 		LCD.drawString("Closing...", 0, 3);
-		leftClawMotor.setSpeed(50); // TODO: check the opening and closing speeds
+		leftClawMotor.setSpeed(50);
 		rightClawMotor.setSpeed(50);
 		leftClawMotor.rotate(CLAMP_ANGLE, true);
 		rightClawMotor.rotate(CLAMP_ANGLE, true);
@@ -46,8 +52,9 @@ public class FlagHandler {
 		rightClawMotor.lock(100);
 	}
 	
-	// TODO: check the rotation direction of the claws
-	// method that opens the robot claws
+	/**
+	 * open the claw to release the beacon
+	 */
 	public static void openClaws() {
 		
 		LCD.drawString("Opening...", 0, 1);
@@ -63,11 +70,17 @@ public class FlagHandler {
 		}
 	}
 	
-	// method that raises the claw system, passed an int that is converted to a height for distance of raise
+	/**
+	 * lift the claw to default height
+	 */
 	public static void raiseClaws() {
 		raiseClaws(MAX_CLAW_HEIGHT);
 	}
 	
+	/**
+	 * lift the claw to the distance
+	 * @param distance
+	 */
 	@SuppressWarnings("deprecation")
 	public static void raiseClaws(int distance) {
 		
@@ -79,7 +92,9 @@ public class FlagHandler {
 		
 	}
 	
-	// method that lowers the claw system, passed an int that is converts to a height for distance to lower
+	/**
+	 * lower the claw to ground height
+	 */
 	public static void lowerClaws() {
 		LCD.drawString("Lowering...", 0, 4);
 		liftRaiseMotor.setSpeed(50);

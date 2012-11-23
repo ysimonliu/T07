@@ -1,7 +1,5 @@
 package client;
 
-import java.util.Arrays;
-
 import lejos.nxt.*;
 import lejos.util.Timer;
 import lejos.util.TimerListener;
@@ -21,7 +19,10 @@ public class LightPoller implements TimerListener{
 	private LightSensor ls;
 
 
-	// Constructor of lightPoller
+	/**
+	 * constructor. light sensor passed in from DPM_Client class
+	 * @param ls
+	 */
 	public LightPoller(LightSensor ls) {
 		
 		this.ls = ls;
@@ -30,7 +31,10 @@ public class LightPoller implements TimerListener{
 		this.lightPollerTimer.start();
 	}
 	
-	// timerListener method that controls access to the light sensor
+	/**
+	 * populate raw value and second order derivative of the middle light sensor reading
+	 * at a time interval
+	 */
 	public void timedOut() {
 		// add the newly read distance to replace the oldest element in the array
 		previousFirstOrderDerivative = firstOrderDerivative;
@@ -38,14 +42,20 @@ public class LightPoller implements TimerListener{
 		rawLightValue = ls.getNormalizedLightValue();
 		firstOrderDerivative = rawLightValue - previousValue;
 		secondOrderDerivative = firstOrderDerivative - previousFirstOrderDerivative;
-		
 	}
 	
+	/**
+	 * get the second order derivative of the middle light sensor reading
+	 * @return
+	 */
 	public int getSecondOrderDerivative() {
 		return secondOrderDerivative;
 	}
 	
-	// getting that returns the raw light value
+	/**
+	 * get the raw value reading of the middle light sensor reading
+	 * @return
+	 */
 	public int getRawValue() {
 		return rawLightValue;
 	}	

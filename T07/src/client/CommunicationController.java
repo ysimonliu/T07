@@ -23,6 +23,13 @@ public class CommunicationController implements TimerListener, Runnable{
 	// the meaning of each index, and the array length is defined in the Message class
 	private int[] lightData = new int [Message.NUMBER_OF_ELEMENTS];
 	
+	/**
+	 * constructor of client-end communication controller
+	 * upon instantiation, this class will call timedOut() and run() method to send & receive data
+	 * @param ls
+	 * @param usPoller
+	 * @param communicationClient
+	 */
 	public CommunicationController(LightPoller ls, USPoller usPoller, CommunicationClient communicationClient) {
 		// constructor
 		this.communicationClient = communicationClient;
@@ -37,13 +44,18 @@ public class CommunicationController implements TimerListener, Runnable{
 		this.communicationTimer.start();
 	}
 	
+	/**
+	 * send data to the master brick periodically at DEFAULT_COMMUNICATION_PERIOD
+	 */
 	@Override
-	// Data Sender: This timedOut method will send data to the communication client periodically at DEFAULT_COMMUNICATION_PERIOD
 	public void timedOut() {
 		sendMidLightSensorValue();
 		sendRightUSSensorValue();
 	}
 
+	/**
+	 * receive data from master brick and process the message received
+	 */
 	@Override
 	// Data Receiver: This run method will receive data from the communication client constantly on the fly
 	public void run() {
@@ -56,6 +68,11 @@ public class CommunicationController implements TimerListener, Runnable{
 		}
 	}
 	
+	/**
+	 * helper method to process message
+	 * when a request to perform a task is sent, trigger the method
+	 * @param message
+	 */
 	private void process(Message message) {
 		switch(message.getType()) {
 		case Message.CLOSE_CLAW:
@@ -75,21 +92,20 @@ public class CommunicationController implements TimerListener, Runnable{
 		}
 	}
 
-	// send the mid light sensor reading to the communication server
+	/**
+	 * send the middle light sensor value to the master brick
+	 */
 	public void sendMidLightSensorValue() {
 		Message message = new Message(Message.MID_LIGHT_SENSOR_VALUE, this.lightPoller.getRawValue());
-		this.communicationClient.sent(message);
+		this.communicationClient.send(message);
 	}
+
 	
-	// send the mid light sensor offset angle to the communication server
-	public void sendMidLightSensorTheta() {
-		Message message = new Message(Message.MID_LIGHT_SENSOR_THETA, this.lightPoller.getRawValue());
-		this.communicationClient.sent(message);
-	}
-	
-	// send the right ultrasonic sensor reading to the communication server
+	/**
+	 * send the right ultrasonic sensor reading to the communication server
+	 */
 	private void sendRightUSSensorValue() {
 		Message message = new Message(Message.RIGHT_US_SENSOR_VALUE, this.usPoller.getRawValue());
-		this.communicationClient.sent(message);
+		this.communicationClient.send(message);
 	}
 }

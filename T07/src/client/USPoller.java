@@ -21,7 +21,10 @@ public class USPoller implements TimerListener{
 	private UltrasonicSensor usSensor;
 
 
-	// Constructor of lightPoller
+	/**
+	 * constructor of right side US sensor
+	 * @param usSensor
+	 */
 	public USPoller(UltrasonicSensor usSensor) {
 	
 		this.usSensor = usSensor;
@@ -29,7 +32,10 @@ public class USPoller implements TimerListener{
 		this.lightPollerTimer.start();
 	}
 	
-	// timerListener method that controls access to the light sensor
+	/**
+	 * populate raw value and second order derivative of the right side ultrasonic sensor reading
+	 * at a time interval
+	 */
 	public void timedOut() {
 		// add the newly read distance to replace the oldest element in the array
 		previousFirstOrderDerivative = firstOrderDerivative;
@@ -40,11 +46,18 @@ public class USPoller implements TimerListener{
 		
 	}
 	
+	/**
+	 * get the second order derivative of the right side ultrasonic sensor reading
+	 * @return
+	 */
 	public int getSecondOrderDerivative() {
 		return secondOrderDerivative;
 	}
 	
-	// getting that returns the raw light value
+	/**
+	 * get the raw value reading of the right side ultrasonic sensor reading
+	 * @return
+	 */
 	public int getRawValue() {
 		return rawLightValue;
 	}	

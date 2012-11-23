@@ -18,6 +18,11 @@ public class DPM_Client {
 	static final NXTRegulatedMotor RIGHT_CLAW_MOTOR = Motor.B;
 	static final NXTRegulatedMotor CLAW_LIFT_MOTOR = Motor.C;
 	
+	/**
+	 * main method for slave brick
+	 * will wait for connection with the master brick
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		LightPoller lightPoller = new LightPoller(MIDDLE_LIGHT_SENSOR);
 		USPoller usPoller = new USPoller(RIGHT_US_SENSOR);

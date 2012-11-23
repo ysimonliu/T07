@@ -19,8 +19,12 @@ public class CommunicationClient {
 	private DataOutputStream dataOut;
 	private DataInputStream dataIn;
 	
-
-	
+	/**
+	 * constructor for CommunicationClient class
+	 * the slave brick of a two-brick communications should instantiate this class
+	 * connection via cable
+	 * upon successful connection, robot will sound two beeps
+	 */
 	public CommunicationClient() {
 
 		connection = RS485.connect("0016530E3CEC", NXTConnection.PACKET);
@@ -36,7 +40,11 @@ public class CommunicationClient {
 		
 	}
 	
-	public void sent(Message message) {
+	/**
+	 * by passing in a message, this method will send a message to the master brick
+	 * @param message
+	 */
+	public void send(Message message) {
 		try {
 			dataOut.writeUTF(message.getString());
 			dataOut.flush();
@@ -45,6 +53,10 @@ public class CommunicationClient {
 		}
 	}
 	
+	/**
+	 * receive and return a message from the master brick
+	 * @return
+	 */
 	public Message receive() {
 		String messageString = null;
 		Message receivedMessage = null;
