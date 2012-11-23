@@ -10,6 +10,7 @@ public class TwoWheeledRobot {
 	public NXTRegulatedMotor leftMotor, rightMotor, lightSensorMotor;
 	public UltrasonicSensor middleUSSensor, rightUSSensor;
 	public LightSensor leftLS, rightLS, middleLS;
+	private  CommunicationController communicationController;
 	private double leftRadius, rightRadius, width;
 	private double forwardSpeed, rotationSpeed;
 	
@@ -17,7 +18,8 @@ public class TwoWheeledRobot {
 						   NXTRegulatedMotor rightMotor,
 						   UltrasonicSensor middleUSSensor,
 						   LightSensor leftLS,
-						   LightSensor rightLS) {
+						   LightSensor rightLS,
+						   CommunicationController communicationController) {
 		this.leftMotor = leftMotor;
 		this.rightMotor = rightMotor;
 		this.leftLS = leftLS;
@@ -26,9 +28,31 @@ public class TwoWheeledRobot {
 		this.leftRadius = DEFAULT_LEFT_RADIUS;
 		this.rightRadius = DEFAULT_RIGHT_RADIUS;
 		this.width = DEFAULT_WIDTH;
+		this.communicationController = communicationController;
+	}
+	
+	// control the slave brick to perform tasks
+	public void closeClaw() {
+		communicationController.sendCloseClaw();
+	}
+	
+	public void openClaw() {
+		communicationController.sendOpenClaw();
+	}
+	
+	public void liftClaw() {
+		communicationController.sendRaiseLift();
+	}
+	
+	public void lowerClaw() {
+		communicationController.sendLowerLift();
 	}
 	
 	// accessors
+	public CommunicationController getCommunicationController(){
+		return this.communicationController;
+	}
+	
 	public double getDisplacement() {
 		return (leftMotor.getTachoCount() * leftRadius +
 				rightMotor.getTachoCount() * rightRadius) *

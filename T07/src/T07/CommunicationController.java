@@ -61,8 +61,14 @@ public class CommunicationController implements TimerListener, Runnable{
 	}
 	
 	// send a request message to the communication client to perform and lift claw task
-	public void sendRaiseLiftDistance(){
-		Message message = new Message(Message.RAISE_LIFT_DISTANCE, 0);
+	public void sendRaiseLift(){
+		Message message = new Message(Message.RAISE_LIFT, 0);
+		this.communicationServer.sent(message);
+	}
+	
+	// send a request message to the communication client to perform and lower claw task
+	public void sendLowerLift(){
+		Message message = new Message(Message.LOWER_LIFT, 0);
 		this.communicationServer.sent(message);
 	}
 	

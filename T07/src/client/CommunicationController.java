@@ -50,25 +50,31 @@ public class CommunicationController implements TimerListener, Runnable{
 		while (true) {
 			Message message = this.communicationClient.receive();
 			if (message != null) {
-				// Depending on the type of the message, perform the task that is requested by the communication server
-				if (message.getType() == Message.OPEN_CLAW) {
-					FlagHandler.openClaws();
-				}
-				else if (message.getType() == Message.CLOSE_CLAW) {
-					FlagHandler.closeClaws();
-				}
-				else if (message.getType() == Message.RAISE_LIFT_DISTANCE){
-					FlagHandler.raiseClaws();
-				}
-				else {
-					this.lightData[message.getType()] = message.getValue();
-				}
+				// process message
+				process(message);
 			}
-			
 		}
-		
 	}
 	
+	private void process(Message message) {
+		switch(message.getType()) {
+		case Message.CLOSE_CLAW:
+			FlagHandler.closeClaws();
+			break;
+		case Message.RAISE_LIFT:
+			FlagHandler.raiseClaws();
+			break;
+		case Message.OPEN_CLAW:
+			FlagHandler.openClaws();
+			break;
+		case Message.LOWER_LIFT:
+			FlagHandler.lowerClaws();
+			break;
+		default:
+			this.lightData[message.getType()] = message.getValue();
+		}
+	}
+
 	// send the mid light sensor reading to the communication server
 	public void sendMidLightSensorValue() {
 		Message message = new Message(Message.MID_LIGHT_SENSOR_VALUE, this.lightPoller.getRawValue());
@@ -86,20 +92,4 @@ public class CommunicationController implements TimerListener, Runnable{
 		Message message = new Message(Message.RIGHT_US_SENSOR_VALUE, this.usPoller.getRawValue());
 		this.communicationClient.sent(message);
 	}
-
-	// receive and read the content of a OPEN_CLAW message
-	public int getOpenClaw(){
-		return this.lightData[Message.OPEN_CLAW];
-	}
-	
-	// receive and read the content of a CLOSE_CLAW message
-	public int getCloseClaw(){
-		return this.lightData[Message.CLOSE_CLAW];
-	}
-	
-	// receive and read the content of a LIFT_CLAW message
-	public int getRaiseLifeDistance(){
-		return this.lightData[Message.RAISE_LIFT_DISTANCE];
-	}
-
 }
