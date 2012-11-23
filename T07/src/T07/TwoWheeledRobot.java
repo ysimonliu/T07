@@ -150,8 +150,10 @@ public class TwoWheeledRobot {
 	
 	// method that moves the robot forward a specific distance
 	public void moveForwardDistance(double distance) {
+		leftMotor.forward();
+		rightMotor.forward();
 		leftMotor.rotate(convertDistance(leftRadius, distance), true);
-		rightMotor.rotate(convertDistance(rightRadius, distance), true);
+		rightMotor.rotate(convertDistance(rightRadius, distance), false);
 	}
 	
 	// taken from the square driver class (lab2) converts the turn angle into a distance for the convertDistance method
