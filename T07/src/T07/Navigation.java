@@ -18,6 +18,7 @@ public class Navigation {
 	private static int gridLineIntensity = 460;
 	private static final double tileLength = 30.48;
 	private static final int minObjectDistance = 30;
+	private long storedSystemTime;
 	private double[] currentPosition;
 	private boolean[] changeValue;
 	
@@ -91,7 +92,7 @@ public class Navigation {
 				
 			if (leftLight.getRawValue() < gridLineIntensity) { // checks if the left lightsensor has crossed a gridline, odometry correct if so
 				robot.stopLeftMotor();
-				long storedSystemTime = System.currentTimeMillis();
+				storedSystemTime = System.currentTimeMillis();
 				while (rightLight.getRawValue() > gridLineIntensity && (System.currentTimeMillis() - storedSystemTime) < 200) {
 					// do nothing
 				}
@@ -100,7 +101,7 @@ public class Navigation {
 			}
 			if (rightLight.getRawValue() < gridLineIntensity) { // checks if the right lightsensor has crossed a gridline, odometry correct if so
 				robot.stopRightMotor();
-				long storedSystemTime = System.currentTimeMillis();
+				storedSystemTime = System.currentTimeMillis();
 				while(leftLight.getRawValue() > gridLineIntensity && (System.currentTimeMillis() - storedSystemTime) < 200) {
 					// do nothing
 				}
@@ -131,7 +132,7 @@ public class Navigation {
 			
 			if (leftLight.getRawValue() < gridLineIntensity) {
 				robot.stopLeftMotor();
-				long storedSystemTime = System.currentTimeMillis();
+				storedSystemTime = System.currentTimeMillis();
 				while (rightLight.getRawValue() > gridLineIntensity && (System.currentTimeMillis() - storedSystemTime) < 200) {
 					// do nothing
 				}
@@ -140,7 +141,7 @@ public class Navigation {
 			}
 			if (rightLight.getRawValue() < gridLineIntensity) {
 				robot.stopRightMotor();
-				long storedSystemTime = System.currentTimeMillis();
+				storedSystemTime = System.currentTimeMillis();
 				while(leftLight.getRawValue() > gridLineIntensity && (System.currentTimeMillis() - storedSystemTime) < 200) {
 					// do nothing
 				}
