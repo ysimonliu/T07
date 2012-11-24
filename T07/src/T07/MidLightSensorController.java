@@ -2,7 +2,7 @@ package T07;
 
 import lejos.nxt.NXTRegulatedMotor;
 
-public class lsController {
+public class MidLightSensorController {
 		
 		private TwoWheeledRobot robot;
 		private NXTRegulatedMotor lsMotor;
@@ -16,7 +16,7 @@ public class lsController {
 		 * constructor for this class light sensor controller
 		 * @param robot
 		 */
-		public lsController(TwoWheeledRobot robot){
+		public MidLightSensorController(TwoWheeledRobot robot){
 			this.robot = robot;
 			this.lsMotor = robot.lightSensorMotor;
 		}
