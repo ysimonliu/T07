@@ -15,7 +15,7 @@ public class Navigation {
 	private USPoller selectedSensor;
 	private LightPoller leftLight;
 	private LightPoller rightLight;
-	private static int gridLineIntensity = 490;
+	private static int gridLineIntensity = 460;
 	private static final double tileLength = 30.48;
 	private static final int minObjectDistance = 30;
 	private double[] currentPosition;
@@ -87,14 +87,24 @@ public class Navigation {
 		Delay.msDelay(500); // prevents the robot from reading a line after a rotate
 			
 		// moves the robot up the y-axis stops when the desired y-coordinate is reached
-		while (Math.abs(y - odometer.getY()) > epsilon) {
+		while (Math.abs(y - odometer.getY()) > epsilon) { //FIXME bug here that must be fixed, overshooting range will cause infinitite loop
 				
 			if (leftLight.getRawValue() < gridLineIntensity) { // checks if the left lightsensor has crossed a gridline, odometry correct if so
 				robot.stopLeftMotor();
+				long storedSystemTime = System.currentTimeMillis();
+				while (rightLight.getRawValue() > gridLineIntensity && (System.currentTimeMillis() - storedSystemTime) < 200) {
+					// do nothing
+				}
+				robot.stopRightMotor();
 				odometryCorrect();
 			}
 			if (rightLight.getRawValue() < gridLineIntensity) { // checks if the right lightsensor has crossed a gridline, odometry correct if so
 				robot.stopRightMotor();
+				long storedSystemTime = System.currentTimeMillis();
+				while(leftLight.getRawValue() > gridLineIntensity && (System.currentTimeMillis() - storedSystemTime) < 200) {
+					// do nothing
+				}
+				robot.stopLeftMotor();
 				odometryCorrect();
 			}
 			if (selectedSensor.getFilteredData() < minObjectDistance) { // checks for obstacle, stop robot and avoid if so
@@ -121,10 +131,20 @@ public class Navigation {
 			
 			if (leftLight.getRawValue() < gridLineIntensity) {
 				robot.stopLeftMotor();
+				long storedSystemTime = System.currentTimeMillis();
+				while (rightLight.getRawValue() > gridLineIntensity && (System.currentTimeMillis() - storedSystemTime) < 200) {
+					// do nothing
+				}
+				robot.stopRightMotor();
 				odometryCorrect();
 			}
 			if (rightLight.getRawValue() < gridLineIntensity) {
 				robot.stopRightMotor();
+				long storedSystemTime = System.currentTimeMillis();
+				while(leftLight.getRawValue() > gridLineIntensity && (System.currentTimeMillis() - storedSystemTime) < 200) {
+					// do nothing
+				}
+				robot.stopLeftMotor();
 				odometryCorrect();
 			}
 			if (selectedSensor.getFilteredData() < minObjectDistance) {
@@ -246,6 +266,7 @@ public class Navigation {
 		// TODO: May need to deal with an object here... we shall see
 			
 		// moves the robot forward one tile, will not odometryCorrect at this point
+		robot.setForwardSpeed(forwardSpeed);
 		robot.moveForwardDistance(tileLength);
 			
 		// moves the robot to the original heading
