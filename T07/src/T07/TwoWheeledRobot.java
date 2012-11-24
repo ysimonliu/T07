@@ -16,12 +16,14 @@ public class TwoWheeledRobot {
 	
 	public TwoWheeledRobot(NXTRegulatedMotor leftMotor,
 						   NXTRegulatedMotor rightMotor,
+						   NXTRegulatedMotor lightSensorMotor,
 						   UltrasonicSensor middleUSSensor,
 						   LightSensor leftLS,
 						   LightSensor rightLS,
 						   CommunicationController communicationController) {
 		this.leftMotor = leftMotor;
 		this.rightMotor = rightMotor;
+		this.lightSensorMotor = lightSensorMotor;
 		this.leftLS = leftLS;
 		this.rightLS = rightLS;
 		this.middleUSSensor = middleUSSensor;

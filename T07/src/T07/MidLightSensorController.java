@@ -32,14 +32,15 @@ public class MidLightSensorController {
 			maxReadingOffsetAngle = 0;
 			// manually set initial position to straight ahead
 			lsMotor.setSpeed(LIGHT_SENSOR_ROTATION_SPEED);
-			// turn motor to the start position (-45 degree)
+			// turn motor to the start position
 			lsMotor.rotateTo(-SWIPE_ANGLE, false);
-			// now start swiping
+			// now start swiping to 45 degree
 			lsMotor.rotateTo(SWIPE_ANGLE, true);
 			while (lsMotor.isMoving()){
 				if ((currentReading = robot.getMidLightSensorReading()) > maxReading){
 					maxReading = currentReading;
-					maxReadingOffsetAngle = robot.lightSensorMotor.getTachoCount();
+					// the angle is the opposite sign with the tacho count because the motor is upside down
+					maxReadingOffsetAngle = -robot.lightSensorMotor.getTachoCount();
 				}
 			}
 			// return to straight ahead position

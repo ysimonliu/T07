@@ -12,6 +12,7 @@ public class DPM {
 	public enum LSensor {LEFT, RIGHT};
 	static private final NXTRegulatedMotor LEFT_MOTOR = Motor.A; // TODO: Will need to sort out the motor configurations with master/slave brick communications
 	static private final NXTRegulatedMotor RIGHT_MOTOR = Motor.B;
+	static private final NXTRegulatedMotor LIGHT_SENSOR_MOTOR = Motor.C;
 	static private final LightSensor LEFT_LIGHT_SENSOR = new LightSensor(SensorPort.S1);
 	static private final LightSensor RIGHT_LIGHT_SENSOR = new LightSensor(SensorPort.S2);
 	static private final UltrasonicSensor MIDDLE_ULTRASONIC_SENSOR = new UltrasonicSensor(SensorPort.S3);
@@ -23,7 +24,7 @@ public class DPM {
 		// establish connection
 		CommunicationController communicationController = new CommunicationController(communicationServer);
 		// Instantiate classes of all basic components
-		TwoWheeledRobot robot = new TwoWheeledRobot(LEFT_MOTOR, RIGHT_MOTOR, MIDDLE_ULTRASONIC_SENSOR, LEFT_LIGHT_SENSOR, RIGHT_LIGHT_SENSOR, communicationController);
+		TwoWheeledRobot robot = new TwoWheeledRobot(LEFT_MOTOR, RIGHT_MOTOR, LIGHT_SENSOR_MOTOR, MIDDLE_ULTRASONIC_SENSOR, LEFT_LIGHT_SENSOR, RIGHT_LIGHT_SENSOR, communicationController);
 		Odometer odo = new Odometer(robot);
 		USPoller usPoller = new USPoller(robot);
 		LightPoller lp1 = new LightPoller(robot, LSensor.LEFT);
@@ -45,13 +46,12 @@ public class DPM {
 		//OdometryCorrection correct = new OdometryCorrection (odo, lp1, lp2);
 		//correct.start();
 		
-		
-		navi.travelTo(60, 60);
+		/*navi.travelTo(60, 60);
 		navi.travelTo(0, 0);
 		navi.travelTo(60,0);
 		navi.travelTo(60,60);
 		navi.travelTo(0, 0);
-		
+		*/
 		
 		// localize
 		//localize(odo, navi, usPoller, lp1, lp2);
