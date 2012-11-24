@@ -2,7 +2,6 @@ package T07;
 
 import lejos.nxt.*;
 import lejos.nxt.comm.RConsole;
-import lejos.util.Delay;
 
 
 public class Navigation {
@@ -85,7 +84,6 @@ public class Navigation {
 		}
 			
 		robot.setForwardSpeed(forwardSpeed);
-		Delay.msDelay(500); // prevents the robot from reading a line after a rotate
 			
 		// moves the robot up the y-axis stops when the desired y-coordinate is reached
 		while (Math.abs(y - odometer.getY()) > epsilon) { //FIXME bug here that must be fixed, overshooting range will cause infinitite loop
@@ -125,7 +123,6 @@ public class Navigation {
 		}
 			
 		robot.setForwardSpeed(forwardSpeed);
-		Delay.msDelay(500); // prevents the robot from reading a line after a rotate
 			
 		// moves the robot up the x-axis stops when the desired x-coordinate is reached
 		while (Math.abs(x - odometer.getX()) > epsilon) {
@@ -252,8 +249,6 @@ public class Navigation {
 			
 		// starts the robot moving again, will continue the navigation
 		robot.setForwardSpeed(forwardSpeed);
-			
-		Delay.msDelay(500); // allows the robot's light sensors to get off the line and prevent false readings
 	}
 		
 	// method that avoids an approaching object, this is hardcoded
