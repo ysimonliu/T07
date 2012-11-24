@@ -48,6 +48,11 @@ public class TwoWheeledRobot {
 		communicationController.sendLowerLift();
 	}
 	
+	// read values from the slave brick
+	public int getMidLightSensorReading(){
+		return communicationController.getMidLightSensorValue();
+	}
+	
 	// accessors
 	public CommunicationController getCommunicationController(){
 		return this.communicationController;
