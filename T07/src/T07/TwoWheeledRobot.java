@@ -169,7 +169,7 @@ public class TwoWheeledRobot {
 	}
 	
 	public void slowLeftMotorSpeed(){
-		setLeftMotorSpeed(2);
+		setLeftMotorSpeed(30);
 	}
 	
 	// method that stops the rightmotor only
@@ -181,7 +181,7 @@ public class TwoWheeledRobot {
 	}
 	
 	public void slowRightMotorSpeed(){
-		setRightMotorSpeed(2);
+		setRightMotorSpeed(30);
 	}
 	
 	/**

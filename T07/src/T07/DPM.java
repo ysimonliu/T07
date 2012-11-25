@@ -29,8 +29,7 @@ public class DPM {
 		USPoller usPoller = new USPoller(robot);
 		LightPoller lp1 = new LightPoller(robot, LSensor.LEFT);
 		LightPoller lp2 = new LightPoller(robot, LSensor.RIGHT);
-		OdometryCorrection odometryCorrection = new OdometryCorrection(robot, odometer, lp1, lp2);
-		Navigation navigation = new Navigation(robot, odometer, usPoller, odometryCorrection);
+		Navigation navigation = new Navigation(robot, odometer, usPoller, lp1, lp2);
 		MidLightSensorController midLightSensor = new MidLightSensorController(robot);
 		// connect to bluetooth for debug
 		RConsole.openBluetooth(20000);
