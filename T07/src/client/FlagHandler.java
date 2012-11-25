@@ -2,7 +2,7 @@ package client;
 
 import lejos.nxt.LCD;
 import lejos.nxt.NXTRegulatedMotor;
-import T07.Navigation;
+import T07.Navigation2;
 import T07.Odometer;
 import T07.TwoWheeledRobot;
 import T07.USPoller;

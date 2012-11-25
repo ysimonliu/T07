@@ -25,12 +25,16 @@ public class DPM {
 		CommunicationController communicationController = new CommunicationController(communicationServer);
 		// Instantiate classes of all basic components
 		TwoWheeledRobot robot = new TwoWheeledRobot(LEFT_MOTOR, RIGHT_MOTOR, LIGHT_SENSOR_MOTOR, MIDDLE_ULTRASONIC_SENSOR, LEFT_LIGHT_SENSOR, RIGHT_LIGHT_SENSOR, communicationController);
-		Odometer odo = new Odometer(robot);
+		Odometer odometer = new Odometer(robot);
 		USPoller usPoller = new USPoller(robot);
 		LightPoller lp1 = new LightPoller(robot, LSensor.LEFT);
 		LightPoller lp2 = new LightPoller(robot, LSensor.RIGHT);
-		Navigation navi = new Navigation(odo, usPoller, lp1, lp2);
+		OdometryCorrection odometryCorrection = new OdometryCorrection(robot, odometer, lp1, lp2);
+		Navigation navigation = new Navigation(robot, odometer, usPoller, odometryCorrection);
 		MidLightSensorController midLightSensor = new MidLightSensorController(robot);
+		// connect to bluetooth for debug
+		RConsole.openBluetooth(20000);
+		RConsole.println("Connected!");
 		
 		//start to get connection with Bluetooth server provided by TA
 		//BTReceiver btReceiver = new BTReceiver();
@@ -40,22 +44,20 @@ public class DPM {
 		
 
 		// start the LCD display
-		startLCDDisplay(odo, usPoller, communicationController, lp2, lp2);
+		startLCDDisplay(odometer, usPoller, communicationController, lp2, lp2);
 		
-		//OdometryCorrection correct = new OdometryCorrection (odo, lp1, lp2);
+		
+		//OdometryCorrection correct = new OdometryCorrection (odometer, lp1, lp2);
 		//correct.start();
 		
-		
-		
-		/*navi.travelTo(60, 60);
-		navi.travelTo(0, 0);
-		navi.travelTo(60,0);
-		navi.travelTo(60,60);
-		navi.travelTo(0, 0);
-		*/
-		
 		// localize
-		//localize(odo, navi, usPoller, lp1, lp2);
+		//localize(odometer, navigation, usPoller, lp1, lp2);
+
+		navigation.travelTo(60.96, 60.96);
+		navigation.travelTo(0, 0);
+		navigation.travelTo(60.96, 0);
+		navigation.travelTo(60.96, 60.96);
+		navigation.travelTo(0, 0);
 		
 		// once the escape button is pressed, the robot will exit
 		while (Button.waitForAnyPress() != Button.ID_ESCAPE);
@@ -67,7 +69,7 @@ public class DPM {
 		lcd.timedOut();
 	}
 
-	private static void localize(Odometer odo, Navigation navi, USPoller usPoller, LightPoller lp1, LightPoller lp2){
+	private static void localize(Odometer odo, Navigation2 navi, USPoller usPoller, LightPoller lp1, LightPoller lp2){
 		USLocalizer usLocalizer = new USLocalizer(odo, navi, usPoller);		
 		LightLocalizer lightLocalizer = new LightLocalizer(odo, lp1, lp2, navi); 
 		// performs us and light localization subroutines

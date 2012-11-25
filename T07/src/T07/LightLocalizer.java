@@ -11,13 +11,13 @@ public class LightLocalizer{
 	private TwoWheeledRobot robot;
 	private LightPoller leftLight;
 	private LightPoller rightLight;
-	private Navigation navigation;
+	private Navigation2 navigation;
 	public static double ROTATION_SPEED = 3, FORWARD_SPEED = 3;
 	// the intensity of the grid line on the tile, to avoid using magic numbers
 	private static int gridLineIntensity = 460;
 	
 	// constructor
-	public LightLocalizer(Odometer odo, LightPoller leftLight, LightPoller rightLight, Navigation navi) {
+	public LightLocalizer(Odometer odo, LightPoller leftLight, LightPoller rightLight, Navigation2 navi) {
 		this.odo = odo;
 		this.robot = odo.getTwoWheeledRobot();
 		this.leftLight = leftLight;

@@ -7,6 +7,7 @@ public class TwoWheeledRobot {
 	public static final double DEFAULT_LEFT_RADIUS = 2.68;
 	public static final double DEFAULT_RIGHT_RADIUS = 2.68;
 	public static final double DEFAULT_WIDTH = 16.2;
+	private static final int DEFAULT_FORWARD_SPEED = 6, DEFAULT_ROTATION_SPEED = 18;
 	public NXTRegulatedMotor leftMotor, rightMotor, lightSensorMotor;
 	public UltrasonicSensor middleUSSensor, rightUSSensor;
 	public LightSensor leftLS, rightLS, middleLS;
@@ -86,9 +87,17 @@ public class TwoWheeledRobot {
 		setSpeeds(forwardSpeed, 0);
 	}
 	
+	public void setForwardSpeed(){
+		setForwardSpeed(DEFAULT_FORWARD_SPEED);
+	}
+	
 	public void setRotationSpeed(double speed) {
 		rotationSpeed = speed;
 		setSpeeds(0, rotationSpeed);
+	}
+	
+	public void setRotationSpeed() {
+		setRotationSpeed(DEFAULT_ROTATION_SPEED);
 	}
 	
 	public void setSpeeds(double forwardSpeed, double rotationalSpeed) {
@@ -155,9 +164,24 @@ public class TwoWheeledRobot {
 		leftMotor.stop(true);
 	}
 	
+	public void setLeftMotorSpeed(int speed) {
+		leftMotor.setSpeed(speed);
+	}
+	
+	public void slowLeftMotorSpeed(){
+		setLeftMotorSpeed(2);
+	}
+	
 	// method that stops the rightmotor only
 	public void stopRightMotor () {
 		rightMotor.stop(true);
+	}
+	public void setRightMotorSpeed(int speed) {
+		rightMotor.setSpeed(speed);
+	}
+	
+	public void slowRightMotorSpeed(){
+		setRightMotorSpeed(2);
 	}
 	
 	/**

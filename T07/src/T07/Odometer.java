@@ -8,7 +8,7 @@ public class Odometer implements TimerListener {
 	public static final int DEFAULT_PERIOD = 25;
 	private TwoWheeledRobot robot;
 	private Timer odometerTimer;
-	private Navigation nav;
+	private Navigation2 nav;
 	private Object lock;
 	private double x, y, theta;
 	private double [] oldDH, dDH;
