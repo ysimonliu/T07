@@ -23,7 +23,7 @@ public class Searcher {
 	private int startY;
 	private int[][] field  = new int[12][12]; // will store field information for use by the searcher algorithm
 	private int lightBeaconThreshold = 50; // minimum light value that exits the searching algorithm and moves robot towards the light source (will be close)
-	private int lightBeaconMaxValue; // light value that is detected when in front of the beacon (will be calibrated)
+	private int lightBeaconMaxValue = 600; // light value that is detected when in front of the beacon (will be calibrated)
 	private int desiredBeaconDistance = 20; // distance that is desired from beacon to grabbing arm
 	private static final double tileLength = 30.48;
 	
