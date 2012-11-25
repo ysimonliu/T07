@@ -1,7 +1,7 @@
 package T07;
 
 import lejos.nxt.*;
-import lejos.nxt.comm.RConsole;
+import lejos.util.Delay;
 
 
 public class Navigation {
@@ -9,12 +9,12 @@ public class Navigation {
 	private Odometer odometer;
 	private TwoWheeledRobot robot;
 	private double epsilon = 2.0, thetaEpsilon = 2.0;
-	private boolean isTurning = false;
+	private boolean  isTurning = false;
 	private double forwardSpeed = 6, rotationSpeed = 18;
 	private USPoller selectedSensor;
 	private LightPoller leftLight;
 	private LightPoller rightLight;
-	private static int secondDirevativeThreshold = 100;
+	private static int gridLineIntensity = 460;
 	private static final double tileLength = 30.48;
 	private static final int minObjectDistance = 30;
 	private long storedSystemTime;
@@ -84,23 +84,24 @@ public class Navigation {
 		}
 			
 		robot.setForwardSpeed(forwardSpeed);
+		Delay.msDelay(500); // prevents the robot from reading a line after a rotate
 			
 		// moves the robot up the y-axis stops when the desired y-coordinate is reached
 		while (Math.abs(y - odometer.getY()) > epsilon) { //FIXME bug here that must be fixed, overshooting range will cause infinitite loop
 				
-			if (leftLight.getSecondOrderDerivative() < secondDirevativeThreshold) { // checks if the left lightsensor has crossed a gridline, odometry correct if so
+			if (leftLight.getRawValue() < gridLineIntensity) { // checks if the left lightsensor has crossed a gridline, odometry correct if so
 				robot.stopLeftMotor();
 				storedSystemTime = System.currentTimeMillis();
-				while (rightLight.getSecondOrderDerivative() > secondDirevativeThreshold && (System.currentTimeMillis() - storedSystemTime) < 200) {
+				while (rightLight.getRawValue() > gridLineIntensity && (System.currentTimeMillis() - storedSystemTime) < 200) {
 					// do nothing
 				}
 				robot.stopRightMotor();
 				odometryCorrect();
 			}
-			if (rightLight.getSecondOrderDerivative() < secondDirevativeThreshold) { // checks if the right lightsensor has crossed a gridline, odometry correct if so
+			if (rightLight.getRawValue() < gridLineIntensity) { // checks if the right lightsensor has crossed a gridline, odometry correct if so
 				robot.stopRightMotor();
 				storedSystemTime = System.currentTimeMillis();
-				while(leftLight.getSecondOrderDerivative() > secondDirevativeThreshold && (System.currentTimeMillis() - storedSystemTime) < 200) {
+				while(leftLight.getRawValue() > gridLineIntensity && (System.currentTimeMillis() - storedSystemTime) < 200) {
 					// do nothing
 				}
 				robot.stopLeftMotor();
@@ -123,23 +124,24 @@ public class Navigation {
 		}
 			
 		robot.setForwardSpeed(forwardSpeed);
+		Delay.msDelay(500); // prevents the robot from reading a line after a rotate
 			
 		// moves the robot up the x-axis stops when the desired x-coordinate is reached
 		while (Math.abs(x - odometer.getX()) > epsilon) {
 			
-			if (leftLight.getSecondOrderDerivative() < secondDirevativeThreshold) {
+			if (leftLight.getRawValue() < gridLineIntensity) {
 				robot.stopLeftMotor();
 				storedSystemTime = System.currentTimeMillis();
-				while (rightLight.getSecondOrderDerivative() > secondDirevativeThreshold && (System.currentTimeMillis() - storedSystemTime) < 200) {
+				while (rightLight.getRawValue() > gridLineIntensity && (System.currentTimeMillis() - storedSystemTime) < 200) {
 					// do nothing
 				}
 				robot.stopRightMotor();
 				odometryCorrect();
 			}
-			if (rightLight.getSecondOrderDerivative() < secondDirevativeThreshold) {
+			if (rightLight.getRawValue() < gridLineIntensity) {
 				robot.stopRightMotor();
 				storedSystemTime = System.currentTimeMillis();
-				while(leftLight.getSecondOrderDerivative() > secondDirevativeThreshold && (System.currentTimeMillis() - storedSystemTime) < 200) {
+				while(leftLight.getRawValue() > gridLineIntensity && (System.currentTimeMillis() - storedSystemTime) < 200) {
 					// do nothing
 				}
 				robot.stopLeftMotor();
@@ -200,11 +202,11 @@ public class Navigation {
 			
 		// check for lines on the field, will stop the robot on the line it is crossing, taken from localization
 		while (robot.leftMotorMoving() || robot.rightMotorMoving()) {
-			if (leftLight.getSecondOrderDerivative() < secondDirevativeThreshold) {
+			if (leftLight.getRawValue() < gridLineIntensity) {
 				Sound.beep();
 				robot.stopLeftMotor();
 			}
-			if (rightLight.getSecondOrderDerivative() < secondDirevativeThreshold) {
+			if (rightLight.getRawValue() < gridLineIntensity) {
 				Sound.beep();
 				robot.stopRightMotor();
 			}
@@ -249,6 +251,8 @@ public class Navigation {
 			
 		// starts the robot moving again, will continue the navigation
 		robot.setForwardSpeed(forwardSpeed);
+			
+		Delay.msDelay(500); // allows the robot's light sensors to get off the line and prevent false readings
 	}
 		
 	// method that avoids an approaching object, this is hardcoded
