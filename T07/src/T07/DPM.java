@@ -41,6 +41,8 @@ public class DPM {
 
 		// start the LCD display
 		startLCDDisplay(odo, usPoller, communicationController, lp2, lp2);
+		Searcher search = new Searcher(odo, navi, lp1, usPoller, midLightSensor, 1, 1);
+		search.findBeacon(1);
 		
 		//OdometryCorrection correct = new OdometryCorrection (odo, lp1, lp2);
 		//correct.start();
