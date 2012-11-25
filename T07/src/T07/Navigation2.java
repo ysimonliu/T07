@@ -14,7 +14,7 @@ public class Navigation2 {
 	private USPoller selectedSensor;
 	private LightPoller leftLight;
 	private LightPoller rightLight;
-	private static int gridLineIntensity = 460;
+	private static int GRID_LINE_THRESHOLD = 50;
 	private static final double tileLength = 30.48;
 	private static final int minObjectDistance = 30;
 	private long storedSystemTime;
@@ -75,11 +75,18 @@ public class Navigation2 {
 	public void travelTo(double x, double y) {
 			
 		// Moves the robot in a square, first up along the y axis, and second up along the x axis
-			
+		int checkX1 = 0;
+		int checkX2 = 0;
+		int checkY1 = 0;
+		int checkY2 = 0;
 		// makes sure that the robot turns to the correct heading
 		if (y - odometer.getY() < 0) {
+			checkY1 = -1;
+			checkY2 = 1;
 			turnTo(180);
 		} else {
+			checkY1 = 1;
+			checkY2 = -1;
 			turnTo(0);
 		}
 			
@@ -87,21 +94,21 @@ public class Navigation2 {
 		Delay.msDelay(500); // prevents the robot from reading a line after a rotate
 			
 		// moves the robot up the y-axis stops when the desired y-coordinate is reached
-		while (Math.abs(y - odometer.getY()) > epsilon) { //FIXME bug here that must be fixed, overshooting range will cause infinitite loop
+		while ((checkY1*y) + (checkY2*odometer.getY()) > epsilon) {
 				
-			if (leftLight.getRawValue() < gridLineIntensity) { // checks if the left lightsensor has crossed a gridline, odometry correct if so
+			if (leftLight.getSecondOrderDerivative() > GRID_LINE_THRESHOLD) { // checks if the left lightsensor has crossed a gridline, odometry correct if so
 				robot.stopLeftMotor();
-				storedSystemTime = System.currentTimeMillis();
-				while (rightLight.getRawValue() > gridLineIntensity && (System.currentTimeMillis() - storedSystemTime) < 200) {
+				storedSystemTime = System.currentTimeMillis(); // protection against missing a gridline
+				while (rightLight.getSecondOrderDerivative() < GRID_LINE_THRESHOLD && (System.currentTimeMillis() - storedSystemTime) < 200) {
 					// do nothing
 				}
 				robot.stopRightMotor();
 				odometryCorrect();
 			}
-			if (rightLight.getRawValue() < gridLineIntensity) { // checks if the right lightsensor has crossed a gridline, odometry correct if so
+			if (rightLight.getSecondOrderDerivative() > GRID_LINE_THRESHOLD) { // checks if the right lightsensor has crossed a gridline, odometry correct if so
 				robot.stopRightMotor();
-				storedSystemTime = System.currentTimeMillis();
-				while(leftLight.getRawValue() > gridLineIntensity && (System.currentTimeMillis() - storedSystemTime) < 200) {
+				storedSystemTime = System.currentTimeMillis(); // protection against missing a gridline
+				while(leftLight.getSecondOrderDerivative() < GRID_LINE_THRESHOLD && (System.currentTimeMillis() - storedSystemTime) < 200) {
 					// do nothing
 				}
 				robot.stopLeftMotor();
@@ -118,8 +125,12 @@ public class Navigation2 {
 			
 		// makes sure that the robot turns to the correct heading
 		if (x - odometer.getX() < 0) {
+			checkX1 = -1;
+			checkX2 = 1;
 			turnTo(270);
 		} else {
+			checkX1 = 1;
+			checkX2 = -1;
 			turnTo(90);
 		}
 			
@@ -127,21 +138,21 @@ public class Navigation2 {
 		Delay.msDelay(500); // prevents the robot from reading a line after a rotate
 			
 		// moves the robot up the x-axis stops when the desired x-coordinate is reached
-		while (Math.abs(x - odometer.getX()) > epsilon) {
+		while ((checkX1*x) + (checkX2*odometer.getX()) > epsilon) {
 			
-			if (leftLight.getRawValue() < gridLineIntensity) {
+			if (leftLight.getSecondOrderDerivative() > GRID_LINE_THRESHOLD) { // if left light poller detects a gridline stop
 				robot.stopLeftMotor();
-				storedSystemTime = System.currentTimeMillis();
-				while (rightLight.getRawValue() > gridLineIntensity && (System.currentTimeMillis() - storedSystemTime) < 200) {
+				storedSystemTime = System.currentTimeMillis(); // protection against missing a gridline
+				while (rightLight.getSecondOrderDerivative() < GRID_LINE_THRESHOLD && (System.currentTimeMillis() - storedSystemTime) < 200) {
 					// do nothing
 				}
 				robot.stopRightMotor();
 				odometryCorrect();
 			}
-			if (rightLight.getRawValue() < gridLineIntensity) {
+			if (rightLight.getSecondOrderDerivative() > GRID_LINE_THRESHOLD) { // if right light poller detects a gridline stop
 				robot.stopRightMotor();
-				storedSystemTime = System.currentTimeMillis();
-				while(leftLight.getRawValue() > gridLineIntensity && (System.currentTimeMillis() - storedSystemTime) < 200) {
+				storedSystemTime = System.currentTimeMillis(); // protection against missing a gridline
+				while(leftLight.getSecondOrderDerivative() < GRID_LINE_THRESHOLD && (System.currentTimeMillis() - storedSystemTime) < 200) {
 					// do nothing
 				}
 				robot.stopLeftMotor();
@@ -189,7 +200,7 @@ public class Navigation2 {
 		}
 		// stop the robot
 		robot.stop();
-		//robot.rotate(fixingAngle);
+		// robot.rotate(fixingAngle);
 		// change the status of the flag
 		isTurning = false;
 	}
@@ -202,11 +213,11 @@ public class Navigation2 {
 			
 		// check for lines on the field, will stop the robot on the line it is crossing, taken from localization
 		while (robot.leftMotorMoving() || robot.rightMotorMoving()) {
-			if (leftLight.getRawValue() < gridLineIntensity) {
+			if (leftLight.getSecondOrderDerivative() > GRID_LINE_THRESHOLD) {
 				Sound.beep();
 				robot.stopLeftMotor();
 			}
-			if (rightLight.getRawValue() < gridLineIntensity) {
+			if (rightLight.getSecondOrderDerivative() > GRID_LINE_THRESHOLD) {
 				Sound.beep();
 				robot.stopRightMotor();
 			}

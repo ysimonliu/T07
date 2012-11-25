@@ -29,12 +29,12 @@ public class DPM {
 		USPoller usPoller = new USPoller(robot);
 		LightPoller lp1 = new LightPoller(robot, LSensor.LEFT);
 		LightPoller lp2 = new LightPoller(robot, LSensor.RIGHT);
-		Navigation navigation = new Navigation(robot, odometer, usPoller, lp1, lp2);
+		Navigation2 navigation = new Navigation2(odometer, usPoller, lp1, lp2);
 		MidLightSensorController midLightSensor = new MidLightSensorController(robot);
 		// connect to bluetooth for debug
-		RConsole.openBluetooth(20000);
-		Sound.twoBeeps();
-		RConsole.println("Connected!");
+		//RConsole.openBluetooth(20000);
+		//Sound.twoBeeps();
+		//RConsole.println("Connected!");
 		
 		//start to get connection with Bluetooth server provided by TA
 		//BTReceiver btReceiver = new BTReceiver();
@@ -46,6 +46,7 @@ public class DPM {
 		// start the LCD display
 		startLCDDisplay(odometer, usPoller, communicationController, lp2, lp2);
 		
+		//Searcher search = new Searcher()
 		
 		//OdometryCorrection correct = new OdometryCorrection (odometer, lp1, lp2);
 		//correct.start();
@@ -53,11 +54,13 @@ public class DPM {
 		// localize
 		//localize(odometer, navigation, usPoller, lp1, lp2);
 
+		
 		navigation.travelTo(60.96, 60.96);
 		navigation.travelTo(0, 0);
 		navigation.travelTo(60.96, 0);
 		navigation.travelTo(60.96, 60.96);
 		navigation.travelTo(0, 0);
+		
 		
 		// once the escape button is pressed, the robot will exit
 		while (Button.waitForAnyPress() != Button.ID_ESCAPE);

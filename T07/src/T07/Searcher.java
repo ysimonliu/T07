@@ -13,14 +13,11 @@ public class Searcher {
 	private Odometer odometer;
 	private Navigation2 navigation;
 	private TwoWheeledRobot robot;
-	private LightPoller middleLight;
 	private USPoller middlePoller;
 	private MidLightSensorController midLightSensor;
-	private int startX;
 	private static final int TILE_UNSEARCHED = 0;
 	private static final int TILE_SEARCHED = 1;
 	private static final int TILE_OBJECT = 2;
-	private int startY;
 	private int[][] field  = new int[12][12]; // will store field information for use by the searcher algorithm
 	private int lightBeaconThreshold = 50; // minimum light value that exits the searching algorithm and moves robot towards the light source (will be close)
 	private int lightBeaconMaxValue = 600; // light value that is detected when in front of the beacon (will be calibrated)
@@ -28,13 +25,9 @@ public class Searcher {
 	private static final double tileLength = 30.48;
 	
 	//Constructor
-	public Searcher(Odometer odometer, Navigation2 navigation, LightPoller middleLight, USPoller middlePoller,
-			MidLightSensorController midLightSensor, int startX, int startY) {
+	public Searcher(Odometer odometer, Navigation2 navigation, USPoller middlePoller, MidLightSensorController midLightSensor) {
 		this.odometer = odometer;
 		this.navigation = navigation;
-		this.middleLight = middleLight;
-		this.startX = startX;
-		this.startY = startY;
 		this.middlePoller = middlePoller;
 		this.robot = odometer.getTwoWheeledRobot();
 		this.midLightSensor = midLightSensor;
@@ -151,7 +144,7 @@ public class Searcher {
 			
 			//check the left position
 			if (position[0]-1 != -1) { // protects against array out of bounds
-				if (field[position[0]-1][position[1]] == TILE_SEARCHED) { // protects against searched or object
+				if (field[position[0]-1][position[1]] == TILE_UNSEARCHED) { // protects against searched or object
 					navigation.turnTo(270); // turns to the bottom block to check light values
 					lightSensor = midLightSensor.findMaxReading();
 					if (lightSensor > maxLightValue) {
