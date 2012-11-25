@@ -16,7 +16,7 @@ public class LightPoller implements TimerListener{
 	private int previousValue = 0;
 	private int previousFirstOrderDerivative = 0;
 	private Timer lightPollerTimer;
-	private final int DEFAULT_PERIOD_ULTRASONIC = 60; // Period for which the timerlistener will sleep (Adjust if necessary)
+	private final int DEFAULT_PERIOD_ULTRASONIC = 25; // Period for which the timerlistener will sleep (Adjust if necessary)
 	private LightSensor ls;
 	private TwoWheeledRobot robot;
 

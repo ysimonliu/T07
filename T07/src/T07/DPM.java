@@ -33,6 +33,7 @@ public class DPM {
 		MidLightSensorController midLightSensor = new MidLightSensorController(robot);
 		// connect to bluetooth for debug
 		RConsole.openBluetooth(20000);
+		Sound.twoBeeps();
 		RConsole.println("Connected!");
 		
 		//start to get connection with Bluetooth server provided by TA

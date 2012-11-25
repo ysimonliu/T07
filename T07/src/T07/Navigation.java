@@ -12,12 +12,14 @@ public class Navigation {
 	private Odometer odometer;
 	private USPoller usPoller;
 	private double turningAngle;
-	private static final double THETA_EPSILON = 0.8, EPSILON = 0.5,	TILE_LENGTH = 30.48;
-	private static final int ROTATION_SPEED = 10, THETA_P_X = 90, THETA_P_Y = 0, THETA_N_X = 270, THETA_N_Y = 180;
-	private static final int OBSTACLE_DISTANCE = 20, GRID_LINE_THRESHOLD = 100, THETA_TOLERANCE = 20;
+	private static final double THETA_EPSILON = 0.8, EPSILON = 1,	TILE_LENGTH = 30.48;
+	private static final int ROTATION_SPEED = 15, THETA_P_X = 90, THETA_P_Y = 0, THETA_N_X = 270, THETA_N_Y = 180;
+	private static final int OBSTACLE_DISTANCE = 20, GRID_LINE_THRESHOLD = 50, THETA_TOLERANCE = 20;
 	private static double currentTheta;
 	private static double[] currentPosition;
 	private static boolean[] changeValue;
+	
+	private static double currentX;
 	
 	public Navigation(TwoWheeledRobot robot, Odometer odometer, USPoller usPoller, LightPoller leftLP, LightPoller rightLP){
 		this.odometer = odometer;
@@ -42,12 +44,13 @@ public class Navigation {
 			turnTo(THETA_N_X);
 		}
 		robot.setForwardSpeed();
-		Delay.msDelay(300); // prevents the robot from reading a line after a rotate
-		while(Math.abs(x - odometer.getX()) > EPSILON) {
+		Delay.msDelay(500); // prevents the robot from reading a line after a rotate
+		while(Math.abs(x - (currentX = odometer.getX())) > EPSILON) {
+			RConsole.println("our current X position is " + currentX);
 			if (usPoller.getFilteredData() < OBSTACLE_DISTANCE) {
 				avoidObstacle();
 			}
-			if (leftLP.getSecondOrderDerivative() > GRID_LINE_THRESHOLD || rightLP.getSecondOrderDerivative() < GRID_LINE_THRESHOLD) {
+			if (leftLP.getSecondOrderDerivative() > GRID_LINE_THRESHOLD || rightLP.getSecondOrderDerivative() > GRID_LINE_THRESHOLD) {
 				correctOdometer();
 			}
 		}
@@ -55,19 +58,20 @@ public class Navigation {
 	}
 	
 	private void travelAlongYTo(double y) {
-		if (y - odometer.getX() > 0) {
+		RConsole.println("DEBUG: I'm now travelling along Y");
+		if (y - odometer.getY() > 0) {
 			turnTo(THETA_P_Y);
 		}
 		else {
 			turnTo(THETA_N_Y);
 		}
 		robot.setForwardSpeed();
-		Delay.msDelay(300); // prevents the robot from reading a line after a rotate
+		Delay.msDelay(500); // prevents the robot from reading a line after a rotate
 		while(Math.abs(y - odometer.getY()) > EPSILON) {
 			if (usPoller.getFilteredData() < OBSTACLE_DISTANCE) {
 				avoidObstacle();
 			}
-			if (leftLP.getSecondOrderDerivative() > GRID_LINE_THRESHOLD || rightLP.getSecondOrderDerivative() < GRID_LINE_THRESHOLD) {
+			if (leftLP.getSecondOrderDerivative() > GRID_LINE_THRESHOLD || rightLP.getSecondOrderDerivative() > GRID_LINE_THRESHOLD) {
 				correctOdometer();
 			}
 		}
@@ -75,19 +79,21 @@ public class Navigation {
 	}
 
 	public void turnTo(double angle) {
+		// first stop the robot in motion
+		robot.stop();
 		// indicate that now is turning
 		isTurning = true;
 		angle = normalizeAngle(angle);
 		turningAngle = normalizeAngle(angle - odometer.getTheta());
+		RConsole.println("DEBUG: I'm now turning to " + turningAngle);
 		// turning the minimal angle and wait until reached the angle
 		if (turningAngle < 180) {
 			robot.setRotationSpeed(ROTATION_SPEED);
-			while(odometer.getTheta() - angle > THETA_EPSILON);
 		}
 		else {
 			robot.setRotationSpeed(-ROTATION_SPEED);
-			while(angle - odometer.getTheta() > THETA_EPSILON);
 		}
+		while(Math.abs(angle - odometer.getTheta()) > THETA_EPSILON);
 		// then stop the robot
 		robot.stop();
 		isTurning = false;
@@ -131,13 +137,15 @@ public class Navigation {
 	
 	private void correctOdometer() {
 		
-		while (robot.leftMotorMoving() || robot.rightMotorMoving() ) {
-			if (leftLP.getSecondOrderDerivative() > GRID_LINE_THRESHOLD) {
+		while (robot.leftMotor.isMoving() || robot.rightMotor.isMoving()) {
+			//RConsole.println("left light sensor reading " + leftLP.getSecondOrderDerivative());
+			//RConsole.println("left motor is moving? " + robot.leftMotor.isMoving());
+			if (leftLP.getSecondOrderDerivative() > GRID_LINE_THRESHOLD && robot.leftMotor.isMoving()) {
 				Sound.beep();
 				robot.stopLeftMotor();
 				//robot.slowRightMotorSpeed();
 			}
-			if (rightLP.getSecondOrderDerivative() > GRID_LINE_THRESHOLD) {
+			if (rightLP.getSecondOrderDerivative() > GRID_LINE_THRESHOLD && robot.rightMotor.isMoving()) {
 				Sound.beep();
 				robot.stopRightMotor();
 				//robot.slowLeftMotorSpeed();
@@ -183,5 +191,6 @@ public class Navigation {
 					
 				// starts the robot moving again, will continue the navigation
 				robot.setForwardSpeed();
+				RConsole.println("Change X to " + currentPosition[0] + " and Y to " + currentPosition[1] + " and heading to " + currentPosition[2]);
 	}
 }
