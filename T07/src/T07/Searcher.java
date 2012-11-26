@@ -49,7 +49,7 @@ public class Searcher {
 			field[position[0]][position[1]] = TILE_SEARCHED; // sets the (1,1) tile to searched
 			
 			// moves the robot to the center of (1,1)
-			navigation.travelTo(odometer.getX() + tileLength/2, odometer.getY() + tileLength/2);
+			navigation.travelTo(odometer.getX() + tileLength/2, odometer.getY() + tileLength/2,false);
 			navigation.turnTo(0);
 		} else if (corner == 2) {
 			position[0] = 1;
@@ -60,7 +60,7 @@ public class Searcher {
 			field[position[0]][position[1]] = TILE_SEARCHED; // sets the (1,10) tile to searched
 			
 			// moves the robot to the center of (1,1)
-			navigation.travelTo(odometer.getX() + tileLength/2, odometer.getY() - tileLength/2);
+			navigation.travelTo(odometer.getX() + tileLength/2, odometer.getY() - tileLength/2,false);
 			navigation.turnTo(0);
 		} else if (corner == 3) {
 			position[0] = 10;
@@ -71,7 +71,7 @@ public class Searcher {
 			field[position[0]][position[1]] = TILE_SEARCHED; // sets the (1,1) tile to searched
 			
 			// moves the robot to the center of (1,1)
-			navigation.travelTo(odometer.getX() - tileLength/2, odometer.getY() - tileLength/2);
+			navigation.travelTo(odometer.getX() - tileLength/2, odometer.getY() - tileLength/2,false);
 			navigation.turnTo(0);
 		} else if (corner == 4) {
 			position[0] = 10;
@@ -82,7 +82,7 @@ public class Searcher {
 			field[position[0]][position[1]] = TILE_SEARCHED; // sets the (10,1) tile to searched
 			
 			// moves the robot to the center of (1,1)
-			navigation.travelTo(odometer.getX() - tileLength/2, odometer.getY() + tileLength/2);
+			navigation.travelTo(odometer.getX() - tileLength/2, odometer.getY() + tileLength/2,false);
 			navigation.turnTo(0);
 		} 
 		
@@ -160,16 +160,16 @@ public class Searcher {
 			}
 			
 			if (block == 1) { // move to top tile
-				navigation.travelTo(tileLength*position[0]+(tileLength/2), tileLength*(position[0]+1)+ (tileLength/2));
+				navigation.travelTo(tileLength*(position[0]-1)+(tileLength/2), tileLength*(position[1])+ (tileLength/2),false);
 				position[1] = position[1]+1;
 			} else if (block == 2) { // move to the right tile
-				navigation.travelTo(tileLength*(position[0]+1)+(tileLength/2), tileLength*position[0]+ (tileLength/2));
+				navigation.travelTo(tileLength*(position[0])+(tileLength/2), tileLength*(position[1]-1)+ (tileLength/2), false);
 				position[0] = position[0]+1;
 			} else if (block == 3) { // move to the bottom tile 
-				navigation.travelTo(tileLength*position[0]+(tileLength/2), tileLength*(position[0]-1)+ (tileLength/2));
+				navigation.travelTo(tileLength*(position[0]-1)+(tileLength/2), tileLength*(position[1]-2)+ (tileLength/2), false);
 				position[1] = position[1]-1;
 			} else if (block == 4) { // move to the left tile
-				navigation.travelTo(tileLength*(position[0]-1)+(tileLength/2), tileLength*position[0]+ (tileLength/2));
+				navigation.travelTo(tileLength*(position[0]-2)+(tileLength/2), tileLength*(position[1]-1)+ (tileLength/2), false);
 				position[0] = position[0]-1;
 			}
 		}		

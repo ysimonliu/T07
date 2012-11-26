@@ -46,21 +46,21 @@ public class DPM {
 		// start the LCD display
 		startLCDDisplay(odometer, usPoller, communicationController, lp2, lp2);
 		
-		//Searcher search = new Searcher()
-		
+		Searcher search = new Searcher(odometer, navigation, usPoller, midLightSensor);
+		search.findBeacon(1);
 		//OdometryCorrection correct = new OdometryCorrection (odometer, lp1, lp2);
 		//correct.start();
 		
 		// localize
 		//localize(odometer, navigation, usPoller, lp1, lp2);
 
-		
+		/*
 		navigation.travelTo(60.96, 60.96);
 		navigation.travelTo(0, 0);
 		navigation.travelTo(60.96, 0);
 		navigation.travelTo(60.96, 60.96);
 		navigation.travelTo(0, 0);
-		
+		*/
 		
 		// once the escape button is pressed, the robot will exit
 		while (Button.waitForAnyPress() != Button.ID_ESCAPE);

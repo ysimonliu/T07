@@ -71,8 +71,9 @@ public class Navigation2 {
 	public void travelForward() {
 		robot.setForwardSpeed(forwardSpeed);	
 	}
-		
-	public void travelTo(double x, double y) {
+	
+	// moves robot to a point, also needs to be told if it should avoid obstacles
+	public void travelTo(double x, double y, boolean avoidObstacle) {
 			
 		// Moves the robot in a square, first up along the y axis, and second up along the x axis
 		int checkX1 = 0;
@@ -114,7 +115,7 @@ public class Navigation2 {
 				robot.stopLeftMotor();
 				odometryCorrect();
 			}
-			if (selectedSensor.getFilteredData() < minObjectDistance) { // checks for obstacle, stop robot and avoid if so
+			if (selectedSensor.getFilteredData() < minObjectDistance && avoidObstacle) { // checks for obstacle, stop robot and avoid if so
 				robot.stop();
 				avoidBlock();
 			}
@@ -158,7 +159,7 @@ public class Navigation2 {
 				robot.stopLeftMotor();
 				odometryCorrect();
 			}
-			if (selectedSensor.getFilteredData() < minObjectDistance) {
+			if (selectedSensor.getFilteredData() < minObjectDistance && avoidObstacle) {
 				robot.stop();
 				avoidBlock();
 			}

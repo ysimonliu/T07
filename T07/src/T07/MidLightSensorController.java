@@ -10,7 +10,7 @@ public class MidLightSensorController {
 		private static double maxReadingOffsetAngle = 0;
 		private final static int SWIPE_RANGE = 90;
 		private final static int SWIPE_ANGLE = SWIPE_RANGE / 2;
-		private final static int LIGHT_SENSOR_ROTATION_SPEED = 20;
+		private final static int LIGHT_SENSOR_ROTATION_SPEED = 50;
 		
 		/**
 		 * constructor for this class light sensor controller

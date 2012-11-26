@@ -24,7 +24,7 @@ public class Hider {
 		double Y = odometer.getY();
 		//find a close wall and place the flag against it
 		if(X>=Y){
-			navigation.travelTo(fieldLength/2,fieldLength/2);
+			navigation.travelTo(fieldLength/2,fieldLength/2,true);
 			//drop the flag
 			robot.openClaw();
 			navigation.travelForwardX(smallDistance);
@@ -32,7 +32,7 @@ public class Hider {
 			
 		}
 		else{
-			navigation.travelTo(0,fieldLength/2);
+			navigation.travelTo(0,fieldLength/2,true);
 			robot.openClaw();
 			navigation.travelForwardX(-smallDistance);
 			navigation.travelForwardX(smallDistance);
@@ -48,24 +48,24 @@ public class Hider {
 		double currentY = odometer.getY();
 		if(currentX>=currentY){
 			if(currentX<=fieldLength/2){
-				navigation.travelTo(0, 0);
+				navigation.travelTo(0, 0,true);
 			}
 			if(currentY>=fieldLength/2){
-				navigation.travelTo(fieldLength,fieldLength);
+				navigation.travelTo(fieldLength,fieldLength,true);
 			}
 			else{
-				navigation.travelTo(fieldLength,0);
+				navigation.travelTo(fieldLength,0,true);
 			}
 		}
 		else{
 			if(currentY<=fieldLength/2){
-				navigation.travelTo(0,0);
+				navigation.travelTo(0,0,true);
 			}
 			if(currentX>=fieldLength/2){
-				navigation.travelTo(fieldLength,fieldLength);
+				navigation.travelTo(fieldLength,fieldLength,true);
 			}
 			else{
-				navigation.travelTo(fieldLength,0);
+				navigation.travelTo(fieldLength,0,true);
 			}
 		}
 		robot.stop();
