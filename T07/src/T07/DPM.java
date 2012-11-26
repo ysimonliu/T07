@@ -55,12 +55,13 @@ public class DPM {
 		//localize(odometer, navigation, usPoller, lp1, lp2);
 
 		/*
-		navigation.travelTo(60.96, 60.96);
-		navigation.travelTo(0, 0);
-		navigation.travelTo(60.96, 0);
-		navigation.travelTo(60.96, 60.96);
-		navigation.travelTo(0, 0);
+		navigation.travelTo(60.96, 60.96, true);
+		navigation.travelTo(0, 0, true);
+		navigation.travelTo(60.96, 0, true);
+		navigation.travelTo(60.96, 60.96, true);
+		navigation.travelTo(0, 0, true);
 		*/
+		
 		
 		// once the escape button is pressed, the robot will exit
 		while (Button.waitForAnyPress() != Button.ID_ESCAPE);

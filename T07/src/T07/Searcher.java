@@ -96,12 +96,13 @@ public class Searcher {
 				if (field[position[0]][position[1]+1] == TILE_UNSEARCHED) { // protects against searched or object
 					navigation.turnTo(0); // turns to the top block to check light values
 					lightSensor = midLightSensor.findMaxReading();
-					if (lightSensor > maxLightValue) {
+					
+					if (middlePoller.getFilteredData() <30) {
+						field[position[0]][position[1]+1] = TILE_OBJECT;
+					} else if (lightSensor > maxLightValue) {
 						block = 1;
 						maxLightValue = lightSensor;
 						field[position[0]][position[1]+1] = TILE_SEARCHED;
-					} else if (middlePoller.getFilteredData() <30) {
-						field[position[0]][position[1]+1] = TILE_OBJECT;
 					} else {
 						field[position[0]][position[1]+1] = TILE_SEARCHED;
 					}
@@ -113,12 +114,13 @@ public class Searcher {
 				if (field[position[0]+1][position[1]] == TILE_UNSEARCHED) { // protects against searched or object
 					navigation.turnTo(90); // turns to the right block to check light values
 					lightSensor = midLightSensor.findMaxReading();
-					if (lightSensor > maxLightValue) {
+					
+					if (middlePoller.getFilteredData() <30) {
+						field[position[0]+1][position[1]] = TILE_OBJECT;
+					} else if (lightSensor > maxLightValue) {
 						block = 2;
 						maxLightValue = lightSensor;
 						field[position[0]+1][position[1]] = TILE_SEARCHED;
-					} else if (middlePoller.getFilteredData() <30) {
-						field[position[0]+1][position[1]] = TILE_OBJECT;
 					} else {
 						field[position[0]+1][position[1]] = TILE_SEARCHED;
 					}
@@ -130,12 +132,13 @@ public class Searcher {
 				if (field[position[0]][position[1]-1] == TILE_UNSEARCHED ) { // protects against searched or object
 					navigation.turnTo(180); // turns to the bottom block to check light values
 					lightSensor = midLightSensor.findMaxReading();
-					if (lightSensor > maxLightValue) {
+					
+					if (middlePoller.getFilteredData() <30) {
+						field[position[0]][position[1]-1] = TILE_OBJECT;
+					} else if (lightSensor > maxLightValue) {
 						block = 3;
 						maxLightValue = lightSensor;
-						field[position[0]][position[1]-1] = TILE_SEARCHED;
-					} else if (middlePoller.getFilteredData() <30) {
-						field[position[0]][position[1]-1] = TILE_OBJECT;
+						field[position[0]][position[1]-1] = TILE_SEARCHED;	
 					} else {
 						field[position[0]][position[1]-1] = TILE_SEARCHED;
 					}
@@ -147,12 +150,13 @@ public class Searcher {
 				if (field[position[0]-1][position[1]] == TILE_UNSEARCHED) { // protects against searched or object
 					navigation.turnTo(270); // turns to the bottom block to check light values
 					lightSensor = midLightSensor.findMaxReading();
-					if (lightSensor > maxLightValue) {
+					
+					if (middlePoller.getFilteredData() <30) {
+						field[position[0]-1][position[1]] = TILE_OBJECT;
+					} else if (lightSensor > maxLightValue) {
 						block = 4;
 						maxLightValue = lightSensor;
 						field[position[0]-1][position[1]] = TILE_SEARCHED;
-					} else if (middlePoller.getFilteredData() <30) {
-						field[position[0]-1][position[1]] = TILE_OBJECT;
 					} else {
 						field[position[0]-1][position[1]] = TILE_SEARCHED;
 					}
