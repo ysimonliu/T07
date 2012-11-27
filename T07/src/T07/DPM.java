@@ -126,7 +126,7 @@ public class DPM {
 			search.positionAndGrabBeacon();
 			
 			// hider
-			Hider hider = new Hider(odometer, navigation);
+			Hider hider = new Hider(odometer, navigation, usPoller);
 			
 			// flag handler (drop)
 			search.dropBeacon();

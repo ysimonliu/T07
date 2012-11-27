@@ -35,6 +35,16 @@ public class TwoWheeledRobot {
 	}
 	
 	// control the slave brick to perform tasks
+	public void pickUpFromGround() {
+		closeClaw();
+		liftClaw();
+	}
+	
+	public void placeOntoGround() {
+		lowerClaw();
+		openClaw();
+	}
+	
 	public void closeClaw() {
 		communicationController.sendCloseClaw();
 	}
@@ -54,6 +64,11 @@ public class TwoWheeledRobot {
 	// read values from the slave brick
 	public int getMidLightSensorReading(){
 		return communicationController.getMidLightSensorValue();
+	}
+	
+	public void resetTachoCountBothWheels() {
+		leftMotor.resetTachoCount();
+		rightMotor.resetTachoCount();
 	}
 	
 	// accessors

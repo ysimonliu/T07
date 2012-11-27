@@ -7,50 +7,51 @@ public class Hider {
 	private Odometer odometer;
 	private Navigation2 navigation;
 	private TwoWheeledRobot robot;
-	private double fieldLength = 304.8;
+	private USPoller usPoller;
+	private double fieldLength = 30.48 * 11;
 	private double smallDistance = 15;
 	
 	
 	//Constructor
-	public Hider(Odometer odometer, Navigation2 navigation) {
+	public Hider(Odometer odometer, Navigation2 navigation, USPoller usPoller) {
 		this.odometer = odometer;
 		this.navigation = navigation;
+		this.usPoller = usPoller;
 		this.robot = odometer.getTwoWheeledRobot();
+	}
+	
+	public void pickUpDefender(int x, int y) {
+		navigation.travelTo(x * 30.48, y*30.48, true);
+		navigation.turnTo(45);
+		robot.pickUpFromGround();
 	}
 	
 	// method that focuses on hiding the flag, may need a second method for just placing the flag
 	public void hide() {
-		double X = odometer.getX();
-		double Y = odometer.getY();
-		//find a close wall and place the flag against it
-		if(X>=Y){
-			navigation.travelTo(fieldLength/2,fieldLength/2,true);
-			//drop the flag
-			robot.openClaw();
-			navigation.travelForwardX(smallDistance);
-			navigation.travelForwardX(-smallDistance);
-			
-		}
-		else{
-			navigation.travelTo(0,fieldLength/2,true);
-			robot.openClaw();
-			navigation.travelForwardX(-smallDistance);
-			navigation.travelForwardX(smallDistance);
-		}
-		
-		this.offField();
+		// get robot to travel forward
+		robot.setForwardSpeed();
+		// until ultrasonic reading is less than 17
+		while(usPoller.getFilteredData() > 17);
+		robot.stop();
+		// travel another 8cm using the get displacement because the ultrasonic sensor don't work in a close range
+		robot.resetTachoCountBothWheels();
+		while (robot.getDisplacement() < 8);
+		robot.stop();
+		// place down the beacon
+		robot.placeOntoGround();
+		// exit the field
+		exitField();
 		Sound.twoBeeps();
 	}
 	
-	//getting off the field after dropping the flag, this method will find the closest corner
-	public void offField(){
+	public void exitField(){
 		double currentX = odometer.getX();
 		double currentY = odometer.getY();
-		if(currentX>=currentY){
-			if(currentX<=fieldLength/2){
+		if(currentX >= currentY){
+			if(currentX <= fieldLength/2){
 				navigation.travelTo(0, 0,true);
 			}
-			if(currentY>=fieldLength/2){
+			if(currentY >= fieldLength/2){
 				navigation.travelTo(fieldLength,fieldLength,true);
 			}
 			else{
@@ -58,10 +59,10 @@ public class Hider {
 			}
 		}
 		else{
-			if(currentY<=fieldLength/2){
+			if(currentY <= fieldLength/2){
 				navigation.travelTo(0,0,true);
 			}
-			if(currentX>=fieldLength/2){
+			if(currentX >= fieldLength/2){
 				navigation.travelTo(fieldLength,fieldLength,true);
 			}
 			else{
