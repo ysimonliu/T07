@@ -39,7 +39,7 @@ public class DPM {
 		//RConsole.openBluetooth(20000);
 		//Sound.twoBeeps();
 		//RConsole.println("Connected!");
-		/*
+		
 		//start to get connection with Bluetooth server provided by TA
 		BTReceiver btReceiver = new BTReceiver();
 		startCorner = btReceiver.getCorner(); // this gets the start corner for use by the searcher and the localizer
@@ -62,23 +62,18 @@ public class DPM {
 		}
 		
 		switch(role) {
-		case ATTACKER:
-			intRole = 0;
-			break;
-		case DEFENDER:
-			intRole = 1;
-			break;
-		}
+		case ATTACKER:{
 		
-		// Attacker role
-		if (intRole == 0) {
+			try {
+				Thread.sleep(30000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			
 			// gets the destination point for the flag
 			int dropX = btReceiver.getDx();
 			int dropY = btReceiver.getDy();
-			
-			// main menu
-			menu();	
 
 			// start the LCD display
 			startLCDDisplay(odometer, usPoller, communicationController, lp2, lp2);
@@ -102,15 +97,14 @@ public class DPM {
 			// navigate to end point (corner)
 			navigation.travelTo(0, 0, true);
 			
+			break;
+			}
 		// Defender role	
-		} else if (intRole == 1) {
+		case DEFENDER:{
 			
 			// gets the flag point
 			int flagX = btReceiver.getFx();
 			int flagY = btReceiver.getFy();
-			
-			// main menu
-			menu();	
 
 			// start the LCD display
 			startLCDDisplay(odometer, usPoller, communicationController, lp2, lp2);
@@ -121,44 +115,14 @@ public class DPM {
 			// navigate to flag
 			navigation.travelTo(flagX, flagY, true);
 			
-			// flag handler (pickup)
-			Searcher search = new Searcher(odometer, navigation, usPoller, midLightSensor);
-			search.positionAndGrabBeacon();
-			
 			// hider
 			Hider hider = new Hider(odometer, navigation, usPoller);
-			
-			// flag handler (drop)
-			search.dropBeacon();
-			
-			// navigate to end point
-			navigation.travelTo(0, 0, true);
+			hider.pickUpDefender(flagX, flagY);
+			hider.hide();
+			hider.exitField();
+			break;
+			}
 		}
-		*/
-		// main menu
-		menu();	
-
-		// start the LCD display
-		startLCDDisplay(odometer, usPoller, communicationController, lp2, lp2);
-		
-		Searcher search = new Searcher(odometer, navigation, usPoller, midLightSensor);
-		search.findBeacon(1);
-		search.positionAndGrabBeacon();
-		//OdometryCorrection correct = new OdometryCorrection (odometer, lp1, lp2);
-		//correct.start();
-		
-		// localize
-		//localize(odometer, navigation, usPoller, lp1, lp2);
-
-		/*
-		navigation.travelTo(60.96, 60.96, true);
-		navigation.travelTo(0, 0, true);
-		navigation.travelTo(60.96, 0, true);
-		navigation.travelTo(60.96, 60.96, true);
-		navigation.travelTo(0, 0, true);
-		*/
-		
-		
 		// once the escape button is pressed, the robot will exit
 		while (Button.waitForAnyPress() != Button.ID_ESCAPE);
 		System.exit(0);
