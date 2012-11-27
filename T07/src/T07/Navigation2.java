@@ -288,3 +288,13 @@ public class Navigation2 {
 	}
 
 }
+
+
+/*
+Lightvalues = > 420 --> Block away, stop search
+			  >	700 --> directly in front
+Distance =	  < 7 ---> block in front
+
+
+
+*/

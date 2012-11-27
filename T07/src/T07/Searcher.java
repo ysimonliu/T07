@@ -19,8 +19,7 @@ public class Searcher {
 	private static final int TILE_SEARCHED = 1;
 	private static final int TILE_OBJECT = 2;
 	private int[][] field  = new int[12][12]; // will store field information for use by the searcher algorithm
-	private int lightBeaconThreshold = 50; // minimum light value that exits the searching algorithm and moves robot towards the light source (will be close)
-	private int lightBeaconMaxValue = 600; // light value that is detected when in front of the beacon (will be calibrated)
+	private int lightBeaconThreshold = 420; // light value that is detected when in front of the beacon (will be calibrated)
 	private int desiredBeaconDistance = 20; // distance that is desired from beacon to grabbing arm
 	private static final double tileLength = 30.48;
 	
@@ -86,7 +85,7 @@ public class Searcher {
 			navigation.turnTo(0);
 		} 
 		
-		while (lightBeaconMaxValue > lightSensor) { // will repeat until beacon found
+		while (lightBeaconThreshold > robot.getMidLightSensorReading()) { // will repeat until beacon found
 			int maxLightValue = 0;
 			lightSensor = 0;
 			int block = 0; // declares which block to move to, 1 == top, 2 == right, 3 == bottom, 4 == left

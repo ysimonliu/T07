@@ -4,18 +4,22 @@ package T07;
 import lejos.nxt.*;
 import lejos.nxt.comm.RConsole;
 import lejos.util.Delay;
-//import bluetooth.*; //TODO: some error here, fix when required
+import bluetooth.*;
 
 public class DPM {
 	
 	public enum USSensor {MIDDLE, RIGHT};
 	public enum LSensor {LEFT, RIGHT};
-	static private final NXTRegulatedMotor LEFT_MOTOR = Motor.A; // TODO: Will need to sort out the motor configurations with master/slave brick communications
+	static private final NXTRegulatedMotor LEFT_MOTOR = Motor.A; 
 	static private final NXTRegulatedMotor RIGHT_MOTOR = Motor.B;
 	static private final NXTRegulatedMotor LIGHT_SENSOR_MOTOR = Motor.C;
 	static private final LightSensor LEFT_LIGHT_SENSOR = new LightSensor(SensorPort.S1);
 	static private final LightSensor RIGHT_LIGHT_SENSOR = new LightSensor(SensorPort.S2);
 	static private final UltrasonicSensor MIDDLE_ULTRASONIC_SENSOR = new UltrasonicSensor(SensorPort.S3);
+	private static StartCorner startCorner; // to determine the start corner of the robot
+	private static PlayerRole role;
+	private static int corner = 1;
+	private static int intRole; // 0 means attacker, 1 means defender
 	
 	public static void main(String[] args){
 		
@@ -37,17 +41,102 @@ public class DPM {
 		//RConsole.println("Connected!");
 		
 		//start to get connection with Bluetooth server provided by TA
-		//BTReceiver btReceiver = new BTReceiver();
+		BTReceiver btReceiver = new BTReceiver();
+		startCorner = btReceiver.getCorner(); // this gets the start corner for use by the searcher and the localizer
+		role = btReceiver.getRole();
+
+		// switch that gets the starting corner and sets it as an int, for use by the 
+		switch(startCorner) {
+		case BOTTOM_LEFT:
+			corner = 1;
+			break;
+		case TOP_LEFT:
+			corner = 2;
+			break;
+		case TOP_RIGHT:
+			corner = 3;
+			break;
+		case BOTTOM_RIGHT:
+			corner = 4;
+			break;
+		}
+		
+		switch(role) {
+		case ATTACKER:
+			intRole = 0;
+			break;
+		case DEFENDER:
+			intRole = 1;
+			break;
+		}
+		
+		// Attacker role
+		if (intRole == 0) {
+			
+			// gets the destination point for the flag
+			int dropX = btReceiver.getDx();
+			int dropY = btReceiver.getDy();
+			
+			// main menu
+			menu();	
+
+			// start the LCD display
+			startLCDDisplay(odometer, usPoller, communicationController, lp2, lp2);
+			
+			// localize
+			localize(odometer, navigation, usPoller, lp1, lp2, corner);
+			
+			// search
+			Searcher search = new Searcher(odometer, navigation, usPoller, midLightSensor);
+			search.findBeacon(corner);
+			
+			// flaghandler (pickup)
+			
+			// navigate to drop off point
+			navigation.travelTo(dropX, dropY, true);
+			
+			// flaghandler (drop)
+			
+			// navigate to end point (corner)
+			navigation.travelTo(0, 0, true);
+			
+		// Defender role	
+		} else if (intRole == 1) {
+			
+			// gets the flag point
+			int flagX = btReceiver.getFx();
+			int flagY = btReceiver.getFy();
+			
+			// main menu
+			menu();	
+
+			// start the LCD display
+			startLCDDisplay(odometer, usPoller, communicationController, lp2, lp2);
+			
+			// localize
+			localize(odometer, navigation, usPoller, lp1, lp2, corner);
+			
+			// navigate to flag
+			navigation.travelTo(flagX, flagY, true);
+			
+			// flag handler (pickup)
+			
+			// hider
+			
+			// flag handler (drop)
+			
+			// navigate to end point
+			navigation.travelTo(0, 0, true);
+		}
 		
 		// main menu
-		menu();
-		
+		menu();	
 
 		// start the LCD display
 		startLCDDisplay(odometer, usPoller, communicationController, lp2, lp2);
 		
-		Searcher search = new Searcher(odometer, navigation, usPoller, midLightSensor);
-		search.findBeacon(1);
+		//Searcher search = new Searcher(odometer, navigation, usPoller, midLightSensor);
+		//search.findBeacon(1);
 		//OdometryCorrection correct = new OdometryCorrection (odometer, lp1, lp2);
 		//correct.start();
 		
@@ -73,12 +162,12 @@ public class DPM {
 		lcd.timedOut();
 	}
 
-	private static void localize(Odometer odo, Navigation2 navi, USPoller usPoller, LightPoller lp1, LightPoller lp2){
+	private static void localize(Odometer odo, Navigation2 navi, USPoller usPoller, LightPoller lp1, LightPoller lp2, int corner){
 		USLocalizer usLocalizer = new USLocalizer(odo, navi, usPoller);		
 		LightLocalizer lightLocalizer = new LightLocalizer(odo, lp1, lp2, navi); 
 		// performs us and light localization subroutines
 		usLocalizer.doLocalization();
-		lightLocalizer.doLocalization();
+		lightLocalizer.doLocalization(corner);
 	}
 	
 	private static void menu() {
