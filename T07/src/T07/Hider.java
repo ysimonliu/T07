@@ -12,10 +12,10 @@ public class Hider {
 	
 	
 	//Constructor
-	public Hider(Odometer odometer, Navigation2 navigation, TwoWheeledRobot robot) {
+	public Hider(Odometer odometer, Navigation2 navigation) {
 		this.odometer = odometer;
 		this.navigation = navigation;
-		this.robot = robot;
+		this.robot = odometer.getTwoWheeledRobot();
 	}
 	
 	// method that focuses on hiding the flag, may need a second method for just placing the flag

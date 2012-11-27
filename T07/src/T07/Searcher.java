@@ -194,4 +194,10 @@ public class Searcher {
 		robot.closeClaw();
 		robot.liftClaw();
 	}
+	
+	// drops the beacon
+	public void dropBeacon() {
+		robot.lowerClaw(); //TODO, check that the claw doesn't just drop the beacon
+		robot.openClaw();
+	}
 }

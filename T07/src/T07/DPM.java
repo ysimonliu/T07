@@ -91,11 +91,13 @@ public class DPM {
 			search.findBeacon(corner);
 			
 			// flaghandler (pickup)
+			search.positionAndGrabBeacon();
 			
 			// navigate to drop off point
 			navigation.travelTo(dropX, dropY, true);
 			
 			// flaghandler (drop)
+			search.dropBeacon();
 			
 			// navigate to end point (corner)
 			navigation.travelTo(0, 0, true);
@@ -120,10 +122,14 @@ public class DPM {
 			navigation.travelTo(flagX, flagY, true);
 			
 			// flag handler (pickup)
+			Searcher search = new Searcher(odometer, navigation, usPoller, midLightSensor);
+			search.positionAndGrabBeacon();
 			
 			// hider
+			Hider hider = new Hider(odometer, navigation);
 			
 			// flag handler (drop)
+			search.dropBeacon();
 			
 			// navigate to end point
 			navigation.travelTo(0, 0, true);
