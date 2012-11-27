@@ -8,7 +8,7 @@ public class Navigation2 {
 	// initialize all variables, both class and instance variables
 	private Odometer odometer;
 	private TwoWheeledRobot robot;
-	private double epsilon = 2.0, thetaEpsilon = 2.0;
+	private double epsilon = 0.5, thetaEpsilon = 2.0;
 	private boolean  isTurning = false;
 	private double forwardSpeed = 6, rotationSpeed = 18;
 	private USPoller selectedSensor;

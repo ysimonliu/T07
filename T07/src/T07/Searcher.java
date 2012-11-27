@@ -15,12 +15,14 @@ public class Searcher {
 	private TwoWheeledRobot robot;
 	private USPoller middlePoller;
 	private MidLightSensorController midLightSensor;
+	private double forwardSpeed = 5;
 	private static final int TILE_UNSEARCHED = 0;
 	private static final int TILE_SEARCHED = 1;
 	private static final int TILE_OBJECT = 2;
 	private int[][] field  = new int[12][12]; // will store field information for use by the searcher algorithm
-	private int lightBeaconThreshold = 420; // light value that is detected when in front of the beacon (will be calibrated)
-	private int desiredBeaconDistance = 20; // distance that is desired from beacon to grabbing arm
+	private int lightBeaconThreshold = 420; // light value that is detected when a tile away from the beacon
+	private int desiredBeaconDistance = 10; // distance that is desired from beacon to grabbing arm
+	private int lightBeaconHighValue = 610; // light value that is detected when in front of the beacon
 	private static final double tileLength = 30.48;
 	
 	//Constructor
@@ -176,5 +178,20 @@ public class Searcher {
 				position[0] = position[0]-1;
 			}
 		}		
+	}
+	
+	// positions and grabs beacon
+	public void positionAndGrabBeacon() {
+		
+		robot.setForwardSpeed(forwardSpeed);
+		
+		while (middlePoller.getFilteredData() > desiredBeaconDistance || robot.getMidLightSensorReading() < lightBeaconHighValue) {
+			// drive
+		}
+		
+		robot.stop();
+		
+		robot.closeClaw();
+		robot.liftClaw();
 	}
 }

@@ -39,7 +39,7 @@ public class DPM {
 		//RConsole.openBluetooth(20000);
 		//Sound.twoBeeps();
 		//RConsole.println("Connected!");
-		
+		/*
 		//start to get connection with Bluetooth server provided by TA
 		BTReceiver btReceiver = new BTReceiver();
 		startCorner = btReceiver.getCorner(); // this gets the start corner for use by the searcher and the localizer
@@ -128,15 +128,16 @@ public class DPM {
 			// navigate to end point
 			navigation.travelTo(0, 0, true);
 		}
-		
+		*/
 		// main menu
 		menu();	
 
 		// start the LCD display
 		startLCDDisplay(odometer, usPoller, communicationController, lp2, lp2);
 		
-		//Searcher search = new Searcher(odometer, navigation, usPoller, midLightSensor);
-		//search.findBeacon(1);
+		Searcher search = new Searcher(odometer, navigation, usPoller, midLightSensor);
+		search.findBeacon(1);
+		search.positionAndGrabBeacon();
 		//OdometryCorrection correct = new OdometryCorrection (odometer, lp1, lp2);
 		//correct.start();
 		
