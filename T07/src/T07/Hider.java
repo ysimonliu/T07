@@ -45,6 +45,8 @@ public class Hider {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		// travel back to the given coordinates
+		navigation.travelTo(x * 30.48, y * 30.48, true);
 	}
 	
 	// method that focuses on hiding the flag, may need a second method for just placing the flag
@@ -101,6 +103,7 @@ public class Hider {
 			}
 		}
 		robot.stop();
+		Sound.twoBeeps();
 	}
 
 }
