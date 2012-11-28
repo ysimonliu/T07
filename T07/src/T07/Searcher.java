@@ -15,11 +15,11 @@ public class Searcher {
 	private TwoWheeledRobot robot;
 	private USPoller middlePoller;
 	private MidLightSensorController midLightSensor;
-	private double forwardSpeed = 5;
+	private double forwardSpeed = 4;
 	private static final int TILE_UNSEARCHED = 0;
 	private static final int TILE_SEARCHED = 1;
 	private static final int TILE_OBJECT = 2;
-	private int[][] field  = new int[12][12]; // will store field information for use by the searcher algorithm
+	private int[][] field  = new int[10][10]; // will store field information for use by the searcher algorithm
 	private int lightBeaconThreshold = 420; // light value that is detected when a tile away from the beacon
 	private int desiredBeaconDistance = 10; // distance that is desired from beacon to grabbing arm
 	private int lightBeaconHighValue = 610; // light value that is detected when in front of the beacon
@@ -40,6 +40,7 @@ public class Searcher {
 		int lightSensor = 0;
 		int[] position = {0,0};
 		
+		/*
 		// this code will move the robot to the desired position on the field and sets the starting position of the field
 		if (corner == 1) { // TODO look at the convention for corner tiles
 			position[0] = 1;
@@ -85,7 +86,14 @@ public class Searcher {
 			// moves the robot to the center of (1,1)
 			navigation.travelTo(odometer.getX() - tileLength/2, odometer.getY() + tileLength/2,false);
 			navigation.turnTo(0);
-		} 
+		} 		
+		*/
+		
+		navigation.travelTo((4*tileLength) + (tileLength/2), (4*tileLength) + (tileLength/2), true); // travels to the center of the field and commences search from there
+		position[0] = 4;
+		position[1] = 4;
+		field[4][4] = TILE_SEARCHED;
+		
 		
 		while (lightBeaconThreshold > robot.getMidLightSensorReading()) { // will repeat until beacon found
 			int maxLightValue = 0;
@@ -93,11 +101,13 @@ public class Searcher {
 			int block = 0; // declares which block to move to, 1 == top, 2 == right, 3 == bottom, 4 == left
 			
 			//check top of position
-			if (position[1]+1 != 12) { // protects against array out of bounds
+			if (position[1]+1 != 10) { // protects against array out of bounds
 				if (field[position[0]][position[1]+1] == TILE_UNSEARCHED) { // protects against searched or object
 					navigation.turnTo(0); // turns to the top block to check light values
 					lightSensor = midLightSensor.findMaxReading();
-					
+					if (robot.getMidLightSensorReading() > lightBeaconThreshold) {
+						break;
+					}
 					if (middlePoller.getFilteredData() <30) {
 						field[position[0]][position[1]+1] = TILE_OBJECT;
 					} else if (lightSensor > maxLightValue) {
@@ -111,11 +121,13 @@ public class Searcher {
 			}
 			
 			//check right position
-			if (position[0]+1 != 12) { // protects against array out of bounds
+			if (position[0]+1 != 10) { // protects against array out of bounds
 				if (field[position[0]+1][position[1]] == TILE_UNSEARCHED) { // protects against searched or object
 					navigation.turnTo(90); // turns to the right block to check light values
 					lightSensor = midLightSensor.findMaxReading();
-					
+					if (robot.getMidLightSensorReading() > lightBeaconThreshold) {
+						break;
+					}
 					if (middlePoller.getFilteredData() <30) {
 						field[position[0]+1][position[1]] = TILE_OBJECT;
 					} else if (lightSensor > maxLightValue) {
@@ -133,7 +145,9 @@ public class Searcher {
 				if (field[position[0]][position[1]-1] == TILE_UNSEARCHED ) { // protects against searched or object
 					navigation.turnTo(180); // turns to the bottom block to check light values
 					lightSensor = midLightSensor.findMaxReading();
-					
+					if (robot.getMidLightSensorReading() > lightBeaconThreshold) {
+						break;
+					}
 					if (middlePoller.getFilteredData() <30) {
 						field[position[0]][position[1]-1] = TILE_OBJECT;
 					} else if (lightSensor > maxLightValue) {
@@ -151,7 +165,9 @@ public class Searcher {
 				if (field[position[0]-1][position[1]] == TILE_UNSEARCHED) { // protects against searched or object
 					navigation.turnTo(270); // turns to the bottom block to check light values
 					lightSensor = midLightSensor.findMaxReading();
-					
+					if (robot.getMidLightSensorReading() > lightBeaconThreshold) {
+						break;
+					}
 					if (middlePoller.getFilteredData() <30) {
 						field[position[0]-1][position[1]] = TILE_OBJECT;
 					} else if (lightSensor > maxLightValue) {

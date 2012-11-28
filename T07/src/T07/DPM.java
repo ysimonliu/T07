@@ -36,10 +36,10 @@ public class DPM {
 		Navigation2 navigation = new Navigation2(odometer, usPoller, lp1, lp2);
 		MidLightSensorController midLightSensor = new MidLightSensorController(robot);
 		// connect to bluetooth for debug
-		//RConsole.openBluetooth(20000);
-		//Sound.twoBeeps();
-		//RConsole.println("Connected!");
-		
+		RConsole.openBluetooth(20000);
+		Sound.twoBeeps();
+		RConsole.println("Connected!");
+		/*
 		//start to get connection with Bluetooth server provided by TA
 		BTReceiver btReceiver = new BTReceiver();
 		startCorner = btReceiver.getCorner(); // this gets the start corner for use by the searcher and the localizer
@@ -123,6 +123,8 @@ public class DPM {
 			break;
 			}
 		}
+		
+		*/
 		// once the escape button is pressed, the robot will exit
 		while (Button.waitForAnyPress() != Button.ID_ESCAPE);
 		System.exit(0);
