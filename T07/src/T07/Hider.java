@@ -20,34 +20,39 @@ public class Hider {
 	}
 	
 	public void pickUpDefender(int x, int y) {
-		navigation.travelTo((x - 1) * 30.48, (y - 1)*30.48, true);
+		navigation.travelTo((x - 1) * 30.48, y * 30.48, true);
 		robot.stop();
 		navigation.turnTo(45);
 		// position to in front of the beacon
-		positionToBeacon();
+		robot.resetTachoCountBothWheels();
+		robot.setForwardSpeed();
+		while (robot.getDisplacement() < 20);
+		robot.stop();
 		robot.pickUpFromGround();
 	}
 	
 	// method that focuses on hiding the flag, may need a second method for just placing the flag
 	public void hide() {
-		// get robot to travel forward
+		// get robot to travel forward until sees a obstacle in close range
 		robot.setForwardSpeed();
-		// position
-		positionToBeacon();
+		while(usPoller.getFilteredData() > 17);
+		robot.stop();
+		// travel towards the obstacle for another 8cm
+		robot.resetTachoCountBothWheels();
+		robot.setForwardSpeed();
+		while (robot.getDisplacement() > 8);
+		robot.stop();
 		// place down the beacon
 		robot.placeOntoGround();
+		Sound.twoBeeps();
+		// back off a bit
+		robot.resetTachoCountBothWheels();
+		robot.setBackwardSpeed();
+		while (Math.abs(robot.getDisplacement()) < 8);
+		robot.stop();
 		// exit the field
 		exitField();
 		Sound.twoBeeps();
-	}
-	
-	private void positionToBeacon() {
-		while(usPoller.getFilteredData() > 17);
-		robot.stop();
-		// travel another 8cm using the get displacement because the ultrasonic sensor don't work in a close range
-		robot.resetTachoCountBothWheels();
-		while (robot.getDisplacement() < 8);
-		robot.stop();
 	}
 	
 	public void exitField(){

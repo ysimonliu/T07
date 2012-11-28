@@ -93,8 +93,8 @@ public class DPM {
 		case DEFENDER:{
 			
 			// gets the flag point
-			int flagX = 3;//btReceiver.getFx();
-			int flagY = 7;//btReceiver.getFy();
+			int flagX = 1;//btReceiver.getFx();
+			int flagY = 1;//btReceiver.getFy();
 
 			// start the LCD display
 			startLCDDisplay(odometer, usPoller, communicationController, lp2, lp2);
