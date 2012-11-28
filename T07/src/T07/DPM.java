@@ -37,7 +37,6 @@ public class DPM {
 		Navigation2 navigation = new Navigation2(odometer, usPoller, lp1, lp2);
 		MidLightSensorController midLightSensor = new MidLightSensorController(robot);
 
-		setUpClawInitPos(robot);
 		//start to get connection with Bluetooth server provided by TA
 		//BTReceiver btReceiver = new BTReceiver();
 		startCorner = StartCorner.BOTTOM_LEFT;//btReceiver.getCorner(); // this gets the start corner for use by the searcher and the localizer
@@ -103,9 +102,6 @@ public class DPM {
 			// localize
 			localize(odometer, navigation, usPoller, lp1, lp2, corner);
 			
-			// navigate to flag
-			navigation.travelTo(flagX*tileLength, flagY*tileLength, true);
-			
 			// hider
 			Hider hider = new Hider(odometer, navigation, usPoller);
 			hider.pickUpDefender(flagX, flagY);
@@ -121,10 +117,6 @@ public class DPM {
 		System.exit(0);
 	}
 	
-	private static void setUpClawInitPos(TwoWheeledRobot robot) {
-		robot.openClaw();
-	}
-
 	private static void startLCDDisplay(Odometer odo, USPoller usPoller, CommunicationController communicationController, LightPoller lp1, LightPoller lp2) {
 		LCDInfo lcd = new LCDInfo(odo, usPoller, communicationController, lp1, lp2);
 		lcd.timedOut();

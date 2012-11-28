@@ -14,7 +14,7 @@ public class Navigation2 {
 	private USPoller selectedSensor;
 	private LightPoller leftLight;
 	private LightPoller rightLight;
-	private static int GRID_LINE_THRESHOLD = 50;
+	private static int GRID_LINE_THRESHOLD = 460;
 	private static final double tileLength = 30.48;
 	private static final int minObjectDistance = 30;
 	private long storedSystemTime;
@@ -97,19 +97,19 @@ public class Navigation2 {
 		// moves the robot up the y-axis stops when the desired y-coordinate is reached
 		while ((checkY1*y) + (checkY2*odometer.getY()) > epsilon) {
 				
-			if (leftLight.getSecondOrderDerivative() > GRID_LINE_THRESHOLD) { // checks if the left lightsensor has crossed a gridline, odometry correct if so
+			if (leftLight.getRawValue() < GRID_LINE_THRESHOLD) { // checks if the left lightsensor has crossed a gridline, odometry correct if so
 				robot.stopLeftMotor();
 				storedSystemTime = System.currentTimeMillis(); // protection against missing a gridline
-				while (rightLight.getSecondOrderDerivative() < GRID_LINE_THRESHOLD && (System.currentTimeMillis() - storedSystemTime) < 200) {
+				while (rightLight.getRawValue() > GRID_LINE_THRESHOLD && (System.currentTimeMillis() - storedSystemTime) < 200) {
 					// do nothing
 				}
 				robot.stopRightMotor();
 				odometryCorrect();
 			}
-			if (rightLight.getSecondOrderDerivative() > GRID_LINE_THRESHOLD) { // checks if the right lightsensor has crossed a gridline, odometry correct if so
+			if (rightLight.getRawValue() < GRID_LINE_THRESHOLD) { // checks if the right lightsensor has crossed a gridline, odometry correct if so
 				robot.stopRightMotor();
 				storedSystemTime = System.currentTimeMillis(); // protection against missing a gridline
-				while(leftLight.getSecondOrderDerivative() < GRID_LINE_THRESHOLD && (System.currentTimeMillis() - storedSystemTime) < 200) {
+				while(leftLight.getRawValue() > GRID_LINE_THRESHOLD && (System.currentTimeMillis() - storedSystemTime) < 200) {
 					// do nothing
 				}
 				robot.stopLeftMotor();
@@ -141,19 +141,19 @@ public class Navigation2 {
 		// moves the robot up the x-axis stops when the desired x-coordinate is reached
 		while ((checkX1*x) + (checkX2*odometer.getX()) > epsilon) {
 			
-			if (leftLight.getSecondOrderDerivative() > GRID_LINE_THRESHOLD) { // if left light poller detects a gridline stop
+			if (leftLight.getRawValue() < GRID_LINE_THRESHOLD) { // if left light poller detects a gridline stop
 				robot.stopLeftMotor();
 				storedSystemTime = System.currentTimeMillis(); // protection against missing a gridline
-				while (rightLight.getSecondOrderDerivative() < GRID_LINE_THRESHOLD && (System.currentTimeMillis() - storedSystemTime) < 200) {
+				while (rightLight.getRawValue() > GRID_LINE_THRESHOLD && (System.currentTimeMillis() - storedSystemTime) < 200) {
 					// do nothing
 				}
 				robot.stopRightMotor();
 				odometryCorrect();
 			}
-			if (rightLight.getSecondOrderDerivative() > GRID_LINE_THRESHOLD) { // if right light poller detects a gridline stop
+			if (rightLight.getRawValue() < GRID_LINE_THRESHOLD) { // if right light poller detects a gridline stop
 				robot.stopRightMotor();
 				storedSystemTime = System.currentTimeMillis(); // protection against missing a gridline
-				while(leftLight.getSecondOrderDerivative() < GRID_LINE_THRESHOLD && (System.currentTimeMillis() - storedSystemTime) < 200) {
+				while(leftLight.getRawValue() > GRID_LINE_THRESHOLD && (System.currentTimeMillis() - storedSystemTime) < 200) {
 					// do nothing
 				}
 				robot.stopLeftMotor();
@@ -214,11 +214,11 @@ public class Navigation2 {
 			
 		// check for lines on the field, will stop the robot on the line it is crossing, taken from localization
 		while (robot.leftMotorMoving() || robot.rightMotorMoving()) {
-			if (leftLight.getSecondOrderDerivative() > GRID_LINE_THRESHOLD) {
+			if (leftLight.getRawValue() < GRID_LINE_THRESHOLD) {
 				Sound.beep();
 				robot.stopLeftMotor();
 			}
-			if (rightLight.getSecondOrderDerivative() > GRID_LINE_THRESHOLD) {
+			if (rightLight.getRawValue() < GRID_LINE_THRESHOLD) {
 				Sound.beep();
 				robot.stopRightMotor();
 			}
