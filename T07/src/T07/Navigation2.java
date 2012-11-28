@@ -216,11 +216,9 @@ public class Navigation2 {
 		// check for lines on the field, will stop the robot on the line it is crossing, taken from localization
 		while (robot.leftMotorMoving() || robot.rightMotorMoving()) {
 			if (leftLight.getRawValue() < GRID_LINE_THRESHOLD) {
-				Sound.beep();
 				robot.stopLeftMotor();
 			}
 			if (rightLight.getRawValue() < GRID_LINE_THRESHOLD) {
-				Sound.beep();
 				robot.stopRightMotor();
 			}
 		}

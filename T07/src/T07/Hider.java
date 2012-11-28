@@ -22,49 +22,54 @@ public class Hider {
 	}
 	
 	public void pickUpDefender(int x, int y) {
-		navigation.travelTo(x * 30.48, y * 30.48, true);
+		navigation.travelTo(x * 30.48, (y - 1) * 30.48, true);
+		navigation.travelTo(x * 30.48, y * 30.48, false);
+		positionAndGrab();
+	}
+	
+	public void positionAndGrab() {
 		robot.stop();
 		navigation.turnTo(45);
 		// swipe to offset angles
 		navigation.turnTo(midLSController.findMaxAngle() + odometer.getTheta());
-		// approach the beacon
-		robot.setForwardSpeed();
-		while(usPoller.getFilteredData() > 15);
-		robot.stop();
 		// travel another 12 cm
 		robot.resetTachoCountBothWheels();
 		robot.setForwardSpeed();
-		while(robot.getDisplacement() < 12);
+		while(robot.getDisplacement() < 40);
 		robot.stop();
 		// now at position to pick up
 		robot.pickUpFromGround();
 		// wait until all actions complete
 		try {
-			Thread.sleep(6000);
+			Thread.sleep(20000);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		// travel back to the given coordinates
-		navigation.travelTo(x * 30.48, y * 30.48, true);
+		robot.stop();
 	}
-	
+
 	// method that focuses on hiding the flag, may need a second method for just placing the flag
 	public void hide() {
 		// get robot to travel forward until sees a obstacle in close range
 		robot.setForwardSpeed();
-		while(usPoller.getFilteredData() > 17);
+		while(usPoller.getFilteredData() > 30);
 		robot.stop();
 		// travel towards the obstacle for another 8cm
 		robot.resetTachoCountBothWheels();
 		robot.setForwardSpeed();
 		while (robot.getDisplacement() > 8);
 		robot.stop();
+		putDownAndGo();
+	}
+	
+	public void putDownAndGo() {
+		robot.stop();
 		// place down the beacon
 		robot.placeOntoGround();
 		// wait until all actions complete
 		try {
-			Thread.sleep(6000);
+			Thread.sleep(25000);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -73,37 +78,8 @@ public class Hider {
 		// back off a bit
 		robot.resetTachoCountBothWheels();
 		robot.setBackwardSpeed();
-		while (Math.abs(robot.getDisplacement()) < 8);
+		while (Math.abs(robot.getDisplacement()) < 25);
 		robot.stop();
-	}
-	
-	public void exitField(){
-		double currentX = odometer.getX();
-		double currentY = odometer.getY();
-		if(currentX >= currentY){
-			if(currentX <= fieldLength/2){
-				navigation.travelTo(0, 0,true);
-			}
-			if(currentY >= fieldLength/2){
-				navigation.travelTo(fieldLength,fieldLength,true);
-			}
-			else{
-				navigation.travelTo(fieldLength,0,true);
-			}
-		}
-		else{
-			if(currentY <= fieldLength/2){
-				navigation.travelTo(0,0,true);
-			}
-			if(currentX >= fieldLength/2){
-				navigation.travelTo(fieldLength,fieldLength,true);
-			}
-			else{
-				navigation.travelTo(fieldLength,0,true);
-			}
-		}
-		robot.stop();
-		Sound.twoBeeps();
 	}
 
 }

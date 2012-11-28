@@ -14,6 +14,7 @@ public class Searcher {
 	private Navigation2 navigation;
 	private TwoWheeledRobot robot;
 	private USPoller middlePoller;
+	private Hider hider;
 	private MidLightSensorController midLightSensor;
 	private double forwardSpeed = 4;
 	private static final int TILE_UNSEARCHED = 0;
@@ -26,12 +27,13 @@ public class Searcher {
 	private static final double tileLength = 30.48;
 	
 	//Constructor
-	public Searcher(Odometer odometer, Navigation2 navigation, USPoller middlePoller, MidLightSensorController midLightSensor) {
+	public Searcher(Odometer odometer, Navigation2 navigation, USPoller middlePoller, MidLightSensorController midLightSensor, Hider hider) {
 		this.odometer = odometer;
 		this.navigation = navigation;
 		this.middlePoller = middlePoller;
 		this.robot = odometer.getTwoWheeledRobot();
 		this.midLightSensor = midLightSensor;
+		this.hider = hider;
 	}
 	
 	// method that deals with finding the beacon, will need a sophisticated searching algorithm, may also need a separate method to get
@@ -201,32 +203,11 @@ public class Searcher {
 	
 	// positions and grabs beacon
 	public void positionAndGrabBeacon() {
-		
-		robot.setForwardSpeed(forwardSpeed);
-		
-		while (middlePoller.getFilteredData() >= desiredBeaconDistance || robot.getMidLightSensorReading() < lightBeaconHighValue) {
-			// drive
-		}
-		
-		robot.stop();
-		
-		robot.pickUpFromGround();
-		try {
-			Thread.sleep(6000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		hider.positionAndGrab();		
 	}
 	
 	// drops the beacon
 	public void dropBeacon() {
-		robot.placeOntoGround();
-		try {
-			Thread.sleep(6000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		hider.putDownAndGo();
 	}
 }

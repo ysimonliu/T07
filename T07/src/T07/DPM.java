@@ -36,11 +36,12 @@ public class DPM {
 		LightPoller lp2 = new LightPoller(robot, LSensor.RIGHT);
 		Navigation2 navigation = new Navigation2(odometer, usPoller, lp1, lp2);
 		MidLightSensorController midLightSensor = new MidLightSensorController(robot);
+		Hider hider = new Hider(odometer, navigation, usPoller, midLightSensor);
 
 		//start to get connection with Bluetooth server provided by TA
-		//BTReceiver btReceiver = new BTReceiver();
-		startCorner = StartCorner.BOTTOM_LEFT;//btReceiver.getCorner(); // this gets the start corner for use by the searcher and the localizer
-		role = PlayerRole.DEFENDER;//btReceiver.getRole();
+		BTReceiver btReceiver = new BTReceiver();
+		startCorner = btReceiver.getCorner(); // this gets the start corner for use by the searcher and the localizer
+		role = btReceiver.getRole();
 
 		// switch that gets the starting corner and sets it as an int, for use by the 
 		switch(startCorner) {
@@ -62,30 +63,30 @@ public class DPM {
 		case ATTACKER:{
 			
 			// gets the destination point for the flag
-			int dropX = 5;//btReceiver.getDx();
-			int dropY = 6;//btReceiver.getDy();
+			int dropX = btReceiver.getDx();
+			int dropY = btReceiver.getDy();
 
 			// start the LCD display
 			startLCDDisplay(odometer, usPoller, communicationController, lp2, lp2);
 			
 			// localize
-			//localize(odometer, navigation, usPoller, lp1, lp2, corner);
+			localize(odometer, navigation, usPoller, lp1, lp2, corner);
 			
 			// search
-			Searcher search = new Searcher(odometer, navigation, usPoller, midLightSensor);
+			Searcher search = new Searcher(odometer, navigation, usPoller, midLightSensor, hider);
 			search.findBeacon(corner);
 			
 			// flaghandler (pickup)
-			search.positionAndGrabBeacon();
+			hider.positionAndGrab();
 			
 			// navigate to drop off point
-			navigation.travelTo(dropX, dropY, true);
+			navigation.travelTo(dropX*tileLength, dropY*tileLength, true);
 			
 			// flaghandler (drop)
-			search.dropBeacon();
+			hider.putDownAndGo();
 			
 			// navigate to end point (corner)
-			navigation.travelTo(0, 0, true);
+			navigation.travelTo(-15, -15, false);
 			
 			break;
 			}
@@ -93,8 +94,8 @@ public class DPM {
 		case DEFENDER:{
 			
 			// gets the flag point
-			int flagX = 2;//btReceiver.getFx();
-			int flagY = 4;//btReceiver.getFy();
+			int flagX = btReceiver.getFx();
+			int flagY = btReceiver.getFy();
 
 			// start the LCD display
 			startLCDDisplay(odometer, usPoller, communicationController, lp2, lp2);
@@ -103,10 +104,10 @@ public class DPM {
 			localize(odometer, navigation, usPoller, lp1, lp2, corner);
 			
 			// hider
-			Hider hider = new Hider(odometer, navigation, usPoller, midLightSensor);
 			hider.pickUpDefender(flagX, flagY);
 			hider.hide();
-			hider.exitField();
+			// navigate to end point (corner)
+			navigation.travelTo(-15, -15, false);
 			break;
 			}
 		}
