@@ -40,7 +40,7 @@ public class DPM {
 		//start to get connection with Bluetooth server provided by TA
 		//BTReceiver btReceiver = new BTReceiver();
 		startCorner = StartCorner.BOTTOM_LEFT;//btReceiver.getCorner(); // this gets the start corner for use by the searcher and the localizer
-		role = PlayerRole.DEFENDER;//btReceiver.getRole();
+		role = PlayerRole.ATTACKER;//btReceiver.getRole();
 
 		// switch that gets the starting corner and sets it as an int, for use by the 
 		switch(startCorner) {
@@ -69,7 +69,7 @@ public class DPM {
 			startLCDDisplay(odometer, usPoller, communicationController, lp2, lp2);
 			
 			// localize
-			localize(odometer, navigation, usPoller, lp1, lp2, corner);
+			//localize(odometer, navigation, usPoller, lp1, lp2, corner);
 			
 			// search
 			Searcher search = new Searcher(odometer, navigation, usPoller, midLightSensor);
@@ -103,7 +103,7 @@ public class DPM {
 			localize(odometer, navigation, usPoller, lp1, lp2, corner);
 			
 			// hider
-			Hider hider = new Hider(odometer, navigation, usPoller);
+			Hider hider = new Hider(odometer, navigation, usPoller, midLightSensor);
 			hider.pickUpDefender(flagX, flagY);
 			hider.hide();
 			hider.exitField();

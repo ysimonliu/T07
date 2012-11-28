@@ -8,27 +8,43 @@ public class Hider {
 	private Navigation2 navigation;
 	private TwoWheeledRobot robot;
 	private USPoller usPoller;
+	private MidLightSensorController midLSController;
 	private double fieldLength = 30.48 * 11;
 	
 	
 	//Constructor
-	public Hider(Odometer odometer, Navigation2 navigation, USPoller usPoller) {
+	public Hider(Odometer odometer, Navigation2 navigation, USPoller usPoller, MidLightSensorController midLSController) {
 		this.odometer = odometer;
 		this.navigation = navigation;
 		this.usPoller = usPoller;
 		this.robot = odometer.getTwoWheeledRobot();
+		this.midLSController = midLSController;
 	}
 	
 	public void pickUpDefender(int x, int y) {
-		navigation.travelTo((x - 1) * 30.48, y * 30.48, true);
+		navigation.travelTo(x * 30.48, y * 30.48, true);
 		robot.stop();
 		navigation.turnTo(45);
-		// position to in front of the beacon
+		// swipe to offset angles
+		navigation.turnTo(midLSController.findMaxAngle());
+		// approach the beacon
+		robot.setForwardSpeed();
+		while(usPoller.getFilteredData() > 15);
+		robot.stop();
+		// travel another 12 cm
 		robot.resetTachoCountBothWheels();
 		robot.setForwardSpeed();
-		while (robot.getDisplacement() < 20);
+		while(robot.getDisplacement() < 12);
 		robot.stop();
+		// now at position to pick up
 		robot.pickUpFromGround();
+		// wait until all actions complete
+		try {
+			Thread.sleep(3000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	// method that focuses on hiding the flag, may need a second method for just placing the flag
@@ -44,15 +60,19 @@ public class Hider {
 		robot.stop();
 		// place down the beacon
 		robot.placeOntoGround();
+		// wait until all actions complete
+		try {
+			Thread.sleep(3000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		Sound.twoBeeps();
 		// back off a bit
 		robot.resetTachoCountBothWheels();
 		robot.setBackwardSpeed();
 		while (Math.abs(robot.getDisplacement()) < 8);
 		robot.stop();
-		// exit the field
-		exitField();
-		Sound.twoBeeps();
 	}
 	
 	public void exitField(){

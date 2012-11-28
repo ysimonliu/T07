@@ -21,7 +21,7 @@ public class Searcher {
 	private static final int TILE_OBJECT = 2;
 	private int[][] field  = new int[10][10]; // will store field information for use by the searcher algorithm
 	private int lightBeaconThreshold = 420; // light value that is detected when a tile away from the beacon
-	private int desiredBeaconDistance = 10; // distance that is desired from beacon to grabbing arm
+	private int desiredBeaconDistance = 8; // distance that is desired from beacon to grabbing arm
 	private int lightBeaconHighValue = 610; // light value that is detected when in front of the beacon
 	private static final double tileLength = 30.48;
 	
@@ -88,12 +88,15 @@ public class Searcher {
 			navigation.turnTo(0);
 		} 		
 		*/
+		navigation.travelTo(tileLength/2, tileLength/2, false);
+		field[0][0] = TILE_SEARCHED;	
 		
+		/*
 		navigation.travelTo((4*tileLength) + (tileLength/2), (4*tileLength) + (tileLength/2), true); // travels to the center of the field and commences search from there
 		position[0] = 4;
 		position[1] = 4;
 		field[4][4] = TILE_SEARCHED;
-		
+		*/
 		
 		while (lightBeaconThreshold > robot.getMidLightSensorReading()) { // will repeat until beacon found
 			int maxLightValue = 0;
@@ -181,16 +184,16 @@ public class Searcher {
 			}
 			
 			if (block == 1) { // move to top tile
-				navigation.travelTo(tileLength*(position[0]-1)+(tileLength/2), tileLength*(position[1])+ (tileLength/2),false);
+				navigation.travelTo(tileLength*(position[0])+(tileLength/2), tileLength*(position[1]+1)+ (tileLength/2),false);
 				position[1] = position[1]+1;
 			} else if (block == 2) { // move to the right tile
-				navigation.travelTo(tileLength*(position[0])+(tileLength/2), tileLength*(position[1]-1)+ (tileLength/2), false);
+				navigation.travelTo(tileLength*(position[0]+1)+(tileLength/2), tileLength*(position[1])+ (tileLength/2), false);
 				position[0] = position[0]+1;
 			} else if (block == 3) { // move to the bottom tile 
-				navigation.travelTo(tileLength*(position[0]-1)+(tileLength/2), tileLength*(position[1]-2)+ (tileLength/2), false);
+				navigation.travelTo(tileLength*(position[0])+(tileLength/2), tileLength*(position[1]-1)+ (tileLength/2), false);
 				position[1] = position[1]-1;
 			} else if (block == 4) { // move to the left tile
-				navigation.travelTo(tileLength*(position[0]-2)+(tileLength/2), tileLength*(position[1]-1)+ (tileLength/2), false);
+				navigation.travelTo(tileLength*(position[0]-1)+(tileLength/2), tileLength*(position[1])+ (tileLength/2), false);
 				position[0] = position[0]-1;
 			}
 		}		
@@ -201,19 +204,29 @@ public class Searcher {
 		
 		robot.setForwardSpeed(forwardSpeed);
 		
-		while (middlePoller.getFilteredData() > desiredBeaconDistance || robot.getMidLightSensorReading() < lightBeaconHighValue) {
+		while (middlePoller.getFilteredData() >= desiredBeaconDistance || robot.getMidLightSensorReading() < lightBeaconHighValue) {
 			// drive
 		}
 		
 		robot.stop();
 		
-		robot.closeClaw();
-		robot.liftClaw();
+		robot.pickUpFromGround();
+		try {
+			Thread.sleep(3000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	// drops the beacon
 	public void dropBeacon() {
-		robot.lowerClaw(); //TODO, check that the claw doesn't just drop the beacon
-		robot.openClaw();
+		robot.placeOntoGround();
+		try {
+			Thread.sleep(3000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }
