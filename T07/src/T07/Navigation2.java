@@ -20,6 +20,7 @@ public class Navigation2 {
 	private long storedSystemTime;
 	private double[] currentPosition;
 	private boolean[] changeValue;
+	private int timeDelay = 400;
 	
 	public Navigation2(Odometer odometer, USPoller selectedSensor, LightPoller leftLight, LightPoller rightLight) {
 		// constructor
@@ -100,7 +101,7 @@ public class Navigation2 {
 			if (leftLight.getRawValue() < GRID_LINE_THRESHOLD) { // checks if the left lightsensor has crossed a gridline, odometry correct if so
 				robot.stopLeftMotor();
 				storedSystemTime = System.currentTimeMillis(); // protection against missing a gridline
-				while (rightLight.getRawValue() > GRID_LINE_THRESHOLD && (System.currentTimeMillis() - storedSystemTime) < 200) {
+				while (rightLight.getRawValue() > GRID_LINE_THRESHOLD && (System.currentTimeMillis() - storedSystemTime) < timeDelay) {
 					// do nothing
 				}
 				robot.stopRightMotor();
@@ -109,7 +110,7 @@ public class Navigation2 {
 			if (rightLight.getRawValue() < GRID_LINE_THRESHOLD) { // checks if the right lightsensor has crossed a gridline, odometry correct if so
 				robot.stopRightMotor();
 				storedSystemTime = System.currentTimeMillis(); // protection against missing a gridline
-				while(leftLight.getRawValue() > GRID_LINE_THRESHOLD && (System.currentTimeMillis() - storedSystemTime) < 200) {
+				while(leftLight.getRawValue() > GRID_LINE_THRESHOLD && (System.currentTimeMillis() - storedSystemTime) < timeDelay) {
 					// do nothing
 				}
 				robot.stopLeftMotor();
@@ -144,7 +145,7 @@ public class Navigation2 {
 			if (leftLight.getRawValue() < GRID_LINE_THRESHOLD) { // if left light poller detects a gridline stop
 				robot.stopLeftMotor();
 				storedSystemTime = System.currentTimeMillis(); // protection against missing a gridline
-				while (rightLight.getRawValue() > GRID_LINE_THRESHOLD && (System.currentTimeMillis() - storedSystemTime) < 200) {
+				while (rightLight.getRawValue() > GRID_LINE_THRESHOLD && (System.currentTimeMillis() - storedSystemTime) < timeDelay) {
 					// do nothing
 				}
 				robot.stopRightMotor();
@@ -153,7 +154,7 @@ public class Navigation2 {
 			if (rightLight.getRawValue() < GRID_LINE_THRESHOLD) { // if right light poller detects a gridline stop
 				robot.stopRightMotor();
 				storedSystemTime = System.currentTimeMillis(); // protection against missing a gridline
-				while(leftLight.getRawValue() > GRID_LINE_THRESHOLD && (System.currentTimeMillis() - storedSystemTime) < 200) {
+				while(leftLight.getRawValue() > GRID_LINE_THRESHOLD && (System.currentTimeMillis() - storedSystemTime) < timeDelay) {
 					// do nothing
 				}
 				robot.stopLeftMotor();

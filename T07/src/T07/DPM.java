@@ -40,7 +40,7 @@ public class DPM {
 		//start to get connection with Bluetooth server provided by TA
 		//BTReceiver btReceiver = new BTReceiver();
 		startCorner = StartCorner.BOTTOM_LEFT;//btReceiver.getCorner(); // this gets the start corner for use by the searcher and the localizer
-		role = PlayerRole.ATTACKER;//btReceiver.getRole();
+		role = PlayerRole.DEFENDER;//btReceiver.getRole();
 
 		// switch that gets the starting corner and sets it as an int, for use by the 
 		switch(startCorner) {
@@ -93,8 +93,8 @@ public class DPM {
 		case DEFENDER:{
 			
 			// gets the flag point
-			int flagX = 1;//btReceiver.getFx();
-			int flagY = 1;//btReceiver.getFy();
+			int flagX = 2;//btReceiver.getFx();
+			int flagY = 4;//btReceiver.getFy();
 
 			// start the LCD display
 			startLCDDisplay(odometer, usPoller, communicationController, lp2, lp2);

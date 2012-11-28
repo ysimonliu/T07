@@ -212,7 +212,7 @@ public class Searcher {
 		
 		robot.pickUpFromGround();
 		try {
-			Thread.sleep(3000);
+			Thread.sleep(6000);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -223,7 +223,7 @@ public class Searcher {
 	public void dropBeacon() {
 		robot.placeOntoGround();
 		try {
-			Thread.sleep(3000);
+			Thread.sleep(6000);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
