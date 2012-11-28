@@ -26,7 +26,7 @@ public class Hider {
 		robot.stop();
 		navigation.turnTo(45);
 		// swipe to offset angles
-		navigation.turnTo(midLSController.findMaxAngle());
+		navigation.turnTo(midLSController.findMaxAngle() + odometer.getTheta());
 		// approach the beacon
 		robot.setForwardSpeed();
 		while(usPoller.getFilteredData() > 15);
@@ -40,7 +40,7 @@ public class Hider {
 		robot.pickUpFromGround();
 		// wait until all actions complete
 		try {
-			Thread.sleep(3000);
+			Thread.sleep(6000);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
