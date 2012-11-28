@@ -14,7 +14,7 @@ public class LightLocalizer{
 	private Navigation2 navigation;
 	public static double ROTATION_SPEED = 3, FORWARD_SPEED = 3;
 	// the intensity of the grid line on the tile, to avoid using magic numbers
-	private static int gridLineIntensity = 50;
+	private static int gridLineIntensity = 460;
 	private static final double tileLength = 30.48;
 	private double xCoordinate = 0;
 	private double yCoordinate = 0;
@@ -56,11 +56,11 @@ public class LightLocalizer{
 		
 		// this will make the robot stop on the x axis correcting the y coordinates
 		while (robot.leftMotorMoving() || robot.rightMotorMoving()) {
-			if (leftLight.getSecondOrderDerivative() > gridLineIntensity) {
+			if (leftLight.getRawValue() < gridLineIntensity) {
 				Sound.beep();
 				robot.stopLeftMotor();
 			}
-			if (rightLight.getSecondOrderDerivative() > gridLineIntensity) {
+			if (rightLight.getRawValue() < gridLineIntensity) {
 				Sound.beep();
 				robot.stopRightMotor();
 			}
@@ -77,11 +77,11 @@ public class LightLocalizer{
 		
 		// this will make the robot stop on the y axis correcting the x coordinates
 		while (robot.leftMotorMoving() || robot.rightMotorMoving()) {
-			if (leftLight.getSecondOrderDerivative() > gridLineIntensity) {
+			if (leftLight.getRawValue() < gridLineIntensity) {
 				Sound.beep();
 				robot.stopLeftMotor();
 			}
-			if (rightLight.getSecondOrderDerivative() > gridLineIntensity) {
+			if (rightLight.getRawValue() < gridLineIntensity) {
 				Sound.beep();
 				robot.stopRightMotor();
 			}

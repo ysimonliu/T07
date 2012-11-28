@@ -20,6 +20,7 @@ public class DPM {
 	private static PlayerRole role;
 	private static int corner = 1;
 	private static int intRole; // 0 means attacker, 1 means defender
+	private static final double tileLength = 30.48;
 	
 	public static void main(String[] args){
 		
@@ -35,15 +36,12 @@ public class DPM {
 		LightPoller lp2 = new LightPoller(robot, LSensor.RIGHT);
 		Navigation2 navigation = new Navigation2(odometer, usPoller, lp1, lp2);
 		MidLightSensorController midLightSensor = new MidLightSensorController(robot);
-		// connect to bluetooth for debug
-		//RConsole.openBluetooth(20000);
-		//Sound.twoBeeps();
-		//RConsole.println("Connected!");
-		
+
+		setUpClawInitPos(robot);
 		//start to get connection with Bluetooth server provided by TA
-		BTReceiver btReceiver = new BTReceiver();
-		startCorner = btReceiver.getCorner(); // this gets the start corner for use by the searcher and the localizer
-		role = btReceiver.getRole();
+		//BTReceiver btReceiver = new BTReceiver();
+		startCorner = StartCorner.BOTTOM_LEFT;//btReceiver.getCorner(); // this gets the start corner for use by the searcher and the localizer
+		role = PlayerRole.DEFENDER;//btReceiver.getRole();
 
 		// switch that gets the starting corner and sets it as an int, for use by the 
 		switch(startCorner) {
@@ -63,17 +61,10 @@ public class DPM {
 		
 		switch(role) {
 		case ATTACKER:{
-		
-			try {
-				Thread.sleep(30000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 			
 			// gets the destination point for the flag
-			int dropX = btReceiver.getDx();
-			int dropY = btReceiver.getDy();
+			int dropX = 5;//btReceiver.getDx();
+			int dropY = 6;//btReceiver.getDy();
 
 			// start the LCD display
 			startLCDDisplay(odometer, usPoller, communicationController, lp2, lp2);
@@ -103,8 +94,8 @@ public class DPM {
 		case DEFENDER:{
 			
 			// gets the flag point
-			int flagX = btReceiver.getFx();
-			int flagY = btReceiver.getFy();
+			int flagX = 3;//btReceiver.getFx();
+			int flagY = 7;//btReceiver.getFy();
 
 			// start the LCD display
 			startLCDDisplay(odometer, usPoller, communicationController, lp2, lp2);
@@ -113,7 +104,7 @@ public class DPM {
 			localize(odometer, navigation, usPoller, lp1, lp2, corner);
 			
 			// navigate to flag
-			navigation.travelTo(flagX, flagY, true);
+			navigation.travelTo(flagX*tileLength, flagY*tileLength, true);
 			
 			// hider
 			Hider hider = new Hider(odometer, navigation, usPoller);
@@ -130,6 +121,10 @@ public class DPM {
 		System.exit(0);
 	}
 	
+	private static void setUpClawInitPos(TwoWheeledRobot robot) {
+		robot.openClaw();
+	}
+
 	private static void startLCDDisplay(Odometer odo, USPoller usPoller, CommunicationController communicationController, LightPoller lp1, LightPoller lp2) {
 		LCDInfo lcd = new LCDInfo(odo, usPoller, communicationController, lp1, lp2);
 		lcd.timedOut();
@@ -141,6 +136,13 @@ public class DPM {
 		// performs us and light localization subroutines
 		usLocalizer.doLocalization();
 		lightLocalizer.doLocalization(corner);
+		Sound.twoBeeps();
+		try {
+			Thread.sleep(500);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	private static void menu() {
