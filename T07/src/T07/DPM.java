@@ -87,7 +87,7 @@ public class DPM {
 			
 			// search
 			Searcher search = new Searcher(odometer, navigation, usPoller, midLightSensor, hider);
-			search.findBeacon(corner);
+			search.findBeacon();
 			
 			// flaghandler (pickup)
 			hider.positionAndGrab();
