@@ -2,8 +2,14 @@ package T07;
 
 
 import lejos.nxt.*;
+import lejos.nxt.comm.RConsole;
+import lejos.util.Delay;
 import bluetooth.*;
-
+/**
+ * Main class of the entire project.
+ * Contains all information for proper functioning of the master brick.
+ *
+ */
 public class DPM {
 	
 	public enum USSensor {MIDDLE, RIGHT};
@@ -20,6 +26,14 @@ public class DPM {
 	private static int intRole; // 0 means attacker, 1 means defender
 	private static final double tileLength = 30.48;
 	
+	/**
+	 * Main method of the robot that controls all master slave functionality.
+	 * This main method retrieves bluetooth information that determines role and start corner.
+	 * Depending on role the method will have 2 different functions, one will handle grabbing and hiding the flag
+	 * while the other will handle finding and placing the flag.
+	 * 
+	 * @param args
+	 */
 	public static void main(String[] args){
 		
 		// get ready to connect to slave brick
@@ -57,6 +71,7 @@ public class DPM {
 			break;
 		}
 		
+		// starts either the attacker or defender code based on the bluetooth command passed
 		switch(role) {
 		case ATTACKER:{
 			
@@ -115,12 +130,32 @@ public class DPM {
 		while (Button.waitForAnyPress() != Button.ID_ESCAPE);
 		System.exit(0);
 	}
-	
+	/**
+	 * Method starts the LCD, created to contain all LCD operations.
+	 * 
+	 * @param odo Odometer object that needs to be displayed to brick screen
+	 * @param usPoller USPoller object that allows for sensor readings to be displayed, used for debugging
+	 * @param communicationController
+	 * @param lp1 LightPoller object that allows for sensor readings to be displayed, used for debugging
+	 * @param lp2 LightPoller object that allows for sensor readings to be displayed, used for debugging
+	 */
+	// method that sets the LCD screen up
 	private static void startLCDDisplay(Odometer odo, USPoller usPoller, CommunicationController communicationController, LightPoller lp1, LightPoller lp2) {
 		LCDInfo lcd = new LCDInfo(odo, usPoller, communicationController, lp1, lp2);
 		lcd.timedOut();
 	}
-
+	
+	/**
+	 * Method that contains all localization subroutines, called to orientate the robot correctly.
+	 * Requires a corner parameter for correct localization relative to the field.
+	 * 
+	 * @param odo Odometer object that is used by the USLocalizer and LightLocalizer
+	 * @param navi Navigation object that is used by the USLocalizer and LightLocalizer
+	 * @param usPoller USPoller object that will be used in ultrasonic localization
+	 * @param lp1 left LightPoller that is used in the light localization
+	 * @param lp2 right LightPoller that is used in the light localization
+	 * @param corner int that will specify the starting corner
+	 */
 	private static void localize(Odometer odo, Navigation navi, USPoller usPoller, LightPoller lp1, LightPoller lp2, int corner){
 		USLocalizer usLocalizer = new USLocalizer(odo, navi, usPoller);		
 		LightLocalizer lightLocalizer = new LightLocalizer(odo, lp1, lp2, navi); 
@@ -136,6 +171,10 @@ public class DPM {
 		}
 	}
 	
+	/**
+	 * Method that will display a menu before starting the program.
+	 * Used primarily for debugging purposes.
+	 */
 	private static void menu() {
 		int buttonChoice;
 		do {
@@ -147,6 +186,7 @@ public class DPM {
 			LCD.drawString("      start     ", 0, 3);
 			LCD.drawString("     program    ", 0, 4);
 			
+			// Displayed on the brick for debugging purposes, also prevents premature start of the program
 			buttonChoice = Button.waitForAnyPress();
 			
 		} while (buttonChoice != Button.ID_LEFT && buttonChoice != Button.ID_RIGHT);
