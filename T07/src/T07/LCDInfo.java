@@ -4,6 +4,11 @@ import lejos.nxt.comm.RConsole;
 import lejos.util.Timer;
 import lejos.util.TimerListener;
 
+/**
+ * This class displays all the information to the master brick monitor
+ * @author Simon
+ *
+ */
 public class LCDInfo implements TimerListener{
 	public static final int LCD_REFRESH = 100;
 	private Odometer odometer;
@@ -17,6 +22,14 @@ public class LCDInfo implements TimerListener{
 	// arrays for displaying data
 	private double [] position;
 
+	/**
+	 * Constructs the LCDInfo
+	 * @param odometer - odometer
+	 * @param usPoller - ultrasonic sensor poller
+	 * @param communicationController - communication controller
+	 * @param lpl - left light sensor poller
+	 * @param lpr - right light sensor poller
+	 */
 	public LCDInfo(Odometer odometer, USPoller usPoller, CommunicationController communicationController, LightPoller lpl, LightPoller lpr) {
 		this.odometer = odometer;
 		this.lcdTimer = new Timer(LCD_REFRESH, this);
@@ -33,6 +46,10 @@ public class LCDInfo implements TimerListener{
 		lcdTimer.start();
 	}
 
+	/**
+	 * Refreshes the monitor periodically with current X, current Y, current heading,
+	 * left light sensor reading, right light sensor reading
+	 */
 	public void timedOut() { 
 		odometer.getPosition(position);
 		// print to the LCD screen
@@ -45,7 +62,6 @@ public class LCDInfo implements TimerListener{
 		LCD.drawString(formattedDoubleToString(position[2], 2), 3, 2);
 		LCD.drawString("LLS :" + lpl.getSecondOrderDerivative(), 0, 3);
 		LCD.drawString("RLS :" + lpr.getSecondOrderDerivative(), 0, 4);
-		LCD.drawString("Slave: " + communicationController.getMidLightSensorValue(), 0, 5);
 		// print to the RConsole Viewer for debug's convenience
 		//RConsole.println("LLS :" + lpl.getSecondOrderDerivative());
 		/*RConsole.println("Y:" + formattedDoubleToString(position[1], 2));
@@ -59,7 +75,12 @@ public class LCDInfo implements TimerListener{
 		*/
 	}
 
-	// helper function to cast a double to 2 decimal places and return an array
+	/**
+	 * Helper function to formats a pass in double value to string in a certain number of decimal places
+	 * @param x - double value to be formatted and converted to string
+	 * @param places - number of decimal places
+	 * @return String after conversion
+	 */
 	private static String formattedDoubleToString(double x, int places) {
 		String result = "";
 		String stack = "";

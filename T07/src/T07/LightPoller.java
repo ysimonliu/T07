@@ -4,8 +4,13 @@ import lejos.nxt.*;
 import lejos.util.Timer;
 import lejos.util.TimerListener;
 
-// Class that controls the light sensors and makes sure that the data doesn't
-// become confused when being called from multiple sources
+/**
+ * This class is the master-side version of the light poller. 
+ * It polls the light sensor reading given a light sensor,
+ * and process it through the second derivative filter
+ * @author Simon Liu
+ *
+ */
 
 public class LightPoller implements TimerListener{
 	
@@ -20,7 +25,11 @@ public class LightPoller implements TimerListener{
 	private LightSensor ls;
 	private TwoWheeledRobot robot;
 
-	// Constructor of lightPoller
+	/**
+	 * Constructs the light sensor poller
+	 * @param robot - current robot
+	 * @param choice - the choice of which sensor, DPM.LSensor
+	 */
 	public LightPoller(TwoWheeledRobot robot, DPM.LSensor choice) {
 		this.robot = robot;
 		switch(choice) {
@@ -35,7 +44,9 @@ public class LightPoller implements TimerListener{
 		this.lightPollerTimer.start();
 	}
 	
-	// timerListener method that controls access to the light sensor
+	/**
+	 * Reads the light sensor periodically and process the values to second derivative
+	 */
 	public void timedOut() {
 		// add the newly read distance to replace the oldest element in the array
 		previousFirstOrderDerivative = firstOrderDerivative;
@@ -46,11 +57,18 @@ public class LightPoller implements TimerListener{
 		
 	}
 	
+	/**
+	 * Returns the second order derivative of the light sensor poller
+	 * @return - the second order derivative of the light sensor reading
+	 */
 	public int getSecondOrderDerivative() {
 		return secondOrderDerivative;
 	}
 	
-	// getting that returns the raw light value
+	/**
+	 * Returns the most recent raw ultrasonic sensor reading
+	 * @return the raw ultrasonic sensor reading
+	 */
 	public int getRawValue() {
 		return rawLightValue;
 	}	

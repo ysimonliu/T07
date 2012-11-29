@@ -11,13 +11,24 @@ import lejos.nxt.comm.NXTConnection;
 import lejos.nxt.comm.RS485;
 import lejos.nxt.comm.RS485Connection;
 
+/**
+ * This class will be instantiated by the master brick
+ * to become the master in the two-way communication
+ * @author Simon
+ *
+ */
 public class CommunicationServer {
 	
 	private RS485Connection connection;
 	private DataOutputStream dataOut;
 	private DataInputStream dataIn;
 	
-	// This will make the master brick act as a communication server
+	/**
+	 * Constructs the communication server.
+	 * the master brick of a two-brick communications should instantiate this class;
+	 * connection via cable;
+	 * upon successful connection, robot will sound two beeps.
+	 */
 	public CommunicationServer() {
 		connection = RS485.waitForConnection(0, NXTConnection.PACKET);
 		
@@ -31,7 +42,10 @@ public class CommunicationServer {
 		
 	}
 	
-	// This will send a message to the communication client, or the slave brick
+	/**
+	 * Sends a message to the master brick
+	 * @param message - a message that passed in from the master brick
+	 */
 	public void sent(Message message) {
 		try {
 			// write the message and flush everything to the receiving end
@@ -42,7 +56,10 @@ public class CommunicationServer {
 		}
 	}
 	
-	// This will receive a message from the communication client, or the slave brick
+	/**
+	 * Receives a message from the master brick
+	 * @return
+	 */
 	public Message receive() {
 		String messageString = null;
 		Message receivedMessage = null;
@@ -55,7 +72,4 @@ public class CommunicationServer {
 		return receivedMessage;
 	}
 	
-	
-	
-
 }

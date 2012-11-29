@@ -50,7 +50,7 @@ public class USPoller implements TimerListener{
 	}
 	
 	/**
-	 * Reutrbs the most recent raw value reading of the ultrasonic sensor reading
+	 * Reutrns the most recent raw value reading of the ultrasonic sensor reading
 	 * @return the most recent raw value reading of the ultrasonic sensor reading
 	 */
 	public int getRawValue() {

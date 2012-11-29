@@ -2,7 +2,11 @@ package T07;
 
 import lejos.nxt.*;
 
-// class that focuses on hiding the flag, will also need to deal with depositing the flag
+/**
+ * This class is to perform the hiding task
+ * @author Simon
+ *
+ */
 public class Hider {
 	private Odometer odometer;
 	private Navigation navigation;
@@ -12,7 +16,13 @@ public class Hider {
 	private double fieldLength = 30.48 * 11;
 	
 	
-	//Constructor
+	/**
+	 * Constructs the hider with odometer, navigation, usPoller, mid light sensor controller
+	 * @param odometer - the robot's odometer
+	 * @param navigation - the navigation class of the robot
+	 * @param usPoller - the ultrasonic sensor poller
+	 * @param midLSController - the middle light sensor controller
+	 */
 	public Hider(Odometer odometer, Navigation navigation, USPoller usPoller, MidLightSensorController midLSController) {
 		this.odometer = odometer;
 		this.navigation = navigation;
@@ -21,12 +31,20 @@ public class Hider {
 		this.midLSController = midLSController;
 	}
 	
+	/**
+	 * Picks up the beacon
+	 * @param x - flagX
+	 * @param y - flagY
+	 */
 	public void pickUpDefender(int x, int y) {
 		navigation.travelTo(x * 30.48, (y - 1) * 30.48, true);
 		navigation.travelTo(x * 30.48, y * 30.48, false);
 		positionAndGrab();
 	}
 	
+	/**
+	 * Positions in front of the robot and grabs the robot
+	 */
 	public void positionAndGrab() {
 		robot.stop();
 		navigation.turnTo(45);
@@ -49,7 +67,9 @@ public class Hider {
 		robot.stop();
 	}
 
-	// method that focuses on hiding the flag, may need a second method for just placing the flag
+	/**
+	 * Approaches the nearest wall/obstacle and hides the beacon against
+	 */
 	public void hide() {
 		// get robot to travel forward until sees a obstacle in close range
 		robot.setForwardSpeed();
@@ -63,6 +83,9 @@ public class Hider {
 		putDownAndGo();
 	}
 	
+	/**
+	 * Puts down the beacon, opens the claw, and backs up from the beacon
+	 */
 	public void putDownAndGo() {
 		robot.stop();
 		// place down the beacon

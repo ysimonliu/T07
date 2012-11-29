@@ -16,6 +16,11 @@ import lejos.nxt.UltrasonicSensor;
  *
  */
 public class DPM_Client {
+	/**
+	 * The position of the light sensor.
+	 * @author Simon Liu
+	 * 
+	 */
 	public enum LSensor {LEFT, MIDDLE, RIGHT};
 
 	static final LightSensor MIDDLE_LIGHT_SENSOR = new LightSensor(SensorPort.S1);

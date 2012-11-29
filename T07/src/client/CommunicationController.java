@@ -47,6 +47,7 @@ public class CommunicationController implements TimerListener, Runnable{
 	
 	/**
 	 * Sends data to the master brick periodically at DEFAULT_COMMUNICATION_PERIOD
+	 * will run with run() method in parallel at the same time upon instantiation
 	 */
 	@Override
 	public void timedOut() {
@@ -55,7 +56,8 @@ public class CommunicationController implements TimerListener, Runnable{
 	}
 
 	/**
-	 * Receives data from master brick and process the message received
+	 * Receives data from the slave brick, and update the local copy of all the readings whenever possible
+	 * will run with the timedOut() method in parallel at the same time upon instantiation
 	 */
 	@Override
 	// Data Receiver: This run method will receive data from the communication client constantly on the fly
