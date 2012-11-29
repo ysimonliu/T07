@@ -29,13 +29,13 @@ public class Navigation {
 		this.rightLP = rightLP;
 	}
 	
-	public void travelTo(double x, double y) {
+	public void travelTo(double x, double y, boolean avoidObstable) {
 		RConsole.println("DEBUG: I'm now travelling to [" + x + "," + y + "]");
-		travelAlongYTo(y);
-		travelAlongXTo(x);
+		travelAlongYTo(y, avoidObstable);
+		travelAlongXTo(x, avoidObstable);
 	}
 	
-	private void travelAlongXTo(double x) {
+	private void travelAlongXTo(double x, boolean avoidObstable) {
 		RConsole.println("DEBUG: I'm now travelling along X");
 		if (x - odometer.getX() > 0) {
 			turnTo(THETA_P_X);
@@ -47,7 +47,7 @@ public class Navigation {
 		Delay.msDelay(500); // prevents the robot from reading a line after a rotate
 		while(Math.abs(x - (currentX = odometer.getX())) > EPSILON) {
 			RConsole.println("our current X position is " + currentX);
-			if (usPoller.getFilteredData() < OBSTACLE_DISTANCE) {
+			if (usPoller.getFilteredData() < OBSTACLE_DISTANCE && avoidObstable) {
 				avoidObstacle();
 			}
 			if (leftLP.getSecondOrderDerivative() > GRID_LINE_THRESHOLD || rightLP.getSecondOrderDerivative() > GRID_LINE_THRESHOLD) {
@@ -57,7 +57,7 @@ public class Navigation {
 		robot.stop();
 	}
 	
-	private void travelAlongYTo(double y) {
+	private void travelAlongYTo(double y, boolean avoidObstable) {
 		RConsole.println("DEBUG: I'm now travelling along Y");
 		if (y - odometer.getY() > 0) {
 			turnTo(THETA_P_Y);
@@ -68,7 +68,7 @@ public class Navigation {
 		robot.setForwardSpeed();
 		Delay.msDelay(500); // prevents the robot from reading a line after a rotate
 		while(Math.abs(y - odometer.getY()) > EPSILON) {
-			if (usPoller.getFilteredData() < OBSTACLE_DISTANCE) {
+			if (usPoller.getFilteredData() < OBSTACLE_DISTANCE && avoidObstable) {
 				avoidObstacle();
 			}
 			if (leftLP.getSecondOrderDerivative() > GRID_LINE_THRESHOLD || rightLP.getSecondOrderDerivative() > GRID_LINE_THRESHOLD) {

@@ -1,7 +1,9 @@
 package communication;
 
 /**
- * The message sent between two bricks.
+ * This class defines the message template used between
+ * the two bricks during the communication
+ * @author Simon Liu
  *
  */
 public class Message {
@@ -19,6 +21,7 @@ public class Message {
 	private int value;
 	private String messageString;
 	
+	
 	public Message(int type, int value) {
 		this.value = value;
 		this.type = type;
@@ -31,6 +34,10 @@ public class Message {
 		this.type = checkOutType(this.messageString);
 	}
 	
+	/**
+	 * return the content of the message in the format of String
+	 * @return
+	 */
 	public String getString() {
 		return this.messageString;
 	}

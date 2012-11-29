@@ -11,6 +11,11 @@ import lejos.util.TimerListener;
 import lejos.nxt.LightSensor;
 import lejos.nxt.SensorPort;
 
+/**
+ * This class is used by the communication client to send, receive and process messages
+ * @author Simon Liu
+ *
+ */
 public class CommunicationController implements TimerListener, Runnable{
 
 	// declare necessary variables for this class

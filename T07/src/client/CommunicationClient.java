@@ -13,6 +13,12 @@ import lejos.nxt.comm.NXTConnection;
 import lejos.nxt.comm.RS485;
 import lejos.nxt.comm.RS485Connection;
 
+/**
+ * This class will be instantiated by the slave brick
+ * to become the client in the two-way communication
+ * @author Simon Liu
+ *
+ */
 public class CommunicationClient {
 
 	private RS485Connection connection;

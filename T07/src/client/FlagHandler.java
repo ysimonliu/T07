@@ -2,12 +2,13 @@ package client;
 
 import lejos.nxt.LCD;
 import lejos.nxt.NXTRegulatedMotor;
-import T07.Navigation2;
-import T07.Odometer;
-import T07.TwoWheeledRobot;
-import T07.USPoller;
 
-// class that controls the flag handling performed by the robot
+/**
+ * This class will handle all motions regarding the flag handling,
+ * including controller of both the lift motor and the claw motors
+ * @author Simon Liu
+ *
+ */
 public class FlagHandler {
 	private static NXTRegulatedMotor leftClawMotor = DPM_Client.LEFT_CLAW_MOTOR;
 	private static NXTRegulatedMotor rightClawMotor = DPM_Client.RIGHT_CLAW_MOTOR;

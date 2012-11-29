@@ -4,8 +4,13 @@ import lejos.nxt.*;
 import lejos.util.Timer;
 import lejos.util.TimerListener;
 
-// Class that controls the light sensors and makes sure that the data doesn't
-// become confused when being called from multiple sources
+/**
+ * This class is the client-side version of the light poller. 
+ * It polls the light sensor reading given a light sensor,
+ * and process it through the second derivative filter
+ * @author Simon Liu
+ *
+ */
 public class LightPoller implements TimerListener{
 	
 	// private variable that stores the controlled USValue

@@ -1,13 +1,17 @@
 package client;
 
-import java.util.Arrays;
 
 import lejos.nxt.*;
 import lejos.util.Timer;
 import lejos.util.TimerListener;
 
-// Class that controls the light sensors and makes sure that the data doesn't
-// become confused when being called from multiple sources
+/**
+ * This class is the client-side version of the US Poller,
+ * it will poll the Ultrasonic sensor value, and process it through a mean filter
+ * getting both the raw value and the processed mean value as the result
+ * @author Simon Liu
+ *
+ */
 public class USPoller implements TimerListener{
 	
 	// private variable that stores the controlled USValue

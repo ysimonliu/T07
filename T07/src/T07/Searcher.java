@@ -11,7 +11,7 @@ import lejos.util.Delay;
 public class Searcher {
 	
 	private Odometer odometer;
-	private Navigation2 navigation;
+	private Navigation navigation;
 	private TwoWheeledRobot robot;
 	private USPoller middlePoller;
 	private Hider hider;
@@ -27,7 +27,7 @@ public class Searcher {
 	private static final double tileLength = 30.48;
 	
 	//Constructor
-	public Searcher(Odometer odometer, Navigation2 navigation, USPoller middlePoller, MidLightSensorController midLightSensor, Hider hider) {
+	public Searcher(Odometer odometer, Navigation navigation, USPoller middlePoller, MidLightSensorController midLightSensor, Hider hider) {
 		this.odometer = odometer;
 		this.navigation = navigation;
 		this.middlePoller = middlePoller;

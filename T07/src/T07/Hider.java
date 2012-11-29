@@ -5,7 +5,7 @@ import lejos.nxt.*;
 // class that focuses on hiding the flag, will also need to deal with depositing the flag
 public class Hider {
 	private Odometer odometer;
-	private Navigation2 navigation;
+	private Navigation navigation;
 	private TwoWheeledRobot robot;
 	private USPoller usPoller;
 	private MidLightSensorController midLSController;
@@ -13,7 +13,7 @@ public class Hider {
 	
 	
 	//Constructor
-	public Hider(Odometer odometer, Navigation2 navigation, USPoller usPoller, MidLightSensorController midLSController) {
+	public Hider(Odometer odometer, Navigation navigation, USPoller usPoller, MidLightSensorController midLSController) {
 		this.odometer = odometer;
 		this.navigation = navigation;
 		this.usPoller = usPoller;

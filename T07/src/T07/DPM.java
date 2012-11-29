@@ -2,8 +2,6 @@ package T07;
 
 
 import lejos.nxt.*;
-import lejos.nxt.comm.RConsole;
-import lejos.util.Delay;
 import bluetooth.*;
 
 public class DPM {
@@ -34,7 +32,7 @@ public class DPM {
 		USPoller usPoller = new USPoller(robot);
 		LightPoller lp1 = new LightPoller(robot, LSensor.LEFT);
 		LightPoller lp2 = new LightPoller(robot, LSensor.RIGHT);
-		Navigation2 navigation = new Navigation2(odometer, usPoller, lp1, lp2);
+		Navigation navigation = new Navigation(robot, odometer, usPoller, lp1, lp2);
 		MidLightSensorController midLightSensor = new MidLightSensorController(robot);
 		Hider hider = new Hider(odometer, navigation, usPoller, midLightSensor);
 
@@ -123,7 +121,7 @@ public class DPM {
 		lcd.timedOut();
 	}
 
-	private static void localize(Odometer odo, Navigation2 navi, USPoller usPoller, LightPoller lp1, LightPoller lp2, int corner){
+	private static void localize(Odometer odo, Navigation navi, USPoller usPoller, LightPoller lp1, LightPoller lp2, int corner){
 		USLocalizer usLocalizer = new USLocalizer(odo, navi, usPoller);		
 		LightLocalizer lightLocalizer = new LightLocalizer(odo, lp1, lp2, navi); 
 		// performs us and light localization subroutines

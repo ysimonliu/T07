@@ -15,10 +15,10 @@ public class USLocalizer{
 	private USPoller usPoller;
 	private double headingDiff;
 	//private int filterCounter, lastNormalReading; // values for the getdistance method that isn't required
-	private Navigation2 navigation;
+	private Navigation navigation;
 
 	// constructor
-	public USLocalizer(Odometer odo, Navigation2 navigation,USPoller usPoller) {
+	public USLocalizer(Odometer odo, Navigation navigation,USPoller usPoller) {
 		this.odo = odo;
 		this.robot = odo.getTwoWheeledRobot();
 		this.navigation = navigation;

@@ -9,6 +9,12 @@ import lejos.nxt.NXTRegulatedMotor;
 import lejos.nxt.SensorPort;
 import lejos.nxt.UltrasonicSensor;
 
+/**
+ * This class is the main method of the slave brick
+ * it will start the slave brick as a slave brick
+ * @author Simon Liu
+ *
+ */
 public class DPM_Client {
 	public enum LSensor {LEFT, MIDDLE, RIGHT};
 
