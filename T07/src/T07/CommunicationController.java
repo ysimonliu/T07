@@ -1,7 +1,9 @@
 package T07;
 
 /**
- * Sending and receiving data to and from client brick
+ * This class is used by the communication server to send, receive and process messages
+ * @author Simon Liu
+ *
  */
 
 import communication.Message;
@@ -19,6 +21,11 @@ public class CommunicationController implements TimerListener, Runnable{
 	// the meaning of each index, and the array length is defined in the Message class
 	private int[] lightData = new int [Message.NUMBER_OF_ELEMENTS];
 	
+	/**
+	 * constructor of client-end communication controller
+	 * upon instantiation, this class will call timedOut() and run() method to send & receive data
+	 * @param communicationServer
+	 */
 	public CommunicationController(CommunicationServer communicationServer) {
 		// constructor
 		this.communicationServer = communicationServer;
@@ -31,12 +38,19 @@ public class CommunicationController implements TimerListener, Runnable{
 		this.communicationTimer.start();
 	}
 	
+	/**
+	 * send data to the master brick periodically at DEFAULT_COMMUNICATION_PERIOD
+	 * will run with run() method in parallel at the same time
+	 */
 	@Override
 	// Data Sender: This timedOut method will send data to the communication client periodically at DEFAULT_COMMUNICATION_PERIOD
 	public void timedOut() {
 		//TODO:send more data needed.
 	}
 
+	/**
+	 * receives data from the slave brick, and update the local copy of all the readings whenever possible
+	 */
 	@Override
 	// Data Receiver: This run method will receive data from the communication client constantly on the fly
 	public void run() {
@@ -48,44 +62,62 @@ public class CommunicationController implements TimerListener, Runnable{
 		}
 	}
 	
+	/**
+	 * send a message to the slave brick to open the claw
+	 */
 	// send a request message to the communication client to perform a claw open task
 	public void sendOpenClaw() {
 		Message message = new Message(Message.OPEN_CLAW, 1);
 		this.communicationServer.sent(message);
 	}
 	
+	/**
+	 * send a message to the slave brick to close the claw
+	 */
 	// send a request message to the communication client to perform a claw close task
 	public void sendCloseClaw() {
 		Message message = new Message(Message.CLOSE_CLAW, 1);
 		this.communicationServer.sent(message);
 	}
 	
+	/**
+	 * send a message to the slave brick to lift the claw
+	 */
 	// send a request message to the communication client to perform and lift claw task
 	public void sendRaiseLift(){
 		Message message = new Message(Message.RAISE_LIFT, 0);
 		this.communicationServer.sent(message);
 	}
 	
+	/**
+	 * send a message to the slave brick
+	 */
 	// send a request message to the communication client to perform and lower claw task
 	public void sendLowerLift(){
 		Message message = new Message(Message.LOWER_LIFT, 0);
 		this.communicationServer.sent(message);
 	}
 	
-	// receive the mid light sensor value from the communication client
-	// and update in the lightData array
+	/**
+	 * return the latest received middle light sensor reading
+	 * @return
+	 */
 	public int getMidLightSensorValue() {
 		return this.lightData[Message.MID_LIGHT_SENSOR_VALUE];
 	}
-	
-	// receive the mid light sensor offset angle from the communication client
-	// and update in the lightData array
+
+	/**
+	 * return the middle light sensor offset angle
+	 * @return
+	 */
 	public int getLightSensorTheta() {
 		return this.lightData[Message.MID_LIGHT_SENSOR_THETA];
 	}
 
-	// receive the right ultrasonic sensor value from the communication client
-	// and update in the lightData array
+	/**
+	 * rteurn the right ultrasonic sensor value
+	 * @return
+	 */
 	public int getRightUSSensorValue(){
 		return this.lightData[Message.RIGHT_US_SENSOR_VALUE];
 	}
