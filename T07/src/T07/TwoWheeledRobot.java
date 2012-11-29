@@ -4,7 +4,7 @@ import lejos.nxt.*;
 /**
  * This class defines all measurements and controls all the motors of the robot
  * By doing this, we can avoid motors controlled by multiple classes at the same time and have all measurements defined at one place
- * @author Simon
+ * @author Simon Liu, Ashley Simpson
  *
  */
 public class TwoWheeledRobot {

@@ -5,8 +5,6 @@ import lejos.util.Timer;
 import lejos.util.TimerListener;
 import java.util.Arrays;
 
-// Class that controls the US sensors of the robot, it will function to filter data and
-// control pinging of the sensors so US information is stable, also extends TimerListener
 /**
  * Class controls the US sensors of the robot, filters and processes data and
  * control pinging of the sensors so US information is stable

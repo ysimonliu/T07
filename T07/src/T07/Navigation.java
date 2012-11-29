@@ -4,6 +4,11 @@ import lejos.nxt.Sound;
 import lejos.nxt.comm.RConsole;
 import lejos.util.Delay;
 
+/**
+ * This class controls the navigation of the robot
+ * @author Ashley Simpson, Simon Liu
+ *
+ */
 public class Navigation {
 		
 	private boolean isTurning = false;
@@ -21,6 +26,14 @@ public class Navigation {
 	
 	private static double currentX;
 	
+	/**
+	 * Constructs the navigation
+	 * @param robot - current robot
+	 * @param odometer - current odometer
+	 * @param usPoller - ultrasonic sensor poller
+	 * @param leftLP - left light poller
+	 * @param rightLP - right light poller
+	 */
 	public Navigation(TwoWheeledRobot robot, Odometer odometer, USPoller usPoller, LightPoller leftLP, LightPoller rightLP){
 		this.odometer = odometer;
 		this.robot = odometer.getTwoWheeledRobot();
@@ -29,12 +42,23 @@ public class Navigation {
 		this.rightLP = rightLP;
 	}
 	
+	/**
+	 * Travel to the destination. Will travel first along y axis and then x axis
+	 * @param x - destination x
+	 * @param y - destination y
+	 * @param avoidObstable - whether or not avoid obstacle
+	 */
 	public void travelTo(double x, double y, boolean avoidObstable) {
 		RConsole.println("DEBUG: I'm now travelling to [" + x + "," + y + "]");
 		travelAlongYTo(y, avoidObstable);
 		travelAlongXTo(x, avoidObstable);
 	}
 	
+	/**
+	 * Travel to a point along x-axis to point x 
+	 * @param x - destination x
+	 * @param avoidObstable - whether or not avoid obstacle
+	 */
 	private void travelAlongXTo(double x, boolean avoidObstable) {
 		RConsole.println("DEBUG: I'm now travelling along X");
 		if (x - odometer.getX() > 0) {
@@ -57,6 +81,11 @@ public class Navigation {
 		robot.stop();
 	}
 	
+	/**
+	 * Travel to a point along y-axis to point y
+	 * @param y - destination y
+	 * @param avoidObstable - whether or not avoid obstacle
+	 */
 	private void travelAlongYTo(double y, boolean avoidObstable) {
 		RConsole.println("DEBUG: I'm now travelling along Y");
 		if (y - odometer.getY() > 0) {
@@ -78,6 +107,10 @@ public class Navigation {
 		robot.stop();
 	}
 
+	/**
+	 * Turn to an angle
+	 * @param angle - destination angle
+	 */
 	public void turnTo(double angle) {
 		// first stop the robot in motion
 		robot.stop();
@@ -99,11 +132,18 @@ public class Navigation {
 		isTurning = false;
 	}
 	
+	/**
+	 * Turn a certain angle regardless of the current heading
+	 * @param angle - angle to turn regardless of the current heading
+	 */
 	public void turnAngle(double angle){
 		turnTo(odometer.getTheta() + angle);
 	}
 	
-	// helper functions
+	/**
+	 * Travels for a certain distance while avoiding obstacle
+	 * @param distance - distance to travel
+	 */
 	private void travelDistance(double distance) {
 		robot.setForwardSpeed();
 		while (robot.getDisplacement() < distance) {
@@ -117,6 +157,9 @@ public class Navigation {
 		robot.stop();
 	}
 	
+	/**
+	 * Method to avoid the obstacles
+	 */
 	private void avoidObstacle() {
 		// first stop robot
 		robot.stop();
@@ -128,6 +171,11 @@ public class Navigation {
 		robot.setForwardSpeed();
 	}
 	
+	/**
+	 *  Normalizes the angle
+	 * @param angle - angle to be normalized
+	 * @return normalized angle
+	 */
 	private double normalizeAngle(double angle) {
 		while (angle < 0.0) {
 			angle = 360.0 + (angle % 360.0);
@@ -135,6 +183,9 @@ public class Navigation {
 		return angle % 360.0;
 	}
 	
+	/**
+	 * Method to correct odometer. Only called when travelling.
+	 */
 	private void correctOdometer() {
 		
 		while (robot.leftMotor.isMoving() || robot.rightMotor.isMoving()) {
