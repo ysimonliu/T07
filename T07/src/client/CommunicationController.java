@@ -1,9 +1,5 @@
 package client;
 
-/**
- * Sending and receiving data to and from master brick
- */
-
 import communication.Message;
 
 import lejos.util.Timer;
@@ -29,11 +25,11 @@ public class CommunicationController implements TimerListener, Runnable{
 	private int[] lightData = new int [Message.NUMBER_OF_ELEMENTS];
 	
 	/**
-	 * constructor of client-end communication controller
+	 * Constructs of client-end communication controller;
 	 * upon instantiation, this class will call timedOut() and run() method to send & receive data
-	 * @param ls
-	 * @param usPoller
-	 * @param communicationClient
+	 * @param ls - the light sensor
+	 * @param usPoller - the ultrasonic sensor poller
+	 * @param communicationClient - the communication client
 	 */
 	public CommunicationController(LightPoller ls, USPoller usPoller, CommunicationClient communicationClient) {
 		// constructor
@@ -50,7 +46,7 @@ public class CommunicationController implements TimerListener, Runnable{
 	}
 	
 	/**
-	 * send data to the master brick periodically at DEFAULT_COMMUNICATION_PERIOD
+	 * Sends data to the master brick periodically at DEFAULT_COMMUNICATION_PERIOD
 	 */
 	@Override
 	public void timedOut() {
@@ -59,7 +55,7 @@ public class CommunicationController implements TimerListener, Runnable{
 	}
 
 	/**
-	 * receive data from master brick and process the message received
+	 * Receives data from master brick and process the message received
 	 */
 	@Override
 	// Data Receiver: This run method will receive data from the communication client constantly on the fly
@@ -98,7 +94,7 @@ public class CommunicationController implements TimerListener, Runnable{
 	}
 
 	/**
-	 * send the middle light sensor value to the master brick
+	 * Sends the middle light sensor value to the master brick
 	 */
 	public void sendMidLightSensorValue() {
 		Message message = new Message(Message.MID_LIGHT_SENSOR_VALUE, this.lightPoller.getRawValue());
@@ -107,7 +103,7 @@ public class CommunicationController implements TimerListener, Runnable{
 
 	
 	/**
-	 * send the right ultrasonic sensor reading to the communication server
+	 * Sends the right ultrasonic sensor reading to the communication server
 	 */
 	private void sendRightUSSensorValue() {
 		Message message = new Message(Message.RIGHT_US_SENSOR_VALUE, this.usPoller.getRawValue());

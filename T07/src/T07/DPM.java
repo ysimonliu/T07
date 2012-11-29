@@ -8,7 +8,7 @@ import bluetooth.*;
 /**
  * Main class of the entire project.
  * Contains all information for proper functioning of the master brick.
- *
+ * @author Ashley Simpson
  */
 public class DPM {
 	

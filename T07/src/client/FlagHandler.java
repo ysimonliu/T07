@@ -17,7 +17,7 @@ public class FlagHandler {
 	private static final int MAX_CLAW_HEIGHT = 1000, CLAMP_ANGLE = 45;
 	
 	/**
-	 * first close the claw to grab on the beacon, and then raise the claw
+	 * First close the claw to grab on the beacon, and then raise the claw
 	 */
 	public static void pickUp() {
 		closeClaws();
@@ -25,7 +25,7 @@ public class FlagHandler {
 	}
 	
 	/**
-	 * first lower the claw, and then open the claw
+	 * First lower the claw, and then open the claw
 	 */
 	public static void putDown() {
 		lowerClaws();
@@ -33,7 +33,7 @@ public class FlagHandler {
 	}
 	
 	/**
-	 * close the claw to grab on the beacon
+	 * Closes the claw to grab on the beacon
 	 */
 	@SuppressWarnings("deprecation")
 	public static void closeClaws() {
@@ -79,8 +79,8 @@ public class FlagHandler {
 	}
 	
 	/**
-	 * lift the claw to the distance
-	 * @param distance
+	 * Lifts the claw to the distance
+	 * @param distance - the height to lift the claw to
 	 */
 	@SuppressWarnings("deprecation")
 	public static void raiseClaws(int distance) {
@@ -94,7 +94,7 @@ public class FlagHandler {
 	}
 	
 	/**
-	 * lower the claw to ground height
+	 * Lowers the claw to ground height
 	 */
 	public static void lowerClaws() {
 		LCD.drawString("Lowering...", 0, 4);

@@ -25,7 +25,7 @@ public class LightPoller implements TimerListener{
 
 
 	/**
-	 * constructor. light sensor passed in from DPM_Client class
+	 * Constructs with a light sensor
 	 * @param ls
 	 */
 	public LightPoller(LightSensor ls) {
@@ -37,8 +37,7 @@ public class LightPoller implements TimerListener{
 	}
 	
 	/**
-	 * populate raw value and second order derivative of the middle light sensor reading
-	 * at a time interval
+	 * Reads the light sensor periodically and process the values to second derivative
 	 */
 	public void timedOut() {
 		// add the newly read distance to replace the oldest element in the array
@@ -50,16 +49,16 @@ public class LightPoller implements TimerListener{
 	}
 	
 	/**
-	 * get the second order derivative of the middle light sensor reading
-	 * @return
+	 * Returns the second order derivative of the light sensor poller
+	 * @return - the second order derivative of the light sensor reading
 	 */
 	public int getSecondOrderDerivative() {
 		return secondOrderDerivative;
 	}
 	
 	/**
-	 * get the raw value reading of the middle light sensor reading
-	 * @return
+	 * Returns the most recent raw ultrasonic sensor reading
+	 * @return the raw ultrasonic sensor reading
 	 */
 	public int getRawValue() {
 		return rawLightValue;

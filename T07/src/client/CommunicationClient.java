@@ -26,10 +26,10 @@ public class CommunicationClient {
 	private DataInputStream dataIn;
 	
 	/**
-	 * constructor for CommunicationClient class
-	 * the slave brick of a two-brick communications should instantiate this class
-	 * connection via cable
-	 * upon successful connection, robot will sound two beeps
+	 * Constructs the communication client.
+	 * the slave brick of a two-brick communications should instantiate this class;
+	 * connection via cable;
+	 * upon successful connection, robot will sound two beeps.
 	 */
 	public CommunicationClient() {
 
@@ -47,8 +47,8 @@ public class CommunicationClient {
 	}
 	
 	/**
-	 * by passing in a message, this method will send a message to the master brick
-	 * @param message
+	 * Sends a message to the master brick
+	 * @param message - a message that passed in from the master brick
 	 */
 	public void send(Message message) {
 		try {
@@ -60,7 +60,7 @@ public class CommunicationClient {
 	}
 	
 	/**
-	 * receive and return a message from the master brick
+	 * Receives a message from the master brick
 	 * @return
 	 */
 	public Message receive() {

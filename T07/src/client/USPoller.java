@@ -26,8 +26,8 @@ public class USPoller implements TimerListener{
 
 
 	/**
-	 * constructor of right side US sensor
-	 * @param usSensor
+	 * Construct the Ultrasonic poller with the ultrasonic sensor
+	 * @param usSensor - ultrasonic sensor
 	 */
 	public USPoller(UltrasonicSensor usSensor) {
 	
@@ -37,8 +37,7 @@ public class USPoller implements TimerListener{
 	}
 	
 	/**
-	 * populate raw value and second order derivative of the right side ultrasonic sensor reading
-	 * at a time interval
+	 * Reads the ultrasonic sensor reading periodically
 	 */
 	public void timedOut() {
 		// add the newly read distance to replace the oldest element in the array
@@ -51,16 +50,8 @@ public class USPoller implements TimerListener{
 	}
 	
 	/**
-	 * get the second order derivative of the right side ultrasonic sensor reading
-	 * @return
-	 */
-	public int getSecondOrderDerivative() {
-		return secondOrderDerivative;
-	}
-	
-	/**
-	 * get the raw value reading of the right side ultrasonic sensor reading
-	 * @return
+	 * Reutrbs the most recent raw value reading of the ultrasonic sensor reading
+	 * @return the most recent raw value reading of the ultrasonic sensor reading
 	 */
 	public int getRawValue() {
 		return rawLightValue;
