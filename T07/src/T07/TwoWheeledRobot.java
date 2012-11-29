@@ -1,6 +1,12 @@
 package T07;
 import lejos.nxt.*;
 
+/**
+ * This class defines all measurements and controls all the motors of the robot
+ * By doing this, we can avoid motors controlled by multiple classes at the same time and have all measurements defined at one place
+ * @author Simon
+ *
+ */
 public class TwoWheeledRobot {
 	
 	// this class contains the measurements of the robot
@@ -15,6 +21,16 @@ public class TwoWheeledRobot {
 	private double leftRadius, rightRadius, width;
 	private double forwardSpeed, rotationSpeed;
 	
+	/**
+	 * Constructs the current robot
+	 * @param leftMotor - motor that controls the left wheel
+	 * @param rightMotor - motor that controls the right wheel
+	 * @param lightSensorMotor - motor that controls the light sensor
+	 * @param middleUSSensor - the middle ultrasonic sensor
+	 * @param leftLS - the left light sensor
+	 * @param rightLS - the right light sensor
+	 * @param communicationController - communication controller
+	 */
 	public TwoWheeledRobot(NXTRegulatedMotor leftMotor,
 						   NXTRegulatedMotor rightMotor,
 						   NXTRegulatedMotor lightSensorMotor,
@@ -34,59 +50,96 @@ public class TwoWheeledRobot {
 		this.communicationController = communicationController;
 	}
 	
-	// control the slave brick to perform tasks
+	/**
+	 * Asks the slave brick to pick up the beacon from ground
+	 */
 	public void pickUpFromGround() {
 		closeClaw();
 		liftClaw();
 	}
 	
+	/**
+	 * Asks the slave brick to places the beacon on the ground
+	 */
 	public void placeOntoGround() {
 		lowerClaw();
 		openClaw();
 	}
 	
+	/**
+	 * Asks the slave brick to close the claw
+	 */
 	public void closeClaw() {
 		communicationController.sendCloseClaw();
 	}
 	
+	/**
+	 * Asks the slave brick to open the claw
+	 */
 	public void openClaw() {
 		communicationController.sendOpenClaw();
 	}
 	
+	/**
+	 * Asks the slave brick to lift the claw
+	 */
 	public void liftClaw() {
 		communicationController.sendRaiseLift();
 	}
 	
+	/**
+	 * Asks the slave brick to lower the claw
+	 */
 	public void lowerClaw() {
 		communicationController.sendLowerLift();
 	}
 	
-	// read values from the slave brick
+	/**
+	 * Returns the latest mid light sensor reading
+	 */
 	public int getMidLightSensorReading(){
 		return communicationController.getMidLightSensorValue();
 	}
 	
+	/**
+	 * Resets the tacho count of the motors that control the wheels
+	 */
 	public void resetTachoCountBothWheels() {
 		leftMotor.resetTachoCount();
 		rightMotor.resetTachoCount();
 	}
 	
-	// accessors
+	/**
+	 * Returns the current communication controller
+	 * @return the current communication controller
+	 */
 	public CommunicationController getCommunicationController(){
 		return this.communicationController;
 	}
 	
+	/**
+	 * Returns the displacement of the robot
+	 * @return the displacement of the robot
+	 */
 	public double getDisplacement() {
 		return (leftMotor.getTachoCount() * leftRadius +
 				rightMotor.getTachoCount() * rightRadius) *
 				Math.PI / 360.0;
 	}
 	
+	/**
+	 * Returns the heading change of the robot
+	 * @return the heading change of the robot
+	 */
 	public double getHeading() {
 		return (leftMotor.getTachoCount() * leftRadius -
 				rightMotor.getTachoCount() * rightRadius) / width;
 	}
 	
+	/**
+	 * Returns both the heading change and the displacement of the robot
+	 * @param data - empty array whose elements will be updated with the heading change and displacement of the robot
+	 */
 	public void getDisplacementAndHeading(double [] data) {
 		int leftTacho, rightTacho;
 		leftTacho = leftMotor.getTachoCount();
@@ -96,29 +149,49 @@ public class TwoWheeledRobot {
 		data[1] = (leftTacho * leftRadius - rightTacho * rightRadius) / width;
 	}
 	
-	// mutators
+	/**
+	 * Sets the forward speed of both motors
+	 * @param speed - forward speed
+	 */
 	public void setForwardSpeed(double speed) {
 		forwardSpeed = speed;
 		setSpeeds(forwardSpeed, 0);
 	}
 	
+	/**
+	 * Sets the forward speed of both motors with default forward speed
+	 */
 	public void setForwardSpeed(){
 		setForwardSpeed(DEFAULT_FORWARD_SPEED);
 	}
 	
+	/**
+	 * Sets the backwards speed of both motors with default backward speed
+	 */
 	public void setBackwardSpeed(){
 		setForwardSpeed(-DEFAULT_FORWARD_SPEED);
 	}
-	
+	/**
+	 * Sets the rotation speed of both motors
+	 * @param speed - rotation speed
+	 */
 	public void setRotationSpeed(double speed) {
 		rotationSpeed = speed;
 		setSpeeds(0, rotationSpeed);
 	}
 	
+	/**
+	 * Sets the rotation speed of both motors with default rotation speed
+	 */
 	public void setRotationSpeed() {
 		setRotationSpeed(DEFAULT_ROTATION_SPEED);
 	}
 	
+	/**
+	 * Sets the speeds of the motors that control the wheels
+	 * @param forwardSpeed - forward speed
+	 * @param rotationalSpeed - rotation speed
+	 */
 	public void setSpeeds(double forwardSpeed, double rotationalSpeed) {
 		double leftSpeed, rightSpeed;
 
@@ -158,19 +231,26 @@ public class TwoWheeledRobot {
 		
 	}
 	
-	// 
-	
-	// method that returns if leftMotor is moving
+	/**
+	 * Returns whether the left motor is moving
+	 * @return true if left motor is moving, false otherwise
+	 */
 	public boolean leftMotorMoving() {
 		return leftMotor.isMoving();
 	}
 	
-	// method that returns if rightMotor is moving
+	/**
+	 * Returns whether the right motor is moving
+	 * @return true if right motor is moving, false otherwise
+	 */
 	public boolean rightMotorMoving() {
 		return rightMotor.isMoving();
 	}
 	
-	// returns whether the motors are moving or not
+	/**
+	 * Returns whether the motors that control the wheels are moving
+	 * @return true if left motor or right motor or both are moving, false otherwise
+	 */
 	public boolean motorsMoving() {
 		if (rightMotorMoving() || leftMotorMoving()) {
 			return true;
@@ -178,65 +258,42 @@ public class TwoWheeledRobot {
 		return false;
 	}
 	
-	// method that stops the leftmotor only
+	/**
+	 * Stops the left motor from moving
+	 */
 	public void stopLeftMotor () {
 		leftMotor.stop(true);
 	}
 	
+	/**
+	 * Sets the left motor speed
+	 * @param speed - speed of left motor
+	 */
 	public void setLeftMotorSpeed(int speed) {
 		leftMotor.setSpeed(speed);
 	}
 	
-	public void slowLeftMotorSpeed(){
-		setLeftMotorSpeed(30);
-	}
-	
-	// method that stops the rightmotor only
+	/**
+	 * Sets the right motor speed
+	 * @param speed - speed of right motor
+	 */
 	public void stopRightMotor () {
 		rightMotor.stop(true);
 	}
+	
+	/**
+	 * Sets the right motor speed
+	 * @param speed - speed of right motor
+	 */
 	public void setRightMotorSpeed(int speed) {
 		rightMotor.setSpeed(speed);
 	}
 	
-	public void slowRightMotorSpeed(){
-		setRightMotorSpeed(30);
-	}
-	
 	/**
-	 * both motor rotate a certain degree
-	 * @param angle
-	 */
-	
-	// TODO: Check if this turns the desired angle
-	public void rotate(int angle) {
-		rightMotor.rotate(angle, true);
-		leftMotor.rotate(-angle);
-	}
-	
-	/**
-	 * stop two motors at the same time
+	 * stop both motors that control the wheels from moving at the same time
 	 */
 	public void stop() {
 		rightMotor.stop(true);
 		leftMotor.stop();
-	}
-	
-	// method that moves the robot forward a specific distance
-	public void moveForwardDistance(double distance) {
-		leftMotor.forward();
-		rightMotor.forward();
-		leftMotor.rotate(convertDistance(leftRadius, distance), true);
-		rightMotor.rotate(convertDistance(rightRadius, distance), false);
-	}
-	
-	// taken from the square driver class (lab2) converts the turn angle into a distance for the convertDistance method
-	private static int convertAngle(double radius, double width, double angle) {
-		return convertDistance(radius, Math.PI * width * angle / 360.0);
-	}
-	
-	// taken from the square drive class, converts into a usable angle displacement (degrees) for the rotate operation
-	private static int convertDistance(double radius, double distance) {
-		return (int) ((180.0 * distance) / (Math.PI * radius));
 	}
 }

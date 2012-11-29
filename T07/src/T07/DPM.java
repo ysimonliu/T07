@@ -12,7 +12,17 @@ import bluetooth.*;
  */
 public class DPM {
 	
+	/**
+	 * Ultrasonic Sensor position
+	 * @author Simon Liu
+	 *
+	 */
 	public enum USSensor {MIDDLE, RIGHT};
+	/**
+	 * Light sensor position
+	 * @author Simon Liu
+	 *
+	 */
 	public enum LSensor {LEFT, RIGHT};
 	static private final NXTRegulatedMotor LEFT_MOTOR = Motor.A; 
 	static private final NXTRegulatedMotor RIGHT_MOTOR = Motor.B;

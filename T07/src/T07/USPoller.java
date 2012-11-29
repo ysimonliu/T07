@@ -7,7 +7,12 @@ import java.util.Arrays;
 
 // Class that controls the US sensors of the robot, it will function to filter data and
 // control pinging of the sensors so US information is stable, also extends TimerListener
-
+/**
+ * Class controls the US sensors of the robot, filters and processes data and
+ * control pinging of the sensors so US information is stable
+ * @author Simon
+ *
+ */
 public class USPoller implements TimerListener{
 	
 	// private variable that stores the controlled USValue
@@ -21,7 +26,10 @@ public class USPoller implements TimerListener{
 	private static int[] readingRecords = new int[sizeOfCachedReadings];
 	private static int counter;
 	
-	// Constructor for USPoller
+	/**
+	 * Constructs the Ultrasonic Poller
+	 * @param robot
+	 */
 	public USPoller(TwoWheeledRobot robot) {
 		this.robot = robot;
 		this.us = robot.middleUSSensor;
@@ -30,7 +38,9 @@ public class USPoller implements TimerListener{
 		counter = 0;
 	}
 	
-	// TimerListener method that sets filtered US data readings, also controls pinging rates
+	/**
+	 * Polls and processes the ultrasonic sensor readings at a frequency
+	 */
 	public void timedOut() {
 
 		// do a ping
@@ -43,14 +53,17 @@ public class USPoller implements TimerListener{
 		rawUSValue = us.getDistance();
 		readingRecords[counter % sizeOfCachedReadings] = rawUSValue;
 		// get the median value of the array
-		filteredUSValue = getReadingRecordsMedian();
+		filteredUSValue = computeReadingRecordsMedian();
 		// increment the counter to move to the element in the array, aka the oldest element to be replaced
 		counter++;
 		
 	}
 	
-	// get median will return the median value of the last seven ultrasonic sensor readings
-	public int getReadingRecordsMedian() {
+	/**
+	 * Computes the median value of the last 7 readings
+	 * @return the median value of the last 7 readings
+	 */
+	public int computeReadingRecordsMedian() {
 		int medianValue;
 		// sort the reading records and copy it to another array
 		int[] sortedReadings = sortReadingRecords(Arrays.copyOf(readingRecords, readingRecords.length)); 
@@ -65,18 +78,28 @@ public class USPoller implements TimerListener{
 		return medianValue;
 	}
 
-	// this is a helper function to sort an array
+	/**
+	 * Sorts an array
+	 * @param - unsorted array
+	 * @return - sorted array
+	 */
 	private int[] sortReadingRecords(int[] arraysToBeSorted) {
 		Arrays.sort(arraysToBeSorted);
 		return arraysToBeSorted;
 	}
 		
-	// getter method that returns the filteredUSValue
+	/**
+	 * Returns the filtered ultrasonic sensor value
+	 * @return the filtered ultrasonic sensor value
+	 */
 	public int getFilteredData() {
 		return filteredUSValue;
 	}
 	
-	// getter for the unprocessed data
+	/**
+	 * Returns the most recent raw reading of the ultrasonic sensor
+	 * @return the most recent raw reading of the ultrasonic sensor
+	 */
 	public int getRawData() {
 		return rawUSValue;
 	}

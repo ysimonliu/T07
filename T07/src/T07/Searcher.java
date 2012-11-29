@@ -4,6 +4,7 @@ package T07;
  *Searcher class that will start after localization.
  *Travels to the relative center of the field and the commencers search.
  *Uses a memory based algorithm that always travels towards sources of light
+ *@author Ashley Simpson
  */
 public class Searcher {
 	

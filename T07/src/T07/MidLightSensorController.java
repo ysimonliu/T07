@@ -2,6 +2,11 @@ package T07;
 
 import lejos.nxt.NXTRegulatedMotor;
 
+/**
+ * This controlles the light sensor to turn and process the readings
+ * @author Simon Liu
+ *
+ */
 public class MidLightSensorController {
 		
 		private TwoWheeledRobot robot;
@@ -14,7 +19,7 @@ public class MidLightSensorController {
 		
 		/**
 		 * constructor for this class light sensor controller
-		 * @param robot
+		 * @param robot - the current robot
 		 */
 		public MidLightSensorController(TwoWheeledRobot robot){
 			this.robot = robot;
@@ -22,9 +27,9 @@ public class MidLightSensorController {
 		}
 		
 		/**
-		 * by swiping the area, we will return the max reading and find the offset angle
+		 * Swipes 90 degree, we will return the max reading during the swipe
 		 * before start, need to manually set the mid light sensor to straight ahead
-		 * @return
+		 * @return the max reading during the swipe
 		 */
 		public int findMaxReading(){
 			// reset the two variables that record the maxReading and maxReadingOffsetAngle
@@ -48,6 +53,11 @@ public class MidLightSensorController {
 			return maxReading;
 		}
 		
+		/**
+		 * Swipes 90 degree, we will return the max reading offset angle during the swipe
+		 * before start, need to manually set the mid light sensor to straight ahead
+		 * @return the max reading offset angle during the swipe
+		 */
 		public double findMaxAngle(){
 			// reset the two variables that record the maxReading and maxReadingOffsetAngle
 			maxReading = -1;
