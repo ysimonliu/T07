@@ -2,6 +2,12 @@ package T07;
 
 import lejos.nxt.*;
 
+/**
+ * Class that is responsible for all ultrasonic localization
+ * Accurate to about 10 degrees
+ * 
+ * @author Ashley Simpson
+ */
 public class USLocalizer{
 	// declare falling_edge, and rising_edge
 	public enum LocalizationType {FALLING_EDGE, RISING_EDGE };
@@ -12,17 +18,26 @@ public class USLocalizer{
 	private TwoWheeledRobot robot;
 	private USPoller usPoller;
 	private double headingDiff;
-	//private int filterCounter, lastNormalReading; // values for the getdistance method that isn't required
 	private Navigation navigation;
 
-	// constructor
+	/**
+	 * Constructor for the USLocalizer
+	 * 
+	 * @param odo Odometer object for odometer heading updates and TwoWheeledRobot passing
+	 * @param navigation Navigation object for rotations
+	 * @param usPoller USPoller object for wall detection
+	 */
 	public USLocalizer(Odometer odo, Navigation navigation,USPoller usPoller) {
 		this.odo = odo;
 		this.robot = odo.getTwoWheeledRobot();
 		this.navigation = navigation;
 		this.usPoller = usPoller;
 	}
-
+	
+	/**
+	 * Method that performs all tasks for ultrasonic localization of the robot.
+	 * Primarily for accurate placement so light localization can occur.
+	 */
 	public void doLocalization() {
 		double[] pos = new double [3];
 		double angleA, angleB;
@@ -35,10 +50,11 @@ public class USLocalizer{
 		while(usPoller.getFilteredData() > noWallDistance){
 		}
 		robot.stop();
-
+		
+		// stores the odometer heading, to be used in calculating actual heading
 		odo.getPosition(pos);
 		angleA = pos[2];
-		Sound.beep();
+		Sound.beep(); // indicate that robot has detected a wall
 		
 		robot.setRotationSpeed(-ROTATION_SPEED);
 		// switch direction and wait until it sees no wall
@@ -49,7 +65,8 @@ public class USLocalizer{
 		}
 		
 		robot.stop();
-
+		
+		// stores the odometer heading, to be used in calculating actual heading
 		odo.getPosition(pos);
 		angleB = pos[2];
 		Sound.beep();
@@ -62,6 +79,7 @@ public class USLocalizer{
 		else {
 			headingDiff = 225 - (angleA + angleB)/2;
 		}
+		
 		// update the odometer position (example to follow:)
 		//odo.getPosition(pos);
 		odo.setPosition(new double [] {0.0, 0.0, pos[2] + headingDiff}, new boolean [] {true, true, true});

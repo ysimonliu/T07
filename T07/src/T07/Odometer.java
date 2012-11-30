@@ -4,7 +4,7 @@ import lejos.util.TimerListener;
 
 /**
  * This class controlls the odometer
- * @author Simon Liu
+ * @author Simon Liu, Ashley Simpson
  */
 public class Odometer implements TimerListener {
 	// ALL THESE CODE & COMMENTS ARE GIVEN BY THE TA FOR LOCALIZER

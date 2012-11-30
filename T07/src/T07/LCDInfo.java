@@ -6,7 +6,7 @@ import lejos.util.TimerListener;
 
 /**
  * This class displays all the information to the master brick monitor
- * @author Simon
+ * @author Simon Liu, Ashley Simpson
  *
  */
 public class LCDInfo implements TimerListener{
