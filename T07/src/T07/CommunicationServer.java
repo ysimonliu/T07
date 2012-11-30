@@ -14,7 +14,7 @@ import lejos.nxt.comm.RS485Connection;
 /**
  * This class will be instantiated by the master brick
  * to become the master in the two-way communication
- * @author Simon
+ * @author Simon Liu
  *
  */
 public class CommunicationServer {

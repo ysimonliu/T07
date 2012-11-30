@@ -4,7 +4,7 @@ import lejos.nxt.*;
 
 /**
  * This class is to perform the hiding task
- * @author Simon
+ * @author Simon Liu
  *
  */
 public class Hider {

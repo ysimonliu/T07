@@ -8,7 +8,7 @@ import java.util.Arrays;
 /**
  * Class controls the US sensors of the robot, filters and processes data and
  * control pinging of the sensors so US information is stable
- * @author Simon
+ * @author Simon Liu
  *
  */
 public class USPoller implements TimerListener{
